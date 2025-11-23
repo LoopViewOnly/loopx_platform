@@ -1,0 +1,5 @@
+{
+  "name": "LoopX Challenge",
+  "description": "A futuristic challenge application with a user UI for completing tasks like typing and clicking speed tests, and an admin UI featuring a top 10 scoreboard with a horizontal bar chart.",
+  "requestFramePermissions": []
+}

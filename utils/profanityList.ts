@@ -1,0 +1,32 @@
+
+// A basic list of profane words. In a real application, this would be more comprehensive.
+export const profanityList: string[] = [
+  'darn', 'heck', 'gosh', 'jerk', 'butt',
+  'ass', 'asses', 'asshole', '@ss', 'a55', 'azz',
+  'bastard', 'bitch', 'biatch', 'b1tch', 'b!tch', 'b*tch',
+  'bollocks', 'bugger', 'bullshit',
+  'crap', 'cunt', 'damn',
+  'dick', 'd1ck', 'd!ck', 'd*ck',
+  'douche', 'fag',
+  'fuck', 'fucker', 'fucking',
+  'fuk', 'fck', 'f*ck', 'f@ck', 'f*uk', 'f u c k', 'f uck', 'fu ck',
+  'f0ck', 'phuck',
+  'goddamn',
+  'horseshit',
+  'motherfucker',
+  'nigga', 'nigger', 'n1gga', 'n1gger', 'nigg4',
+  'piss', 'pussy', 'pussi', 'p*ssy',
+  'shit', 'shite', 'sh1t', 'sh!t', 'sh*t', 's h i t',
+  'slut', 'slvt', 'sl*t',
+  'son of a bitch',
+  'twat', 'wanker', 'whore', 'wh0re', 'wh0r3',
+  'sex', 's3x', 'sx', 'sexy', 's3xy', 'sxxy',
+  'porn', 'p0rn', 'pr0n', 'pr0rn', 'p0rno', 'porno',
+  'hot', 'h0t', 'horny', 'h0rny', 'h0rni',
+  'gay', 'g@y',
+  'cum', 'cvm', 'c0m', 'cumm', 'cumshot',
+  'anal', 'an@l', 'a nal', 'a-n-a-l',
+  'fetish', 'nsfw',
+  'boobs', 'b00bs',
+  'tits', 't1ts'
+];
