@@ -159,23 +159,24 @@ const App: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br from-black via-blue-900/50 to-black p-4 sm:p-6 lg:p-8 font-sans">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(29,78,216,0.15)_0,_transparent_50%)] -z-10"></div>
             
-            {/* Burger Menu Button */}
-            {currentUserName && (
-                <button
-                    className="fixed top-4 left-4 z-[100] p-2 bg-black/50 backdrop-blur-md rounded-md border border-white/10 hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    aria-label={isMenuOpen ? "Close challenge menu" : "Open challenge menu"}
-                    aria-expanded={isMenuOpen}
-                >
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        {isMenuOpen ? (
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        ) : (
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                        )}
-                    </svg>
-                </button>
+{/* Burger Menu Button */}
+{currentUserName && (
+    <button
+        className="fixed top-[10%] left-4 z-[100] bg-black/50 backdrop-blur-md rounded-md border border-white/10 hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-label={isMenuOpen ? "Close challenge menu" : "Open challenge menu"}
+        aria-expanded={isMenuOpen}
+    >
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             )}
+        </svg>
+    </button>
+)}
+
 
             {/* Menu Overlay */}
             {isMenuOpen && (
