@@ -254,6 +254,10 @@ export const HIDDEN_CODE_CHALLENGE = {
     pass:"LoopX2025"
 };
 
+export const LOOPERS_SHIRT = {
+    ans:"39"
+};
+
 export const PERSONA_CHALLENGE = {
     question: "The ID card below contains all the clues needed to guess a password. The password is a combination of the pet's name and the owner's birth year. What is it?",
     answer: "Rex2015"
