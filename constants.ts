@@ -1,3 +1,4 @@
+import { LOOPERS_SHIRT } from './challenges/content';
 import { UserScore } from './types';
 
 // Challenge thresholds
@@ -44,7 +45,7 @@ export const SCORE_WEIGHTS = {
     SIMILARITY_SUCCESS: 100,
     JS_CORRECT: 100,
     HTML_CORRECT: 100,
-    LOOP_SHIRT_CORRECT: 100,
+    LOOPERS_SHIRT: 100,
     WORDLE_CORRECT: 200,
     MAGIC_CORRECT: 100,
     PHISHING_CORRECT: 100,

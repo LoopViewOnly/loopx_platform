@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { LOOP_SHIRT_PLACEHOLDER_B64 } from '../challenges/assets';
+import loopShirt from '../assets/loopersShirt.jpg';
+import { LOOPERS_SHIRT} from '../challenges/content';
 
 interface LoopShirtChallengeProps {
     onComplete: (time: number | null) => void;
     challengeTitle: string;
 }
 
-const CORRECT_ANSWER = '10';
+const CORRECT_ANSWER = LOOPERS_SHIRT.ans;
 
 const LoopShirtChallenge: React.FC<LoopShirtChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [answer, setAnswer] = useState('');
@@ -44,7 +45,7 @@ const LoopShirtChallenge: React.FC<LoopShirtChallengeProps> = ({ onComplete, cha
 
             <div className="mb-6 flex justify-center bg-black/20 p-4 rounded-lg">
                  <img 
-                    src={LOOP_SHIRT_PLACEHOLDER_B64}
+                    src = '../assets/loopersShirt.jpg'
                     alt="Placeholder for a crowd of people" 
                     className="rounded-lg max-w-sm w-full h-auto object-contain"
                 />
