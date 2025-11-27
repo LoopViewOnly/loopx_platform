@@ -5,6 +5,7 @@ import { UserScore } from './types';
 import { LOOPX_LOGO_B64 } from './challenges/assets';
 import { db, isFirebaseEnabled } from './firebase';
 
+
 interface SavedProgress {
     name: string;
     challenge: Challenge;
@@ -16,7 +17,6 @@ const App: React.FC = () => {
     const initialUserName = localStorage.getItem('loopx-last-user');
     const [currentUserName, setCurrentUserName] = useState<string | null>(initialUserName);
     const [currentChallenge, setCurrentChallenge] = useState<Challenge>('welcome');
-    const [debugJump, setDebugJump] = useState<Challenge | null>(null);
     const [score, setScore] = useState(0);
     const [completedChallenges, setCompletedChallenges] = useState<Set<Challenge>>(() => new Set());
 
@@ -28,7 +28,7 @@ const App: React.FC = () => {
         'password_strength', 'cipher', 'mcq8', 'tictactoe', 'mcq13', 'persona', 
         'URL', 'imageTrivia', 'mcq9', 'similarity', 'hiddencode', 'dino', 
         'mcq10', 'loopshirt', 'realorfake', 'match_connect', 'pinpoint', 'hex_conversion',
-        'fizzbuzz', 'guess_the_flag', 'mcq11', 'website_count', 'hex_to_binary', 'lua_prime',
+        'fizzbuzz', 'guess_the_flag', 'website_count', 'hex_to_binary', 'lua_prime',
         'logic_gate', 'dual_trivia', 'windows_timeline', 'spot_the_pattern', 'az_speed_test',
         'js_array_sum', 'color_confusion', 'python_calculator', 'arduino_blink', 'connections_grid',
         'number_speed_test', 'interactive_binary', 'lua_maxof3', 'mcq15', 'memory_pattern'
@@ -75,7 +75,8 @@ const App: React.FC = () => {
             localStorage.setItem(`loopx-progress-${currentUserName}`, JSON.stringify(progress));
             localStorage.setItem('loopx-last-user', currentUserName);
 
-            if(isFirebaseEnabled && db) {
+            // FIX: Use v8 compatibility API directly from the 'db' object.
+            if(db) {
                 const updateUserScore = async () => {
                     try {
                         await db.collection('userScores').doc(currentUserName).update({
@@ -126,7 +127,8 @@ const App: React.FC = () => {
             setCurrentChallenge(challengeOrder[0]);
             setCompletedChallenges(new Set());
             
-            if (isFirebaseEnabled && db) {
+            // FIX: Use v8 compatibility API directly from the 'db' object.
+            if (db) {
                 try {
                     await db.collection('userScores').doc(name).set({
                         name: name,
@@ -149,6 +151,23 @@ const App: React.FC = () => {
         });
     }, []);
 
+    const handleJumpToChallenge = useCallback((challengeId: Challenge) => {
+        if (completedChallenges.has(challengeId)) {
+            // If the clicked challenge is completed, find the next uncompleted one
+            const nextUncompletedIndex = challengeOrder.findIndex(c => !completedChallenges.has(c) && challengeOrder.indexOf(c) > challengeOrder.indexOf(challengeId));
+            if (nextUncompletedIndex !== -1) {
+                setCurrentChallenge(challengeOrder[nextUncompletedIndex]);
+            } else {
+                // If all subsequent challenges are completed, or clicked one is last completed, go to 'done'
+                setCurrentChallenge('done');
+            }
+        } else {
+            // If the clicked challenge is not completed, go directly to it
+            setCurrentChallenge(challengeId);
+        }
+    }, [challengeOrder, completedChallenges, setCurrentChallenge]);
+
+
     const renderUserFlow = () => {
         if (!currentUserName) {
             return <WelcomeScreen onStart={handleNameSubmit} />;
@@ -157,7 +176,6 @@ const App: React.FC = () => {
         return (
             <UserView 
                 onComplete={handleUserCompletion}
-                debugJump={debugJump}
                 userName={currentUserName}
                 currentScore={score}
                 updateScore={setScore}
@@ -189,13 +207,13 @@ const App: React.FC = () => {
                         {challengeOrder.map((challenge, index) => (
                             <button
                                 key={challenge}
-                                onClick={() => setDebugJump(challenge)}
+                                onClick={() => handleJumpToChallenge(challenge)} // Use new handler
                                 className={`text-xs px-2 py-1 rounded transition-colors text-left whitespace-nowrap
                                     ${completedChallenges.has(challenge) ? 'bg-green-700/30 text-green-400 cursor-not-allowed' : 'hover:bg-blue-600 text-white'}
                                     ${currentChallenge === challenge ? 'border border-blue-400' : ''}
                                 `}
                                 title={`Jump to ${challenge} challenge`}
-                                disabled={completedChallenges.has(challenge)}
+                                disabled={completedChallenges.has(challenge)} // Still disable direct clicks on completed ones
                             >
                                 <span className="text-gray-400 mr-1">{index + 1}.</span>
                                 {
@@ -225,7 +243,6 @@ const App: React.FC = () => {
                                     challenge === 'js_array_sum' ? 'JS Array Sum' :
                                     challenge === 'color_confusion' ? 'Color Confusion' :
                                     challenge === 'python_calculator' ? 'Python Calculator' :
-                                    challenge === 'python_mentor' ? 'Python Mentor' :
                                     challenge === 'arduino_blink' ? 'Arduino Blink' :
                                     challenge === 'connections_grid' ? 'Connections Puzzle' :
                                     challenge === 'number_speed_test' ? '1-100 Speed Test' :
