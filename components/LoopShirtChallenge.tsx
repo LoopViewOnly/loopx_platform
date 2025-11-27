@@ -45,7 +45,7 @@ const LoopShirtChallenge: React.FC<LoopShirtChallengeProps> = ({ onComplete, cha
 
             <div className="mb-6 flex justify-center bg-black/20 p-4 rounded-lg">
                  <img 
-                    src = '../assets/loopersShirt.jpg'
+                    src = {loopShirt}
                     alt="Placeholder for a crowd of people" 
                     className="rounded-lg max-w-sm w-full h-auto object-contain"
                 />
