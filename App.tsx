@@ -14,11 +14,12 @@ interface SavedProgress {
 }
 
 const App: React.FC = () => {
-    const initialUserName = localStorage.getItem('loopx-last-user');
-    const [currentUserName, setCurrentUserName] = useState<string | null>(initialUserName);
+    // Removed localStorage.getItem for initialUserName
+    const [currentUserName, setCurrentUserName] = useState<string | null>(null);
     const [currentChallenge, setCurrentChallenge] = useState<Challenge>('welcome');
     const [score, setScore] = useState(0);
     const [completedChallenges, setCompletedChallenges] = useState<Set<Challenge>>(() => new Set());
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // New state for menu
 
     const challengeOrder: Challenge[] = useMemo(() => [
         'typing', 'trivia', 'mcq1', 'html', 'html_debug', 'click', 'mcq2', 'js', 
@@ -34,47 +35,18 @@ const App: React.FC = () => {
         'number_speed_test', 'interactive_binary', 'lua_maxof3', 'mcq15', 'memory_pattern'
     ], []);
 
+    // Removed useEffect that loaded progress from localStorage on initial load.
+    // The app will now always start fresh.
     useEffect(() => {
-        if (initialUserName) {
-            const storageKey = `loopx-progress-${initialUserName}`;
-            const savedDataJSON = localStorage.getItem(storageKey);
-            if (savedDataJSON) {
-                try {
-                    const savedData: SavedProgress = JSON.parse(savedDataJSON);
-                    setCurrentUserName(savedData.name);
-                    setCurrentChallenge(savedData.challenge);
-                    setScore(savedData.score);
-                    setCompletedChallenges(new Set(savedData.completedChallenges));
-                } catch (e) {
-                    console.error("Failed to parse saved progress, starting new session.", e);
-                    localStorage.removeItem(storageKey);
-                    localStorage.removeItem('loopx-last-user');
-                    setCurrentUserName(null);
-                    setScore(0);
-                    setCurrentChallenge('welcome');
-                    setCompletedChallenges(new Set());
-                }
-            } else {
-                localStorage.removeItem('loopx-last-user');
-                setCurrentUserName(null);
-                setScore(0);
-                setCurrentChallenge('welcome');
-                setCompletedChallenges(new Set());
-            }
-        }
-    }, [initialUserName]);
+        // If there's an initialUserName, we would normally load progress.
+        // With localStorage removed, we ensure a fresh start by not attempting to load.
+        // If currentUserName is null (which it now always starts as), the WelcomeScreen is shown.
+        // Once a name is submitted, handleNameSubmit sets up a fresh session.
+    }, []);
 
+    // Removed useEffect that saved/removed progress to/from localStorage.
     useEffect(() => {
         if (currentUserName && currentChallenge !== 'welcome' && currentChallenge !== 'done') {
-            const progress: SavedProgress = {
-                name: currentUserName,
-                challenge: currentChallenge,
-                score: score,
-                completedChallenges: Array.from(completedChallenges)
-            };
-            localStorage.setItem(`loopx-progress-${currentUserName}`, JSON.stringify(progress));
-            localStorage.setItem('loopx-last-user', currentUserName);
-
             // FIX: Use v8 compatibility API directly from the 'db' object.
             if(db) {
                 const updateUserScore = async () => {
@@ -90,55 +62,33 @@ const App: React.FC = () => {
                 };
                 updateUserScore();
             }
-        } else if (currentUserName && (currentChallenge === 'welcome' || currentChallenge === 'done')) {
-            localStorage.removeItem('loopx-last-user');
         }
     }, [currentUserName, currentChallenge, score, completedChallenges]);
 
 
     const handleUserCompletion = (newUser: UserScore) => {
-        localStorage.removeItem(`loopx-progress-${newUser.name}`);
-        localStorage.removeItem('loopx-last-user');
+        // Removed localStorage.removeItem
     };
     
     const handleNameSubmit = async (name: string) => {
-        const storageKey = `loopx-progress-${name}`;
-        const savedDataJSON = localStorage.getItem(storageKey);
-
-        if (savedDataJSON) {
+        // Removed all localStorage.getItem and localStorage.removeItem logic for saved data.
+        // The app will now always start a new session for the user.
+        setCurrentUserName(name);
+        setScore(0);
+        setCurrentChallenge(challengeOrder[0]);
+        setCompletedChallenges(new Set());
+        
+        // FIX: Use v8 compatibility API directly from the 'db' object.
+        if (db) {
             try {
-                const savedData: SavedProgress = JSON.parse(savedDataJSON);
-                setCurrentUserName(savedData.name);
-                setCurrentChallenge(savedData.challenge);
-                setScore(savedData.score);
-                setCompletedChallenges(new Set(savedData.completedChallenges));
-            } catch (e) {
-                console.error("Failed to parse saved progress, starting new session.", e);
-                localStorage.removeItem(storageKey);
-                localStorage.removeItem('loopx-last-user');
-                setCurrentUserName(name);
-                setScore(0);
-                setCurrentChallenge(challengeOrder[0]);
-                setCompletedChallenges(new Set());
-            }
-        } else {
-            setCurrentUserName(name);
-            setScore(0);
-            setCurrentChallenge(challengeOrder[0]);
-            setCompletedChallenges(new Set());
-            
-            // FIX: Use v8 compatibility API directly from the 'db' object.
-            if (db) {
-                try {
-                    await db.collection('userScores').doc(name).set({
-                        name: name,
-                        score: 0,
-                        lastChallenge: challengeOrder[0],
-                        completedChallenges: []
-                    }, { merge: true });
-                } catch (error) {
-                    console.error("Error creating user in Firebase:", error);
-                }
+                await db.collection('userScores').doc(name).set({
+                    name: name,
+                    score: 0,
+                    lastChallenge: challengeOrder[0],
+                    completedChallenges: []
+                }, { merge: true });
+            } catch (error) {
+                console.error("Error creating user in Firebase:", error);
             }
         }
     };
@@ -154,9 +104,17 @@ const App: React.FC = () => {
     const handleJumpToChallenge = useCallback((challengeId: Challenge) => {
         if (completedChallenges.has(challengeId)) {
             // If the clicked challenge is completed, find the next uncompleted one
-            const nextUncompletedIndex = challengeOrder.findIndex(c => !completedChallenges.has(c) && challengeOrder.indexOf(c) > challengeOrder.indexOf(challengeId));
-            if (nextUncompletedIndex !== -1) {
-                setCurrentChallenge(challengeOrder[nextUncompletedIndex]);
+            const currentChallengeIndex = challengeOrder.indexOf(challengeId);
+            let nextUncompletedChallenge: Challenge | null = null;
+            for (let i = currentChallengeIndex + 1; i < challengeOrder.length; i++) {
+                const nextChallenge = challengeOrder[i];
+                if (!completedChallenges.has(nextChallenge)) {
+                    nextUncompletedChallenge = nextChallenge;
+                    break;
+                }
+            }
+            if (nextUncompletedChallenge) {
+                setCurrentChallenge(nextUncompletedChallenge);
             } else {
                 // If all subsequent challenges are completed, or clicked one is last completed, go to 'done'
                 setCurrentChallenge('done');
@@ -165,6 +123,7 @@ const App: React.FC = () => {
             // If the clicked challenge is not completed, go directly to it
             setCurrentChallenge(challengeId);
         }
+        setIsMenuOpen(false); // Close menu after selection
     }, [challengeOrder, completedChallenges, setCurrentChallenge]);
 
 
@@ -200,8 +159,39 @@ const App: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br from-black via-blue-900/50 to-black p-4 sm:p-6 lg:p-8 font-sans">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(29,78,216,0.15)_0,_transparent_50%)] -z-10"></div>
             
+            {/* Burger Menu Button */}
             {currentUserName && (
-                <div className="fixed top-1/2 -translate-y-1/2 left-0 bg-black/50 backdrop-blur-md p-2 rounded-r-lg border-y border-r border-white/10 z-50">
+                <button
+                    className="fixed top-4 left-4 z-[100] p-2 bg-black/50 backdrop-blur-md rounded-md border border-white/10 hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label={isMenuOpen ? "Close challenge menu" : "Open challenge menu"}
+                    aria-expanded={isMenuOpen}
+                >
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        {isMenuOpen ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                        )}
+                    </svg>
+                </button>
+            )}
+
+            {/* Menu Overlay */}
+            {isMenuOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/70 z-50"
+                    onClick={() => setIsMenuOpen(false)}
+                ></div>
+            )}
+
+            {currentUserName && (
+                <div 
+                    className={`fixed top-[150px] left-0 w-64 max-h-[calc(100vh-150px)] bg-black/90 backdrop-blur-md p-4 rounded-r-lg border-y border-r border-white/10 z-[60]
+                        transform transition-transform duration-300 ease-in-out
+                        ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+                    `}
+                >
                     <div className="flex flex-col gap-1 max-h-[80vh] overflow-y-auto scrollbar-hide">
                         <p className="text-xs text-center text-gray-400 mb-1 font-bold sticky top-0 bg-black/80 p-1">JUMP</p>
                         {challengeOrder.map((challenge, index) => (
@@ -229,10 +219,10 @@ const App: React.FC = () => {
                                     challenge === 'pinpoint' ? 'Pinpoint' :
                                     challenge === 'match_connect' ? 'Tech Mix & Match' :
                                     challenge === 'hex_conversion' ? 'Hex Conversion' :
-                                    challenge === 'hex_to_binary' ? 'Hex to Binary' :
                                     challenge === 'fizzbuzz' ? 'FizzBuzz' :
                                     challenge === 'guess_the_flag' ? 'Guess the Flag' :
                                     challenge === 'website_count' ? 'Website Count' :
+                                    challenge === 'hex_to_binary' ? 'Hex to Binary' :
                                     challenge === 'lua_prime' ? 'Lua Prime Coding' :
                                     challenge === 'lua_maxof3' ? 'Lua Max Value' :
                                     challenge === 'logic_gate' ? 'Logic Gate Builder' :
