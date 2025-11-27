@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import TypingChallenge from './TypingChallenge';
 import ClickChallenge from './ClickChallenge';
 import TriviaChallenge from './TriviaChallenge';
@@ -59,7 +60,6 @@ import { MCQ_CHALLENGES, PHISHING_CHALLENGES, TYPING_CHALLENGE_2_TEXT, TYPING_CH
 
 interface UserViewProps {
     onComplete: (newUser: UserScore) => void;
-    debugJump?: Challenge | null;
     userName: string | null;
     currentScore: number;
     updateScore: React.Dispatch<React.SetStateAction<number>>;
@@ -133,7 +133,6 @@ const CHALLENGE_NAMES: Record<string, string> = {
 
 const UserView: React.FC<UserViewProps> = ({ 
     onComplete, 
-    debugJump, 
     userName,
     currentScore, 
     updateScore,
@@ -148,13 +147,7 @@ const UserView: React.FC<UserViewProps> = ({
         return challengeOrder.indexOf(currentChallenge);
     }, [challengeOrder, currentChallenge]);
 
-    useEffect(() => {
-        if (debugJump) {
-            setCurrentChallenge(debugJump);
-        }
-    }, [debugJump, setCurrentChallenge]);
-
-    const advanceChallenge = () => {
+    const advanceChallenge = useCallback(() => {
         onChallengeComplete(currentChallenge); // Mark current challenge as completed
         const nextIndex = currentChallengeIndex + 1;
         if (nextIndex < challengeOrder.length) {
@@ -162,7 +155,7 @@ const UserView: React.FC<UserViewProps> = ({
         } else {
             setCurrentChallenge('done');
         }
-    };
+    }, [onChallengeComplete, currentChallenge, currentChallengeIndex, challengeOrder, setCurrentChallenge]);
 
     useEffect(() => {
         if (currentChallenge === 'done' && userName) {
@@ -187,7 +180,7 @@ const UserView: React.FC<UserViewProps> = ({
 
     const currentTitle = getChallengeTitle(currentChallenge, currentChallengeIndex);
 
-    const handleTypingComplete = (cpm: number, attempts: number) => {
+    const handleTypingComplete = useCallback((cpm: number, attempts: number) => {
         let points = 10;
         if (cpm >= 300) points = 100;
         else if (cpm >= 200) points = 90;
@@ -196,10 +189,10 @@ const UserView: React.FC<UserViewProps> = ({
         else if (cpm >= 20) points = 60;
         
         updateScore(prev => prev + points);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500);
+    }, [updateScore, advanceChallenge]);
     
-    const handleTyping2Complete = (cpm: number, attempts: number) => {
+    const handleTyping2Complete = useCallback((cpm: number, attempts: number) => {
         let points = 10;
         if (cpm >= 350) points = 100;
         else if (cpm >= 250) points = 90;
@@ -208,10 +201,10 @@ const UserView: React.FC<UserViewProps> = ({
         else if (cpm >= 80) points = 60;
         
         updateScore(prev => prev + points);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500);
+    }, [updateScore, advanceChallenge]);
 
-    const handleClicksComplete = (cps: number, attempts: number) => {
+    const handleClicksComplete = useCallback((cps: number, attempts: number) => {
         let points = 10;
         if (cps >= 10) points = 100;
         else if (cps >= 8) points = 90;
@@ -220,18 +213,18 @@ const UserView: React.FC<UserViewProps> = ({
         else if (cps >= 3) points = 60;
 
         updateScore(prev => prev + points);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500);
+    }, [updateScore, advanceChallenge]);
 
-    const handleSimpleChallengeComplete = (time: number | null, basePoints: number, timeFactor: number) => {
+    const handleSimpleChallengeComplete = useCallback((time: number | null, basePoints: number, timeFactor: number) => {
          if (time !== null) { 
             const points = 100; 
             updateScore(prev => prev + points);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
     
-    const handleMCQComplete = (mistakes: number) => {
+    const handleMCQComplete = useCallback((mistakes: number) => {
         let points = 0;
         if (mistakes === 0) {
             points = 100;
@@ -245,270 +238,272 @@ const UserView: React.FC<UserViewProps> = ({
         // For 4+ mistakes, points will be 0.
         updateScore(prev => prev + points);
         setTimeout(() => advanceChallenge(), 1500);
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handlePhishingComplete = (points: number) => {
+    const handlePhishingComplete = useCallback((points: number) => {
         updateScore(prev => prev + points);
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Phishing also needs to advance
+    }, [updateScore, advanceChallenge]);
 
-    const handleTicTacToeComplete = (win: boolean) => {
+
+    const handleTicTacToeComplete = useCallback((win: boolean) => {
         if (win) {
             updateScore(prev => prev + SCORE_WEIGHTS.TICTACTOE_WIN);
             advanceChallenge();
         }
-    };
+    }, [updateScore, advanceChallenge]);
     
-    const handleTicTacToeRetry = () => {};
+    const handleTicTacToeRetry = useCallback(() => {}, []);
 
-    const handleSequenceComplete = (finalTime: number) => {
+    const handleSequenceComplete = useCallback((finalTime: number) => {
         const points = Math.max(10, 100 - finalTime);
         updateScore(prev => prev + points);
         advanceChallenge();
-    };
+    }, [updateScore, advanceChallenge]);
     
-    const handleURLComplete = (correct: boolean) => {
+    const handleURLComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.URL_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleMagicComplete = (correct: boolean) => {
+    const handleMagicComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.MAGIC_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleSpanishLoopComplete = (correct: boolean) => {
+    const handleSpanishLoopComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.SPANISH_LOOP_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleBinaryComplete = (correct: boolean) => {
+    const handleBinaryComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.BINARY_CHALLENGE_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleHiddenPasswordComplete = (correct: boolean) => {
+    const handleHiddenPasswordComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.HIDDEN_PASSWORD_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handlePythonMentorComplete = (correct: boolean) => {
+    const handlePythonMentorComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.PYTHON_MENTOR_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleSimilarityComplete = (success: boolean) => {
+    const handleSimilarityComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + SCORE_WEIGHTS.SIMILARITY_SUCCESS);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleJsComplete = (correct: boolean) => {
+    const handleJsComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.JS_CORRECT);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleHtmlComplete = (correct: boolean) => {
+    const handleHtmlComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.HTML_CORRECT);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleHtmlDebugComplete = (correct: boolean) => {
+    const handleHtmlDebugComplete = useCallback((correct: boolean) => {
         if (correct) {
             // Reusing HTML_CORRECT score for debug challenge as well
             updateScore(prev => prev + SCORE_WEIGHTS.HTML_CORRECT);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handlePythonAvgComplete = (correct: boolean) => {
+    const handlePythonAvgComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.PYTHON_AVG_CORRECT);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handlePasswordStrengthComplete = (correct: boolean) => {
+    const handlePasswordStrengthComplete = useCallback((correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.PASSWORD_STRENGTH_CORRECT);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleDinoComplete = (score: number) => {
+    const handleDinoComplete = useCallback((score: number) => {
         updateScore(prev => prev + 100); 
         setTimeout(() => advanceChallenge(), 1500);
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleRealOrFakeComplete = (success: boolean) => {
+    const handleRealOrFakeComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleWordleComplete = (success: boolean) => {
+    const handleWordleComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + SCORE_WEIGHTS.WORDLE_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
     
-    const handlePinpointComplete = (success: boolean) => {
+    const handlePinpointComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100); // Or a specific SCORE_WEIGHT for Pinpoint
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleMatchConnectComplete = (scoreChange: number, allCorrect: boolean) => {
+    const handleMatchConnectComplete = useCallback((scoreChange: number, allCorrect: boolean) => {
         updateScore(prev => prev + scoreChange);
         if (allCorrect) {
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleHexConversionComplete = (success: boolean) => {
+    const handleHexConversionComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleFizzBuzzComplete = (success: boolean) => {
+    const handleFizzBuzzComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleGuessTheFlagComplete = (success: boolean) => {
+    const handleGuessTheFlagComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleWebsiteCountComplete = (success: boolean) => {
-        if (success) {
-            updateScore(prev => prev + 100);
-            setTimeout(() => advanceChallenge(), 1500);
-        }
-    };
-
-    const handleHexToBinaryComplete = (success: boolean) => {
+    const handleWebsiteCountComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleLuaPrimeComplete = (success: boolean) => {
+    const handleHexToBinaryComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleLuaMaxOf3Complete = (success: boolean) => {
+    const handleLuaPrimeComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
+
+    const handleLuaMaxOf3Complete = useCallback((success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+        }
+    }, [updateScore, advanceChallenge]);
     
-    const handleLogicGateComplete = (score: number) => {
+    const handleLogicGateComplete = useCallback((score: number) => {
         updateScore(prev => prev + score);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    }, [updateScore, advanceChallenge]);
 
-    const handleDualTriviaComplete = (success: boolean) => {
+    const handleDualTriviaComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
             setTimeout(() => advanceChallenge(), 1500);
         }
-    };
+    }, [updateScore, advanceChallenge]);
     
-    const handleWindowsTimelineComplete = (score: number) => {
+    const handleWindowsTimelineComplete = useCallback((score: number) => {
         updateScore(prev => prev + score);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    }, [updateScore, advanceChallenge]);
 
-    const handleSpotThePatternComplete = (score: number) => {
+    const handleSpotThePatternComplete = useCallback((score: number) => {
         updateScore(prev => prev + score);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    }, [updateScore, advanceChallenge]);
 
-    const handleAZSpeedTestComplete = (success: boolean) => {
+    const handleAZSpeedTestComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleJsArraySumComplete = (success: boolean) => {
+    const handleJsArraySumComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleColorConfusionComplete = (score: number) => {
+    const handleColorConfusionComplete = useCallback((score: number) => {
         updateScore(prev => prev + score);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    }, [updateScore, advanceChallenge]);
 
-    const handlePythonCalculatorComplete = (success: boolean) => {
+    const handlePythonCalculatorComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleArduinoBlinkComplete = (success: boolean) => {
+    const handleArduinoBlinkComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 150);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleConnectionsGridComplete = (score: number) => {
+    const handleConnectionsGridComplete = useCallback((score: number) => {
         updateScore(prev => prev + score);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    }, [updateScore, advanceChallenge]);
 
-    const handleNumberSpeedTestComplete = (success: boolean) => {
+    const handleNumberSpeedTestComplete = useCallback((success: boolean) => {
         if (success) {
             updateScore(prev => prev + 100);
-            advanceChallenge();
+            setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
         }
-    };
+    }, [updateScore, advanceChallenge]);
 
-    const handleInteractiveBinaryComplete = (score: number) => {
+    const handleInteractiveBinaryComplete = useCallback((score: number) => {
         updateScore(prev => prev + score);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    }, [updateScore, advanceChallenge]);
 
-    const handleMemoryPatternComplete = (score: number) => {
+    const handleMemoryPatternComplete = useCallback((score: number) => {
         updateScore(prev => prev + score);
-        advanceChallenge();
-    };
+        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    }, [updateScore, advanceChallenge]);
 
     const renderChallenge = () => {
         if (currentChallenge.startsWith('mcq')) {
