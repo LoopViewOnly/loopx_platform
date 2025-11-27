@@ -18,16 +18,197 @@ export const INSTAGRAM_CHALLENGE = {
     answer: "0"
 };
 
-export const TSHIRT_CHALLENGE = {
-    question: "How many Loopers in this image are wearing THE LOOP shirt?",
-    answer: "39"
-};
-
 export const WORDLE_CHALLENGE = {
     link: "https://www.nytimes.com/games/wordle/index.html",
     targetWord: "Hello",
     question: "Play today's Wordle, find the secret word, and enter it below to continue."
 };
+
+export const PINPOINT_CHALLENGE = {
+    link: "https://www.linkedin.com/games/pinpoint",
+    targetWord: "Dragons",
+    question: "Play today's LinkedIn Pinpoint game. The secret word for this challenge relates to mythology. Find it and enter it below."
+};
+
+export const HEX_CONVERSION_CHALLENGE = {
+    instructions: "Convert the decimal numbers on the left to their hexadecimal (Base-16) equivalent. Use letters A-F for values 10-15.",
+    problems: [
+        { decimal: 165, answer: 'A5' },
+        { decimal: 235, answer: 'EB' },
+        { decimal: 670, answer: '29E' },
+    ]
+};
+
+export const HEX_TO_BINARY_CHALLENGE = {
+    question: "Convert the following hexadecimal value to its 16-bit binary equivalent.",
+    problem: "22FC",
+    answer: "0010001011111100"
+};
+
+export const FLAG_CHALLENGE_DATA = [
+    { key: 'japan', name: 'Japan' },
+    { key: 'brazil', name: 'Brazil' },
+    { key: 'germany', name: 'Germany' },
+    { key: 'france', name: 'France' },
+    { key: 'italy', name: 'Italy' },
+];
+
+export const PHISHING_CHALLENGES = [
+  {
+    id: 'phishing1',
+    type: 'Email' as const,
+    source: 'From: apple_icloud@aple.com',
+    content: 'Dear Apple Customer,\n\nYour Apple ID account has been temporarily locked due to unusual login attempts from a new device. To prevent permanent deactivation, you must verify your identity immediately.\n\nFailure to complete verification within 12 hours will result in permanent account suspension.',
+    isPhishing: true,
+    explanation: 'This is Phishing. The sender domain is "aple.com", a misspelling of the official "apple.com" domain. This, combined with the urgent tone ("temporarily locked," "permanent deactivation"), is a classic phishing tactic.',
+  },
+  {
+    id: 'phishing2',
+    type: 'Email' as const,
+    source: 'From: james@tesla.com',
+    content: 'Dear {userName},\n\nYour Tesla Model-S car warranty is nearing expiration.\nPlease log in to your Tesla Account on the official Tesla website for details.',
+    isPhishing: false,
+    explanation: 'This is Safe. Although it creates a sense of urgency, it directs you to the official website instead of providing a suspicious link. This is a safe practice for legitimate companies.',
+  },
+  {
+    id: 'phishing3',
+    type: 'Email' as const,
+    source: 'From: james@tesla.com',
+    content: 'ACTION REQUIRED: Your direct deposit information may have been compromised due to a recent system update. Click the link below to verify your routing and account number before end of day. \n\nVerify Now',
+    isPhishing: true,
+    explanation: 'This is Phishing. An unsolicited email from an unknown sender about sensitive financial data (like payroll/direct deposit) that asks you to click a link is highly suspicious and is an attempt to harvest credentials.',
+  }
+];
+
+export const PYTHON_MENTOR_CHALLENGE = {
+    question: "Write a for Loop in Python that prints all the numbers from 10 down to 1. Show your code to a mentor, and they will tell you the password to proceed.",
+    answer: "LOOPCS"
+};
+
+export const MATCH_CONNECT_DATA = {
+    companies: [
+        { id: 'google', name: 'Google' },
+        { id: 'microsoft', name: 'Microsoft' },
+        { id: 'apple', name: 'Apple' },
+    ],
+    items: [
+        { id: 'gemini', name: 'Gemini', correctCompanyId: 'google' },
+        { id: 'swift', name: 'Swift', correctCompanyId: 'apple' },
+        { id: 'azure', name: 'Azure', correctCompanyId: 'microsoft' },
+        { id: 'android', name: 'Android', correctCompanyId: 'google' },
+        { id: 'teams', name: 'Teams', correctCompanyId: 'microsoft' },
+        { id: 'macos', name: 'macOS', correctCompanyId: 'apple' },
+        { id: 'colab', name: 'Colab', correctCompanyId: 'google' },
+        { id: 'visual_studio', name: 'Visual Studio', correctCompanyId: 'microsoft' },
+        { id: 'ipados', name: 'iPadOS', correctCompanyId: 'apple' },
+        { id: 'tensorflow', name: 'TensorFlow', correctCompanyId: 'google' },
+        { id: 'github', name: 'GitHub', correctCompanyId: 'microsoft' },
+        { id: 'm_series_chips', name: 'M-Series Chips', correctCompanyId: 'apple' },
+    ],
+};
+
+export const CONNECTIONS_GRID_DATA = [
+    {
+        title: "HARDWARE",
+        items: ["GPU", "SSD", "CPU", "Motherboard"],
+        color: 'bg-green-800/50'
+    },
+    {
+        title: "FIRST COMPUTERS",
+        items: ["IBM Model 5150", "Macintosh", "Dell Turbo PC", "HP 2116A"],
+        color: 'bg-blue-800/50'
+    },
+    {
+        title: "ENTREPRENEURS & FOUNDERS",
+        items: ["Gates", "Jobs", "Zuckerberg", "Bezos"],
+        color: 'bg-yellow-800/50'
+    },
+    {
+        title: "OPERATING SYSTEMS",
+        items: ["Linux", "iOS", "Win 3.1", "Android"],
+        color: 'bg-purple-800/50'
+    }
+];
+
+export const WINDOWS_TIMELINE_DATA: string[] = [
+    "MS-DOS 1.0",
+    "Windows 1",
+    "Windows 3.1",
+    "Windows 95",
+    "Windows XP",
+    "Windows Vista",
+    "Windows 7",
+    "Windows 8",
+    "Windows 10",
+    "Windows 11",
+];
+
+export const SPOT_THE_PATTERN_DATA = [
+    {
+        sequence: [3, 6, 12, 24],
+        answer: 48,
+    },
+    {
+        sequence: [2, 6, 18, 54],
+        answer: 162,
+        hintText: "The pattern is: x + (x * 2)",
+        hintCost: 10,
+    },
+    {
+        sequence: [2, 8, 32, 128],
+        answer: 512,
+        hintText: "The pattern is: x + (x * 3)",
+        hintCost: 10,
+    }
+];
+
+export const COLOR_CONFUSION_DATA = [
+    {
+        question: "Pick Red!",
+        correctAnswer: "red",
+        options: [
+            { text: "blue", color: "red" },
+            { text: "green", color: "yellow" },
+            { text: "red", color: "green" },
+            { text: "yellow", color: "blue" },
+        ],
+    },
+    {
+        question: "Pick Purple!",
+        correctAnswer: "purple",
+        options: [
+            { text: "orange", color: "pink" },
+            { text: "purple", color: "green" },
+            { text: "pink", color: "orange" },
+            { text: "green", color: "purple" },
+        ],
+    },
+    {
+        question: "Pick Blue!",
+        correctAnswer: "blue",
+        options: [
+            { text: "blue", color: "yellow" },
+            { text: "pink", color: "green" },
+            { text: "green", color: "blue" },
+            { text: "yellow", color: "pink" },
+        ],
+    },
+];
+
+export const INTERACTIVE_BINARY_DATA = [
+    {
+        decimal: 48,
+        answer: "00110000"
+    },
+    {
+        decimal: 7,
+        answer: "00000111"
+    },
+    {
+        decimal: 255,
+        answer: "11111111"
+    }
+];
 
 export const PROMPT_CHALLENGE = {
     question: "You want an AI to generate HTML for a coffee shop menu. Which of the following prompts would likely yield the most detailed and interesting result?",
@@ -52,133 +233,74 @@ export const MATCHSTICK_PUZZLES = [
         question: "Make the equation correct by moving only one matchstick.",
         initialState: ['5', '+', '7', '=', '2'],
         correctState: ['9', '-', '7', '=', '2'],
-        description: "Move the vertical stick from the '+' to the top-left of the '5'."
     },
     {
         id: 2,
         question: "Make the equation correct by moving only one matchstick.",
         initialState: ['6', '+', '4', '=', '4'],
         correctState: ['8', '-', '4', '=', '4'],
-        description: "Move the vertical stick from the '+' to the top-left of the '6'."
     },
-    {
+     {
         id: 3,
         question: "Make the equation correct by moving only one matchstick.",
-        initialState: ['0', '+', '3', '=', '2'],
-        correctState: ['0', '+', '3', '=', '3'],
-        description: "Move the bottom-left stick of the '2' to the bottom-right to make it a '3'."
+        initialState: ['9', '+', '3', '=', '5'],
+        correctState: ['8', '+', '3', '=', '5'],
     }
 ];
 
 export const HIDDEN_CODE_CHALLENGE = {
-    question: "A secret code is hidden within the image file. Right-click the image, save it as 'image.jpeg', then open the downloaded file with a text editor (like Notepad) to find it.",
-    answer: "LoopX2025"
+    question: "A secret code is hidden within the metadata of the image file below. Right-click, save the image, and inspect its contents to find the code.",
+    username: "Admin",
+    pass:"LoopX2025"
 };
 
 export const PERSONA_CHALLENGE = {
-    question: "Use the Persona ID to guess the password. The password is a combination of clues from the card.",
-    answer: "MichRex2015"
+    question: "The ID card below contains all the clues needed to guess a password. The password is a combination of the pet's name and the owner's birth year. What is it?",
+    answer: "Rex2015"
 };
 
-export type SimilarityChallenge = {
-    description: string;
+// FIX: Define and export the SimilarityChallenge interface to be used in ImageSimilarityChallenge.tsx.
+export interface SimilarityChallenge {
     imageUrl: string;
-    keywords: string[];
-};
+    description: string;
+}
 
 export const SIMILARITY_CHALLENGES: SimilarityChallenge[] = [
-    {
-        description: "SpongeBob riding a unicycle in the middle of a busy city street.",
+    { 
         imageUrl: SIMILARITY_SPONGEBOB_B64,
-        keywords: ["spongebob", "unicycle", "juggling pineapples", "busy city street", "cartoon style"]
+        description: "A yellow cartoon character with big blue eyes, a large smile with two prominent front teeth, and a porous, sponge-like body, is shown wearing brown square pants, a white collared shirt, and a red tie."
     },
-    {
-        description: "A drone flying over Big Ben with Mr. Bean standing on the street on a sunny day.",
-        imageUrl: SIMILARITY_IMAGE_PLACEHOLDER_B64,
-        keywords: ["drone", "big ben", "mr. bean", "street", "sunny day"]
-    },
-    {
-        description: "A red and a blue dog eating pizza next to Pisa tower in a shiny day",
-        imageUrl: SIMILARITY_IMAGE_PLACEHOLDER_B64,
-        keywords: ["red dog", "blue dog", "eating pizza", "pisa tower", "sunny/shiny day"]
-    },
-    {
-        description: "A group of robots having a tea party on the moon, Earth visible in the background, with floating pastries around.",
-        imageUrl: SIMILARITY_IMAGE_PLACEHOLDER_B64,
-        keywords: ["robots", "tea party", "moon", "earth in background", "floating pastries"]
-    },
-    {
-        description: "A giant banana playing the piano in a crowded concert hall full of dancing vegetables.",
-        imageUrl: SIMILARITY_IMAGE_PLACEHOLDER_B64,
-        keywords: ["giant banana", "playing piano", "crowded concert hall", "dancing vegetables", "surreal/funny scene"]
+    { 
+        imageUrl: SIMILARITY_IMAGE_PLACEHOLDER_B64, 
+        description: "This is a placeholder image containing text on a dark background."
     }
 ];
 
 export const CONNECTIONS_DATA = [
-    { model: 'ChatGPT', company: 'OpenAI', logoId: 'openai' },
-    { model: 'Gemini', company: 'Google', logoId: 'google' },
-    { model: 'Claude', company: 'Anthropic', logoId: 'anthropic' },
-    { model: 'Grok', company: 'X', logoId: 'xai' },
-    { model: 'DeepSeek', company: '深度求索', logoId: 'deepseek' },
+    { model: 'GPT-4o', company: 'OpenAI', logoId: 'openai' },
+    { model: 'Claude 3.5 Sonnet', company: 'Anthropic', logoId: 'anthropic' },
+    { model: 'Gemini 1.5 Pro', company: 'Google', logoId: 'google' },
+    { model: 'Grok-1.5', company: 'xAI', logoId: 'xai' },
+    { model: 'DeepSeek-V2', company: 'DeepSeek AI', logoId: 'deepseek' }
 ];
-
-export const MEMORY_GAME_PAIRS = [
-    { type: 'lang', content: 'JavaScript', matchId: 1 },
-    { type: 'ext', content: '.js', matchId: 1 },
-    { type: 'lang', content: 'Python', matchId: 2 },
-    { type: 'ext', content: '.py', matchId: 2 },
-    { type: 'lang', content: 'C Sharp', matchId: 3 },
-    { type: 'ext', content: '.cs', matchId: 3 },
-    { type: 'lang', content: 'HTML', matchId: 4 },
-    { type: 'ext', content: '.html', matchId: 4 },
-    { type: 'lang', content: 'C++', matchId: 5 },
-    { type: 'ext', content: '.cpp', matchId: 5 },
-    { type: 'lang', content: 'Arduino', matchId: 6 },
-    { type: 'ext', content: '.ino', matchId: 6 },
-    { type: 'lang', content: 'Java', matchId: 7 },
-    { type: 'ext', content: '.java', matchId: 7 },
-    { type: 'lang', content: 'TypeScript', matchId: 8 },
-    { type: 'ext', content: '.ts', matchId: 8 },
-];
-
-export const MAGIC_CHALLENGE = {
-    question: "How many times does the word 'magic' appear on the page titled \"The Magic\"?",
-    answer: "4"
-};
-
-export const SPANISH_LOOP_CHALLENGE = {
-    question: "What is 'Loop' in Spanish?",
-    answer: "Bucle"
-};
-
-export const BINARY_CHALLENGE = {
-    question: "Write \"I Love Loop\" in Binary",
-    example: "01001001 00100000 01100001 01101101",
-    answer: "01001001 00100000 01001100 01101111 01110110 01100101 00100000 01001100 01101111 01101111 01110000"
-};
-
 
 export const MCQ_CHALLENGES = [
-    {
-        id: 'mcq1',
-        question: "What is the capital city of Australia?",
-        options: ["Sydney", "Melbourne", "Canberra", "Perth"],
-        correctAnswer: "Canberra"
+    { // MCQ 1
+        question: "In programming, what does 'API' stand for?",
+        options: ["Application Programming Interface", "Automated Program Interaction", "Advanced Python Implementation", "Application Protocol Inspector"],
+        correctAnswer: "Application Programming Interface"
     },
-    {
-        id: 'mcq2',
+    { // MCQ 2
         question: "What is the CPU?",
         options: ["The computer’s brain", "A printer", "A mouse", "A cable"],
         correctAnswer: "The computer’s brain"
     },
-    {
-        id: 'mcq3',
+    { // MCQ 3
         question: "Which is an OUTPUT device?",
         options: ["Keyboard", "Mouse", "Monitor", "Microphone"],
         correctAnswer: "Monitor"
     },
-    {
-        id: 'mcq4',
+    { // MCQ 4
         question: "Which code will output Kinder?",
         options: [
             "num = 5\nif num >= 10:\n    print(\"Kinder\")\nelse:\n    print(\"Twix\")",
@@ -187,65 +309,103 @@ export const MCQ_CHALLENGES = [
             "num = 12\nif num < 5:\n    print(\"Twix\")\nelse:\n    print(\"Mars\")"
         ],
         correctAnswer: "num = 20\nif num >= 1 and num <= 10:\n    print(\"Twix\")\nelse:\n    print(\"Kinder\")",
-        isCode: true
+        isCode: true,
     },
-    {
-        id: 'mcq5',
-        question: "In which year did the Titanic sink?",
-        options: ["1912", "1905", "1898", "1920"],
-        correctAnswer: "1912"
+    { // MCQ 5
+        question: "Which git command is used to upload your local commits to a remote repository?",
+        options: ["git fetch", "git commit", "git push", "git pull"],
+        correctAnswer: "git push"
     },
-    {
-        id: 'mcq6',
+    { // MCQ 6
         question: "Which of these is software?",
         options: ["Monitor", "Mouse", "Speakers", "Minecraft"],
         correctAnswer: "Minecraft"
     },
-    {
-        id: 'mcq7',
+    { // MCQ 7
         question: "Which HTML tag is used to show a picture?",
         options: ["<img>", "<pic>", "<photo>", "<png>"],
         correctAnswer: "<img>"
     },
-    {
-        id: 'mcq8',
-        question: "Who painted the Mona Lisa?",
-        options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"],
-        correctAnswer: "Leonardo da Vinci"
+    { // MCQ 8
+        question: "What does SQL stand for?",
+        options: ["Structured Query Language", "Strong Question Language", "System Query Language", "Structured Question Language"],
+        correctAnswer: "Structured Query Language",
     },
-    {
-        id: 'mcq9',
+    { // MCQ 9
         question: "What is a bug in coding?",
         options: ["An insect", "A mistake in the code that causes problems", "A new computer", "A secret message"],
         correctAnswer: "A mistake in the code that causes problems"
     },
-    {
-        id: 'mcq10',
+    { // MCQ 10
         question: "Which is an INPUT device?",
         options: ["Speakers", "Monitor", "Keyboard", "Projector"],
         correctAnswer: "Keyboard"
     },
-    {
-        id: 'mcq11',
-        question: "What does SQL stand for?",
-        options: ["Structured Query Language", "Strong Question Language", "Simple Query Logic", "Standard Query Link"],
-        correctAnswer: "Structured Query Language"
+    { // MCQ 11
+        question: "When was OpenAI founded?",
+        options: ["2021", "2015", "2019", "2017"],
+        correctAnswer: "2015"
     },
-    {
-        id: 'mcq12',
+    { // MCQ 12
         question: "Which of the following passwords is the strongest?",
         options: ["LoopLoopLoop", "LoopConX#2025", "Loop2025", "LoopCon2025"],
-        correctAnswer: "LoopConX#2025"
+        correctAnswer: "LoopConX#2025",
     },
-    {
-        id: 'mcq13',
+    { // MCQ 13
         question: "What is the best practice for creating a strong password?",
-        options: [
-            "Small Letter\nCapital Letters", 
-            "Numbers\nSymbols\nSmall Letter\nCapital Letters", 
-            "Numbers\nSymbols\nSmall Letter\nCapital Letters\n8+ Length", 
-            "Symbols\n8+ Length"
-        ],
-        correctAnswer: "Numbers\nSymbols\nSmall Letter\nCapital Letters\n8+ Length"
+        options: ["Small Letter \n Capita Letters", "Numbers \n Symbols \n Small Letter \n Capita Letters", "Numbers \n Symbols \n Small Letter \n Capita Letters \n 8+ Length", "symbols \n 8+ Length"],
+        correctAnswer: "Numbers \n Symbols \n Small Letter \n Capita Letters \n 8+ Length",
+    },
+    { // MCQ 14
+        question: "What will `console.log(0.1 + 0.2 === 0.3);` output in JavaScript?",
+        options: ["true", "false", "undefined", "Error"],
+        correctAnswer: "false",
+        isCode: true
+    },
+    { // MCQ 15
+        question: "Who won the FIFA World Cup in 2014?",
+        options: ["Brazil", "Germany", "Argentina", "Spain"],
+        correctAnswer: "Germany"
     }
 ];
+
+export const MEMORY_GAME_PAIRS = [
+    { content: 'Python', matchId: 1, uniqueId: 1 }, { content: '.py', matchId: 1, uniqueId: 2 },
+    { content: 'JavaScript', matchId: 2, uniqueId: 3 }, { content: '.js', matchId: 2, uniqueId: 4 },
+    { content: 'Java', matchId: 3, uniqueId: 5 }, { content: '.java', matchId: 3, uniqueId: 6 },
+    { content: 'C#', matchId: 4, uniqueId: 7 }, { content: '.cs', matchId: 4, uniqueId: 8 },
+    { content: 'Ruby', matchId: 5, uniqueId: 9 }, { content: '.rb', matchId: 5, uniqueId: 10 },
+    { content: 'HTML', matchId: 6, uniqueId: 11 }, { content: '.html', matchId: 6, uniqueId: 12 },
+    { content: 'CSS', matchId: 7, uniqueId: 13 }, { content: '.css', matchId: 7, uniqueId: 14 },
+    { content: 'TypeScript', matchId: 8, uniqueId: 15 }, { content: '.ts', matchId: 8, uniqueId: 16 }
+];
+
+export const MAGIC_CHALLENGE = {
+    question: "How many times does the word 'magic' appear on the page titled \"The Magic\" on Loop's website?",
+    answer: "4",
+    link: "https://www.loop.org.il/magic"
+};
+
+export const WEBSITE_COUNT_CHALLENGE = {
+    question: "How many times does the word 'Loop' appear on the loop.org.il home page?",
+    answer: "15"
+};
+
+export const DUAL_TRIVIA_CHALLENGE = {
+    question: "When and where was the first FIFA World Cup held?",
+    answers: {
+        when: "1930",
+        where: "Uruguay"
+    }
+};
+
+export const SPANISH_LOOP_CHALLENGE = {
+    question: "What is the Spanish word for 'Loop'?",
+    answer: "Bucle"
+};
+
+export const BINARY_CHALLENGE = {
+    question: "Convert the following word to binary using the ASCII standard: LoopX",
+    example: "01001001 00100000 01100001 01101101",
+    answer: "01001100 01101111 01101111 01110000 01011000"
+};

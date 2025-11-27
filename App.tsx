@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import UserView, { type Challenge } from './components/UserView';
 import WelcomeScreen from './components/WelcomeScreen';
@@ -23,12 +22,16 @@ const App: React.FC = () => {
 
     const challengeOrder: Challenge[] = useMemo(() => [
         'typing', 'trivia', 'mcq1', 'html', 'html_debug', 'click', 'mcq2', 'js', 
-        'sequence', 'mcq3', 'memory', 'magic', 'mcq4', 'hiddenpassword', 'python_average', 
-        'spanishloop', 'mcq11', 'binary', 'mcq5', 'connections', 'rearrange', 
+        'sequence', 'mcq3', 'memory', 'magic', 'mcq4', 'hiddenpassword', 'python_average', 'python_mentor',
+        'spanishloop', 'mcq14', 'binary', 'phishing1', 'phishing2', 'phishing3', 'mcq5', 'connections', 'rearrange', 
         'typing2', 'mcq6', 'matchstick', 'mcq12', 'wordle', 'mcq7', 'prompt', 
         'password_strength', 'cipher', 'mcq8', 'tictactoe', 'mcq13', 'persona', 
-        'URL', 'imageTrivia', 'mcq9', 'similarity', 'instagram', 'hiddencode', 'dino', 
-        'mcq10', 'loopshirt', 'realorfake'
+        'URL', 'imageTrivia', 'mcq9', 'similarity', 'hiddencode', 'dino', 
+        'mcq10', 'loopshirt', 'realorfake', 'match_connect', 'pinpoint', 'hex_conversion',
+        'fizzbuzz', 'guess_the_flag', 'mcq11', 'website_count', 'hex_to_binary', 'lua_prime',
+        'logic_gate', 'dual_trivia', 'windows_timeline', 'spot_the_pattern', 'az_speed_test',
+        'js_array_sum', 'color_confusion', 'python_calculator', 'arduino_blink', 'connections_grid',
+        'number_speed_test', 'interactive_binary', 'lua_maxof3', 'mcq15', 'memory_pattern'
     ], []);
 
     useEffect(() => {
@@ -72,20 +75,20 @@ const App: React.FC = () => {
             localStorage.setItem(`loopx-progress-${currentUserName}`, JSON.stringify(progress));
             localStorage.setItem('loopx-last-user', currentUserName);
 
-                if(isFirebaseEnabled && db) {
-                    const updateUserScore = async () => {
-                        try {
-                            await db.collection('userScores').doc(currentUserName).update({
-                                score: Math.round(score),
-                                lastChallenge: currentChallenge,
-                                completedChallenges: Array.from(completedChallenges)
-                            });
-                        } catch (error) {
-                            console.error("Error updating score in Firebase:", error);
-                        }
-                    };
-                    updateUserScore();
-                }
+            if(isFirebaseEnabled && db) {
+                const updateUserScore = async () => {
+                    try {
+                        await db.collection('userScores').doc(currentUserName).update({
+                            score: Math.round(score),
+                            lastChallenge: currentChallenge,
+                            completedChallenges: Array.from(completedChallenges)
+                        });
+                    } catch (error) {
+                        console.error("Error updating score in Firebase:", error);
+                    }
+                };
+                updateUserScore();
+            }
         } else if (currentUserName && (currentChallenge === 'welcome' || currentChallenge === 'done')) {
             localStorage.removeItem('loopx-last-user');
         }
@@ -197,14 +200,37 @@ const App: React.FC = () => {
                                 <span className="text-gray-400 mr-1">{index + 1}.</span>
                                 {
                                     challenge.startsWith('mcq') ? `MCQ-${challenge.substring(3)}` :
+                                    challenge.startsWith('phishing') ? `Phishing-${challenge.substring(8)}` :
                                     challenge === 'imageTrivia' ? 'Campus Trivia' :
                                     challenge === 'URL' ? 'URL' :
                                     challenge === 'typing2' ? 'Typing 2' :
-                                    challenge === 'instagram' ? 'Instagram Hunt' :
                                     challenge === 'rearrange' ? 'Rearrange' :
                                     challenge === 'persona' ? 'Persona' :
                                     challenge === 'realorfake' ? 'Real/Fake' :
                                     challenge === 'html_debug' ? 'HTML Debugging' :
+                                    challenge === 'pinpoint' ? 'Pinpoint' :
+                                    challenge === 'match_connect' ? 'Tech Mix & Match' :
+                                    challenge === 'hex_conversion' ? 'Hex Conversion' :
+                                    challenge === 'hex_to_binary' ? 'Hex to Binary' :
+                                    challenge === 'fizzbuzz' ? 'FizzBuzz' :
+                                    challenge === 'guess_the_flag' ? 'Guess the Flag' :
+                                    challenge === 'website_count' ? 'Website Count' :
+                                    challenge === 'lua_prime' ? 'Lua Prime Coding' :
+                                    challenge === 'lua_maxof3' ? 'Lua Max Value' :
+                                    challenge === 'logic_gate' ? 'Logic Gate Builder' :
+                                    challenge === 'dual_trivia' ? 'World Cup Trivia' :
+                                    challenge === 'windows_timeline' ? 'Windows Timeline' :
+                                    challenge === 'spot_the_pattern' ? 'Spot the Pattern' :
+                                    challenge === 'az_speed_test' ? 'A-Z Speed Test' :
+                                    challenge === 'js_array_sum' ? 'JS Array Sum' :
+                                    challenge === 'color_confusion' ? 'Color Confusion' :
+                                    challenge === 'python_calculator' ? 'Python Calculator' :
+                                    challenge === 'python_mentor' ? 'Python Mentor' :
+                                    challenge === 'arduino_blink' ? 'Arduino Blink' :
+                                    challenge === 'connections_grid' ? 'Connections Puzzle' :
+                                    challenge === 'number_speed_test' ? '1-100 Speed Test' :
+                                    challenge === 'interactive_binary' ? 'Dec to Binary' :
+                                    challenge === 'memory_pattern' ? 'Memory Pattern' :
                                     challenge.charAt(0).toUpperCase() + challenge.slice(1)
                                 }
                                 {completedChallenges.has(challenge) && <span className="ml-2 text-green-400">✅</span>}
