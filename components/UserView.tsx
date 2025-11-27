@@ -149,13 +149,23 @@ const UserView: React.FC<UserViewProps> = ({
 
     const advanceChallenge = useCallback(() => {
         onChallengeComplete(currentChallenge); // Mark current challenge as completed
-        const nextIndex = currentChallengeIndex + 1;
-        if (nextIndex < challengeOrder.length) {
-            setCurrentChallenge(challengeOrder[nextIndex]);
+        
+        let nextUncompletedChallenge: Challenge | null = null;
+        // Start searching from the challenge *after* the current one
+        for (let i = currentChallengeIndex + 1; i < challengeOrder.length; i++) {
+            const nextChallenge = challengeOrder[i];
+            if (!completedChallenges.has(nextChallenge)) {
+                nextUncompletedChallenge = nextChallenge;
+                break;
+            }
+        }
+
+        if (nextUncompletedChallenge) {
+            setCurrentChallenge(nextUncompletedChallenge);
         } else {
             setCurrentChallenge('done');
         }
-    }, [onChallengeComplete, currentChallenge, currentChallengeIndex, challengeOrder, setCurrentChallenge]);
+    }, [onChallengeComplete, currentChallenge, currentChallengeIndex, challengeOrder, completedChallenges, setCurrentChallenge]);
 
     useEffect(() => {
         if (currentChallenge === 'done' && userName) {
