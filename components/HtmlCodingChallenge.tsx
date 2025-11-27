@@ -13,7 +13,7 @@ const challengeDescription = (
                 A main title using an <code className="bg-gray-700 text-yellow-300 px-1.5 py-0.5 rounded-md font-mono text-sm">&lt;h1&gt;</code> tag containing the text: <strong className="text-white">"Loop Coffee Shop"</strong>.
             </li>
             <li>
-                At least <strong className="text-white">5 drinks</strong>. Each drink should have an image represented by an <code className="bg-gray-700 text-yellow-300 px-1.5 py-0.5 rounded-md font-mono text-sm">&lt;img&gt;</code> tag.
+                At least <strong className="text-white">5 drinks</strong>. Each drink should have an image represented by an <code className="bg-gray-700 text-yellow-300 px-1.5 py-0.5 rounded-md font-mono text-sm">&lt;img&gt;</code> tag with a <code className="bg-gray-700 text-yellow-300 px-1.5 py-0.5 rounded-md font-mono text-sm">src</code> attribute.
             </li>
             <li>
                 A link to the official Loop website using an <code className="bg-gray-700 text-yellow-300 px-1.5 py-0.5 rounded-md font-mono text-sm">&lt;a&gt;</code> tag. The link's destination (<code className="bg-gray-700 text-yellow-300 px-1.5 py-0.5 rounded-md font-mono text-sm">href</code>) must be exactly <strong className="text-white">https://loop.org.il</strong>.
@@ -57,10 +57,12 @@ const HtmlCodingChallenge: React.FC<HtmlCodingChallengeProps> = ({ onComplete, c
                 errors.push("The <h1> title should contain 'Loop Coffee Shop'.");
             }
 
-            // Check 2: At least 5 images <img>
+            // Check 2: At least 5 images <img> with a 'src' attribute
             const images = doc.querySelectorAll('img');
-            if (images.length < 5) {
-                errors.push(`You need at least 5 <img> tags (found ${images.length}).`);
+            const validImageCount = Array.from(images).filter(img => img.hasAttribute('src')).length;
+
+            if (validImageCount < 5) {
+                errors.push(`You need at least 5 <img> tags with a 'src' attribute (found ${validImageCount}).`);
             }
 
             // Check 3: Link to Loop website <a>

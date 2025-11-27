@@ -19,6 +19,16 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
+
+    useEffect(() => {
+        if (isComplete) {
+            // Automatically advance after showing the score for a moment.
+            const timer = setTimeout(() => {
+                onComplete(cpm, attempts);
+            }, 1500);
+            return () => clearTimeout(timer);
+        }
+    }, [isComplete, onComplete, cpm, attempts]);
     
     const resetChallenge = () => {
         setAttempts(prev => prev + 1);
@@ -92,19 +102,11 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
                         <p className="text-4xl font-bold text-green-400">
                             {cpm} <span className="text-xl text-gray-300">CPM</span>
                         </p>
-                        <p className="text-green-400 font-bold text-lg mt-2">Challenge Complete!</p>
+                        <p className="text-green-400 font-bold text-lg mt-2">Challenge Complete! Advancing...</p>
                     </>
                 )}
                 {!isComplete && (
                     <p className="text-gray-400">Correctly type the sentence to see your score.</p>
-                )}
-            </div>
-
-            <div className="text-center mt-6">
-                 {isComplete && (
-                    <button onClick={() => onComplete(cpm, attempts)} className="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transform hover:scale-105 transition-all duration-300">
-                        Next Challenge
-                    </button>
                 )}
             </div>
         </div>

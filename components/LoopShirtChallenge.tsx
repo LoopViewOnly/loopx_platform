@@ -1,16 +1,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import  LOOP_SHIRT  from '../assets/loopersShirt.jpg';
-import { TSHIRT_CHALLENGE } from '../challenges/content';
-
+import { LOOP_SHIRT_PLACEHOLDER_B64 } from '../challenges/assets';
 
 interface LoopShirtChallengeProps {
     onComplete: (time: number | null) => void;
     challengeTitle: string;
 }
 
-const CORRECT_ANSWER = TSHIRT_CHALLENGE.answer;
-const chall_question = TSHIRT_CHALLENGE.question
+const CORRECT_ANSWER = '10';
 
 const LoopShirtChallenge: React.FC<LoopShirtChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [answer, setAnswer] = useState('');
@@ -43,11 +40,11 @@ const LoopShirtChallenge: React.FC<LoopShirtChallengeProps> = ({ onComplete, cha
     return (
         <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
             <h2 className="text-2xl font-bold text-blue-300 mb-4">{challengeTitle}</h2>
-            <p className="text-gray-300 mb-6 text-lg">{chall_question}</p>
+            <p className="text-gray-300 mb-6 text-lg">How many Loopers in this image are wearing THE LOOP shirt?</p>
 
             <div className="mb-6 flex justify-center bg-black/20 p-4 rounded-lg">
                  <img 
-                    src={LOOP_SHIRT}
+                    src={LOOP_SHIRT_PLACEHOLDER_B64}
                     alt="Placeholder for a crowd of people" 
                     className="rounded-lg max-w-sm w-full h-auto object-contain"
                 />

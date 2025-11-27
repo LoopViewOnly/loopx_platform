@@ -1,12 +1,14 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { INSTAGRAM_CHALLENGE } from '../challenges/content';
-import  LOOPX_QR  from '../assets/loopx_QR.png';
+import { LOOPX_QR_CODE_B64 as LOOPX_QR } from '../challenges/assets';
 
 interface InstagramChallengeProps {
     onComplete: (time: number | null) => void;
+    challengeTitle: string;
 }
 
-const InstagramChallenge: React.FC<InstagramChallengeProps> = ({ onComplete }) => {
+const InstagramChallenge: React.FC<InstagramChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [answer, setAnswer] = useState('');
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -36,13 +38,13 @@ const InstagramChallenge: React.FC<InstagramChallengeProps> = ({ onComplete }) =
 
     return (
         <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
-            <h1 className="text-3xl font-bold text-gray-100 mb-2">The Loop Challenge</h1>
+            <h1 className="text-2xl font-bold text-blue-300 mb-4">{challengeTitle}</h1>
             <p className="text-gray-300 mb-6">Scan the QR code, check Instagram, and enter the following count!</p>
             
             <img 
                 src={LOOPX_QR}
                 alt="Loop IG QR-Code" 
-                className="mx-auto w-48 h-48 rounded-lg border-4 border-indigo-500 mb-6 shadow-md"
+                className="mx-auto w-48 h-48 rounded-lg border-4 border-indigo-500 mb-6 shadow-md bg-white p-2"
             />
 
             <p className="text-lg font-semibold text-gray-200 mb-4">

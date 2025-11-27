@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import TypingChallenge from './TypingChallenge';
 import ClickChallenge from './ClickChallenge';
@@ -10,7 +9,7 @@ import SequenceChallenge from './SequenceChallenge';
 import URLChallenge from './UrlChallenge';
 import HiddenCodeChallenge from './HiddenCodeChallenge';
 import ImageSimilarityChallenge from './ImageSimilarityChallenge';
-import JsCodingChallenge from './JavaCodingChallenge';
+import JsCodingChallenge from './JsCodingChallenge';
 import HtmlCodingChallenge from './HtmlCodingChallenge';
 import HtmlDebugChallenge from './HtmlDebugChallenge';
 import MatchstickChallenge from './MatchstickChallenge';
@@ -28,12 +27,35 @@ import SpanishLoopChallenge from './SpanishLoopChallenge';
 import BinaryChallenge from './BinaryChallenge';
 import MCQChallenge from './MCQChallenge';
 import PythonAverageChallenge from './PythonAverageChallenge';
+import PythonMentorChallenge from './PythonMentorChallenge';
 import PasswordStrengthChallenge from './PasswordStrengthChallenge';
-import InstagramChallenge from './InstagramChallenge';
 import PersonaChallenge from './PersonaChallenge';
+import PhishingChallenge from './PhishingChallenge';
+import MatchConnectChallenge from './MatchConnectChallenge'; // Import new challenge
+import PinpointChallenge from './PinpointChallenge'; // Import PinpointChallenge
+import HexConversionChallenge from './HexConversionChallenge'; // Import new challenge
+import FizzBuzzChallenge from './FizzBuzzChallenge'; // Import new challenge
+import GuessTheFlagChallenge from './GuessTheFlagChallenge'; // Import new challenge
+import WebsiteCountChallenge from './WebsiteCountChallenge'; // Import new challenge
+import HexToBinaryChallenge from './HexToBinaryChallenge'; // Import new challenge
+import LuaPrimeChallenge from './LuaPrimeChallenge'; // Import new challenge
+import LuaMaxOf3Challenge from './LuaMaxOf3Challenge'; // Import new challenge
+import LogicGateChallenge from './LogicGateChallenge'; // Import new challenge
+import DualTriviaChallenge from './DualTriviaChallenge'; // Import new challenge
+import WindowsTimelineChallenge from './WindowsTimelineChallenge'; // Import new challenge
+import SpotThePatternChallenge from './SpotThePatternChallenge'; // Import new challenge
+import AZSpeedTestChallenge from './AZSpeedTestChallenge'; // Import new challenge
+import JsArraySumChallenge from './JsArraySumChallenge';
+import ColorConfusionChallenge from './ColorConfusionChallenge';
+import PythonCalculatorChallenge from './PythonCalculatorChallenge';
+import ArduinoBlinkChallenge from './ArduinoBlinkChallenge';
+import ConnectionsGridChallenge from './ConnectionsGridChallenge';
+import NumberSpeedTestChallenge from './NumberSpeedTestChallenge';
+import InteractiveBinaryChallenge from './InteractiveBinaryChallenge';
+import MemoryPatternChallenge from './MemoryPatternChallenge';
 import { UserScore } from '../types';
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from '../constants';
-import { MCQ_CHALLENGES, TYPING_CHALLENGE_2_TEXT, TYPING_CHALLENGE_TEXT } from '../challenges/content';
+import { MCQ_CHALLENGES, PHISHING_CHALLENGES, TYPING_CHALLENGE_2_TEXT, TYPING_CHALLENGE_TEXT } from '../challenges/content';
 
 interface UserViewProps {
     onComplete: (newUser: UserScore) => void;
@@ -48,7 +70,7 @@ interface UserViewProps {
     onChallengeComplete: (challengeId: Challenge) => void; // New prop for App.tsx to update completed status
 }
 
-export type Challenge = 'welcome' | 'typing' | 'typing2' | 'click' | 'trivia' | 'prompt' | 'cipher' | 'tictactoe' | 'sequence' | 'URL' | 'rearrange' | 'matchstick' | 'imageTrivia' | 'similarity' | 'js' | 'html' | 'html_debug' | 'hiddencode' | 'dino' | 'loopshirt' | 'realorfake' | 'connections' | 'wordle' | 'memory' | 'magic' | 'hiddenpassword' | 'spanishloop' | 'binary' | 'python_average' | 'password_strength' | 'instagram' | 'persona' | 'mcq1' | 'mcq2' | 'mcq3' | 'mcq4' | 'mcq5' | 'mcq6' | 'mcq7' | 'mcq8' | 'mcq9' | 'mcq10' | 'mcq11' | 'mcq12' | 'mcq13' | 'done';
+export type Challenge = 'welcome' | 'typing' | 'typing2' | 'click' | 'trivia' | 'prompt' | 'cipher' | 'tictactoe' | 'sequence' | 'URL' | 'rearrange' | 'matchstick' | 'imageTrivia' | 'similarity' | 'js' | 'html' | 'html_debug' | 'hiddencode' | 'dino' | 'loopshirt' | 'realorfake' | 'connections' | 'wordle' | 'memory' | 'magic' | 'hiddenpassword' | 'spanishloop' | 'binary' | 'python_average' | 'python_mentor' | 'password_strength' | 'persona' | 'phishing1' | 'phishing2' | 'phishing3' | 'mcq1' | 'mcq2' | 'mcq3' | 'mcq4' | 'mcq5' | 'mcq6' | 'mcq7' | 'mcq8' | 'mcq9' | 'mcq10' | 'mcq11' | 'mcq12' | 'mcq13' | 'mcq14' | 'mcq15' | 'match_connect' | 'pinpoint' | 'hex_conversion' | 'fizzbuzz' | 'guess_the_flag' | 'website_count' | 'hex_to_binary' | 'lua_prime' | 'lua_maxof3' | 'logic_gate' | 'dual_trivia' | 'windows_timeline' | 'spot_the_pattern' | 'az_speed_test' | 'js_array_sum' | 'color_confusion' | 'python_calculator' | 'arduino_blink' | 'connections_grid' | 'number_speed_test' | 'interactive_binary' | 'memory_pattern' | 'done';
 
 const CHALLENGE_NAMES: Record<string, string> = {
     typing: "Speed Typing ⌨️",
@@ -79,9 +101,34 @@ const CHALLENGE_NAMES: Record<string, string> = {
     spanishloop: "Spanish Translation 🇪🇸",
     binary: "Binary Code 🧑‍💻",
     python_average: "Python Coding 🐍",
+    python_mentor: "Python Mentor 👨‍🏫",
     password_strength: "Password Validator 🔐",
-    instagram: "Instagram Hunt 📸",
     persona: "Persona Password 🆔",
+    phishing1: "Phishing Detector 🎣",
+    phishing2: "Phishing Detector 🎣",
+    phishing3: "Phishing Detector 🎣",
+    match_connect: "Tech Mix & Match 🔗",
+    pinpoint: "LinkedIn Pinpoint 🎯",
+    hex_conversion: "Hex Conversion 🔢",
+    fizzbuzz: "FizzBuzz Coding 🧑‍💻",
+    guess_the_flag: "Guess the Flag 🌎",
+    website_count: "Website Word Count 🔎",
+    hex_to_binary: "Hex to Binary 🔢",
+    lua_prime: "Lua Prime Coding 💻",
+    lua_maxof3: "Lua Max Value 💻",
+    logic_gate: "Logic Gate Builder 🧠",
+    dual_trivia: "World Cup Trivia ⚽",
+    windows_timeline: "Windows Timeline ⏳",
+    spot_the_pattern: "Spot the Pattern 🧠",
+    az_speed_test: "A-Z Speed Test ⏱️",
+    js_array_sum: "JS Array Sum 💻",
+    color_confusion: "Color Confusion 🎨",
+    python_calculator: "Python Calculator 🐍",
+    arduino_blink: "Arduino Blink 💡",
+    connections_grid: "Connections Puzzle 🧩",
+    number_speed_test: "1-100 Speed Test ⏱️",
+    interactive_binary: "Dec to Binary 💡",
+    memory_pattern: "Memory Pattern 🧠",
 };
 
 const UserView: React.FC<UserViewProps> = ({ 
@@ -130,6 +177,10 @@ const UserView: React.FC<UserViewProps> = ({
             // Extract the number from the key (e.g., mcq5 -> 5)
             const mcqNum = key.replace('mcq', '');
             return `Challenge ${challengeNum}: MCQ-${mcqNum}`;
+        }
+         if (key.startsWith('phishing')) {
+            const phishingNum = key.replace('phishing', '');
+            return `Challenge ${challengeNum}: Phishing Detector #${phishingNum}`;
         }
         return `Challenge ${challengeNum}: ${CHALLENGE_NAMES[key] || 'Unknown'}`;
     };
@@ -196,6 +247,10 @@ const UserView: React.FC<UserViewProps> = ({
         setTimeout(() => advanceChallenge(), 1500);
     };
 
+    const handlePhishingComplete = (points: number) => {
+        updateScore(prev => prev + points);
+    };
+
     const handleTicTacToeComplete = (win: boolean) => {
         if (win) {
             updateScore(prev => prev + SCORE_WEIGHTS.TICTACTOE_WIN);
@@ -242,6 +297,13 @@ const UserView: React.FC<UserViewProps> = ({
     const handleHiddenPasswordComplete = (correct: boolean) => {
         if (correct) {
             updateScore(prev => prev + SCORE_WEIGHTS.HIDDEN_PASSWORD_CORRECT);
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    };
+
+    const handlePythonMentorComplete = (correct: boolean) => {
+        if (correct) {
+            updateScore(prev => prev + SCORE_WEIGHTS.PYTHON_MENTOR_CORRECT);
             setTimeout(() => advanceChallenge(), 1500);
         }
     };
@@ -308,11 +370,158 @@ const UserView: React.FC<UserViewProps> = ({
         }
     };
     
+    const handlePinpointComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100); // Or a specific SCORE_WEIGHT for Pinpoint
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    };
+
+    const handleMatchConnectComplete = (scoreChange: number, allCorrect: boolean) => {
+        updateScore(prev => prev + scoreChange);
+        if (allCorrect) {
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    };
+
+    const handleHexConversionComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    };
+
+    const handleFizzBuzzComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+
+    const handleGuessTheFlagComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+
+    const handleWebsiteCountComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    };
+
+    const handleHexToBinaryComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    };
+
+    const handleLuaPrimeComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+
+    const handleLuaMaxOf3Complete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+    
+    const handleLogicGateComplete = (score: number) => {
+        updateScore(prev => prev + score);
+        advanceChallenge();
+    };
+
+    const handleDualTriviaComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    };
+    
+    const handleWindowsTimelineComplete = (score: number) => {
+        updateScore(prev => prev + score);
+        advanceChallenge();
+    };
+
+    const handleSpotThePatternComplete = (score: number) => {
+        updateScore(prev => prev + score);
+        advanceChallenge();
+    };
+
+    const handleAZSpeedTestComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+
+    const handleJsArraySumComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+
+    const handleColorConfusionComplete = (score: number) => {
+        updateScore(prev => prev + score);
+        advanceChallenge();
+    };
+
+    const handlePythonCalculatorComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+
+    const handleArduinoBlinkComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 150);
+            advanceChallenge();
+        }
+    };
+
+    const handleConnectionsGridComplete = (score: number) => {
+        updateScore(prev => prev + score);
+        advanceChallenge();
+    };
+
+    const handleNumberSpeedTestComplete = (success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100);
+            advanceChallenge();
+        }
+    };
+
+    const handleInteractiveBinaryComplete = (score: number) => {
+        updateScore(prev => prev + score);
+        advanceChallenge();
+    };
+
+    const handleMemoryPatternComplete = (score: number) => {
+        updateScore(prev => prev + score);
+        advanceChallenge();
+    };
+
     const renderChallenge = () => {
         if (currentChallenge.startsWith('mcq')) {
             const index = parseInt(currentChallenge.replace('mcq', ''), 10) - 1;
             const challengeData = MCQ_CHALLENGES[index];
             return <MCQChallenge key={currentChallenge} onComplete={handleMCQComplete} {...challengeData} challengeTitle={currentTitle} />;
+        }
+        
+        if (currentChallenge.startsWith('phishing')) {
+            const index = parseInt(currentChallenge.replace('phishing', ''), 10) - 1;
+            const challengeData = PHISHING_CHALLENGES[index];
+            if (!userName) return <div>Loading...</div>; // Should not happen
+            return <PhishingChallenge key={currentChallenge} onComplete={handlePhishingComplete} advanceChallenge={advanceChallenge} challenge={challengeData} userName={userName} challengeTitle={currentTitle} />;
         }
 
         switch (currentChallenge) {
@@ -333,6 +542,7 @@ const UserView: React.FC<UserViewProps> = ({
             case 'html': return <HtmlCodingChallenge key="html" onComplete={handleHtmlComplete} challengeTitle={currentTitle} />;
             case 'html_debug': return <HtmlDebugChallenge key="html_debug" onComplete={handleHtmlDebugComplete} challengeTitle={currentTitle} />;
             case 'python_average': return <PythonAverageChallenge key="python_average" onComplete={handlePythonAvgComplete} challengeTitle={currentTitle} />;
+            case 'python_mentor': return <PythonMentorChallenge key="python_mentor" onComplete={handlePythonMentorComplete} challengeTitle={currentTitle} />;
             case 'password_strength': return <PasswordStrengthChallenge key="password_strength" onComplete={handlePasswordStrengthComplete} challengeTitle={currentTitle} />;
             case 'hiddencode': return <HiddenCodeChallenge key="hiddencode" onComplete={(time) => handleSimpleChallengeComplete(time, SCORE_WEIGHTS.HIDDEN_CODE_BASE_POINTS, SCORE_WEIGHTS.HIDDEN_CODE_TIME_DEDUCTION_FACTOR)} challengeTitle={currentTitle} />;
             case 'persona': return <PersonaChallenge key="persona" onComplete={(time) => handleSimpleChallengeComplete(time, SCORE_WEIGHTS.PERSONA_BASE_POINTS, SCORE_WEIGHTS.PERSONA_TIME_DEDUCTION_FACTOR)} challengeTitle={currentTitle} />;
@@ -346,7 +556,28 @@ const UserView: React.FC<UserViewProps> = ({
             case 'hiddenpassword': return <HiddenPasswordChallenge key="hiddenpassword" onComplete={handleHiddenPasswordComplete} challengeTitle={currentTitle} />;
             case 'spanishloop': return <SpanishLoopChallenge key="spanishloop" onComplete={handleSpanishLoopComplete} challengeTitle={currentTitle} />;
             case 'binary': return <BinaryChallenge key="binary" onComplete={handleBinaryComplete} challengeTitle={currentTitle} />;
-            case 'instagram': return <InstagramChallenge key="instagram" onComplete={(time) => handleSimpleChallengeComplete(time, SCORE_WEIGHTS.INSTAGRAM_BASE_POINTS, SCORE_WEIGHTS.INSTAGRAM_TIME_DEDUCTION_FACTOR)} challengeTitle={currentTitle} />;
+            case 'match_connect': return <MatchConnectChallenge key="match_connect" onComplete={handleMatchConnectComplete} challengeTitle={currentTitle} />; // Render new challenge
+            case 'pinpoint': return <PinpointChallenge key="pinpoint" onComplete={handlePinpointComplete} challengeTitle={currentTitle} />; // Render PinpointChallenge
+            case 'hex_conversion': return <HexConversionChallenge key="hex_conversion" onComplete={handleHexConversionComplete} challengeTitle={currentTitle} />;
+            case 'fizzbuzz': return <FizzBuzzChallenge key="fizzbuzz" onComplete={handleFizzBuzzComplete} challengeTitle={currentTitle} />;
+            case 'guess_the_flag': return <GuessTheFlagChallenge key="guess_the_flag" onComplete={handleGuessTheFlagComplete} challengeTitle={currentTitle} />;
+            case 'website_count': return <WebsiteCountChallenge key="website_count" onComplete={handleWebsiteCountComplete} challengeTitle={currentTitle} />;
+            case 'hex_to_binary': return <HexToBinaryChallenge key="hex_to_binary" onComplete={handleHexToBinaryComplete} challengeTitle={currentTitle} />;
+            case 'lua_prime': return <LuaPrimeChallenge key="lua_prime" onComplete={handleLuaPrimeComplete} challengeTitle={currentTitle} />;
+            case 'lua_maxof3': return <LuaMaxOf3Challenge key="lua_maxof3" onComplete={handleLuaMaxOf3Complete} challengeTitle={currentTitle} />;
+            case 'logic_gate': return <LogicGateChallenge key="logic_gate" onComplete={handleLogicGateComplete} challengeTitle={currentTitle} />;
+            case 'dual_trivia': return <DualTriviaChallenge key="dual_trivia" onComplete={handleDualTriviaComplete} challengeTitle={currentTitle} />;
+            case 'windows_timeline': return <WindowsTimelineChallenge key="windows_timeline" onComplete={handleWindowsTimelineComplete} challengeTitle={currentTitle} />;
+            case 'spot_the_pattern': return <SpotThePatternChallenge key="spot_the_pattern" onComplete={handleSpotThePatternComplete} challengeTitle={currentTitle} />;
+            case 'az_speed_test': return <AZSpeedTestChallenge key="az_speed_test" onComplete={handleAZSpeedTestComplete} challengeTitle={currentTitle} />;
+            case 'js_array_sum': return <JsArraySumChallenge key="js_array_sum" onComplete={handleJsArraySumComplete} challengeTitle={currentTitle} />;
+            case 'color_confusion': return <ColorConfusionChallenge key="color_confusion" onComplete={handleColorConfusionComplete} challengeTitle={currentTitle} />;
+            case 'python_calculator': return <PythonCalculatorChallenge key="python_calculator" onComplete={handlePythonCalculatorComplete} challengeTitle={currentTitle} />;
+            case 'arduino_blink': return <ArduinoBlinkChallenge key="arduino_blink" onComplete={handleArduinoBlinkComplete} challengeTitle={currentTitle} />;
+            case 'connections_grid': return <ConnectionsGridChallenge key="connections_grid" onComplete={handleConnectionsGridComplete} challengeTitle={currentTitle} />;
+            case 'number_speed_test': return <NumberSpeedTestChallenge key="number_speed_test" onComplete={handleNumberSpeedTestComplete} challengeTitle={currentTitle} />;
+            case 'interactive_binary': return <InteractiveBinaryChallenge key="interactive_binary" onComplete={handleInteractiveBinaryComplete} challengeTitle={currentTitle} />;
+            case 'memory_pattern': return <MemoryPatternChallenge key="memory_pattern" onComplete={handleMemoryPatternComplete} challengeTitle={currentTitle} />;
             
             case 'done':
                 return (

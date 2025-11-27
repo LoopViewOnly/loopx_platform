@@ -20,8 +20,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
             setError('Name must be at least 3 characters long.');
             return;
         }
-        if (trimmedName.length > 15) {
-            setError('Name must be 15 characters or less.');
+        if (trimmedName.length > 30) {
+            setError('Name must be 30 characters or less.');
             return;
         }
         if (profanityList.some(word => trimmedName.toLowerCase().includes(word))) {
@@ -53,7 +53,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
                         }}
                         onKeyDown={(e) => e.key === 'Enter' && validateAndStart()}
                         placeholder="Full Name"
-                        maxLength={15}
+                        maxLength={30}
                         autoFocus
                         className="w-full px-4 py-3 bg-black/40 border-2 border-blue-500/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 text-center"
                     />

@@ -80,7 +80,7 @@ const HtmlDebugChallenge: React.FC<HtmlDebugChallengeProps> = ({ onComplete, cha
                 if (!src || src.trim() === "") {
                     errors.push("The image is missing the 'src' attribute.");
                 } else if (src !== targetImageUrl) {
-                    errors.push(`The <img> tag's 'src' attribute is incorrect. It should be exactly the provided URL.`);
+                    errors.push(`The <img> tag's 'src' attribute is incorrect. It should be exactly '${targetImageUrl}'.`);
                 }
             }
 
