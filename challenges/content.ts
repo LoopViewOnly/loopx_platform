@@ -96,6 +96,7 @@ export const JS_CALCULATOR_CODE_TYPING_CHALLENGE_TEXT = `function calc(n1,n2,sym
    else if symbol == "*" { print(n1*n2) }
    else if symbol == "/" { print(n1/n2) }
    else { print("Error") }
+   }
 `
 ;
 
