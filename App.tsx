@@ -5,6 +5,7 @@ import { UserScore } from "./types";
 import { LOOPX_LOGO_B64 } from "./challenges/assets";
 import { db, isFirebaseEnabled } from "./firebase";
 import ContinueProgressModal from "./components/ContinueProgressModal"; // Import new modal component
+import loopx_logo from "./assets/loopx_logo.png";
 
 interface SavedProgress {
   name: string;
@@ -448,7 +449,7 @@ const App: React.FC = () => {
         <header className="flex justify-between items-start mb-8">
           <div>
             <div className="flex items-center">
-              <img src={LOOPX_LOGO_B64} alt="LoopX Logo" className="h-10" />
+              <img src={loopx_logo} alt="LoopX Logo" className="h-20 w-30" />
               {currentUserName && (
                 <span className="text-2xl text-gray-300 font-normal leading-tight ml-4">
                   / {currentUserName}
