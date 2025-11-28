@@ -281,11 +281,11 @@ export const SIMILARITY_CHALLENGES: SimilarityChallenge[] = [
 ];
 
 export const CONNECTIONS_DATA = [
-    { model: 'GPT-4o', company: 'OpenAI', logoId: 'openai' },
-    { model: 'Claude 3.5 Sonnet', company: 'Anthropic', logoId: 'anthropic' },
-    { model: 'Gemini 1.5 Pro', company: 'Google', logoId: 'google' },
-    { model: 'Grok-1.5', company: 'xAI', logoId: 'xai' },
-    { model: 'DeepSeek-V2', company: 'DeepSeek AI', logoId: 'deepseek' }
+    { model: 'GPT-5.1', company: 'OpenAI', logoId: 'openai' },
+    { model: 'Opus 4.5', company: 'Anthropic', logoId: 'anthropic' },
+    { model: 'Gemini 3', company: 'Google', logoId: 'google' },
+    { model: 'Grok-4.1', company: 'xAI', logoId: 'xai' },
+    { model: 'DeepSeek-V3', company: 'DeepSeek AI', logoId: 'deepseek' }
 ];
 
 export const MCQ_CHALLENGES = [
