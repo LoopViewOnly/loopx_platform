@@ -102,6 +102,7 @@ const App: React.FC = () => {
       "memory_pattern",
       "sandbox_login",
       "coding_typing",
+      "html_list",
     ],
     []
   );
@@ -442,8 +443,9 @@ const App: React.FC = () => {
                     ? "Sandbox Login"
                     : challenge === "coding_typing"
                     ? "Coding Typing"
-                    : challenge.charAt(0).toUpperCase() + challenge.slice(1)
-                    }
+                    : challenge === "html_list"
+                    ? "HTML List"
+                    : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>
                   )}
