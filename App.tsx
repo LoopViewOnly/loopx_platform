@@ -101,6 +101,7 @@ const App: React.FC = () => {
       "mcq15",
       "memory_pattern",
       "sandbox_login",
+      "coding_typing",
     ],
     []
   );
@@ -439,6 +440,8 @@ const App: React.FC = () => {
                     ? "Memory Pattern"
                     : challenge === "sandbox_login"
                     ? "Sandbox Login"
+                    : challenge === "coding_typing"
+                    ? "Coding Typing"
                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)
                     }
                   {completedChallenges.has(challenge) && (

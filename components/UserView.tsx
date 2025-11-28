@@ -55,9 +55,10 @@ import NumberSpeedTestChallenge from './NumberSpeedTestChallenge';
 import InteractiveBinaryChallenge from './InteractiveBinaryChallenge';
 import MemoryPatternChallenge from './MemoryPatternChallenge';
 import SandboxLoginChallenge from './SandboxLoginChallenge'; // Import new challenge
+import CodingTypingChallenge from './CodingTypingChallenge'; // Import new CodingTypingChallenge
 import { UserScore } from '../types';
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from '../constants';
-import { MCQ_CHALLENGES, PHISHING_CHALLENGES, TYPING_CHALLENGE_2_TEXT, TYPING_CHALLENGE_TEXT } from '../challenges/content';
+import { MCQ_CHALLENGES, PHISHING_CHALLENGES, TYPING_CHALLENGE_2_TEXT, TYPING_CHALLENGE_TEXT, JS_CALCULATOR_CODE_TYPING_CHALLENGE_TEXT } from '../challenges/content';
 
 interface UserViewProps {
     onComplete: (newUser: UserScore) => void;
@@ -131,6 +132,7 @@ const CHALLENGE_NAMES: Record<string, string> = {
     interactive_binary: "Dec to Binary 💡",
     memory_pattern: "Memory Pattern 🧠",
     sandbox_login: "Sandbox Login 🕵️‍♂️",
+    coding_typing: "Coding Typing 💻",
 };
 
 const UserView: React.FC<UserViewProps> = ({ 
@@ -525,6 +527,13 @@ const UserView: React.FC<UserViewProps> = ({
         }
     }, [updateScore, advanceChallenge]);
 
+    const handleCodingTypingComplete = useCallback((cpm: number, attempts: number) => {
+        updateScore(prev => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+    }, [updateScore, advanceChallenge]);
+
+
+
     const renderChallenge = () => {
         if (currentChallenge.startsWith('mcq')) {
             const index = parseInt(currentChallenge.replace('mcq', ''), 10) - 1;
@@ -542,6 +551,7 @@ const UserView: React.FC<UserViewProps> = ({
         switch (currentChallenge) {
             case 'typing': return <TypingChallenge key="typing" onComplete={handleTypingComplete} challengeTitle={currentTitle} challengeText={TYPING_CHALLENGE_TEXT} minCpm={TYPING_MIN_CPM} />;
             case 'typing2': return <TypingChallenge key="typing2" onComplete={handleTyping2Complete} challengeTitle={currentTitle} challengeText={TYPING_CHALLENGE_2_TEXT} minCpm={TYPING_2_MIN_CPM} />;
+            case 'coding_typing': return <CodingTypingChallenge key="coding_typing" onComplete={handleCodingTypingComplete} challengeTitle={currentTitle} codeText={JS_CALCULATOR_CODE_TYPING_CHALLENGE_TEXT} minCpm={50} />; // Render new challenge          
             case 'click': return <ClickChallenge key="click" onComplete={handleClicksComplete} challengeTitle={currentTitle} />;
             case 'trivia': return <TriviaChallenge key="trivia" onComplete={(time) => handleSimpleChallengeComplete(time, SCORE_WEIGHTS.TRIVIA_BASE_POINTS, SCORE_WEIGHTS.TRIVIA_TIME_DEDUCTION_FACTOR)} challengeTitle={currentTitle} />;
             case 'prompt': return <PromptChallenge key="prompt" onComplete={(time) => handleSimpleChallengeComplete(time, SCORE_WEIGHTS.PROMPT_BASE_POINTS, SCORE_WEIGHTS.PROMPT_TIME_DEDUCTION_FACTOR)} challengeTitle={currentTitle} />;

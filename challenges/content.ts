@@ -90,6 +90,15 @@ export const SANDBOX_CHALLENGE = {
     answer: "6122025"
 };
 
+export const JS_CALCULATOR_CODE_TYPING_CHALLENGE_TEXT = `function calc(n1,n2,symbol){
+   if symbol == "+" { print(n1+n2) }
+   else if symbol == "-" { print(n1-n2) }
+   else if symbol == "*" { print(n1*n2) }
+   else if symbol == "/" { print(n1/n2) }
+   else { print("Error") }
+`
+;
+
 export const MATCH_CONNECT_DATA = {
     companies: [
         { id: 'google', name: 'Google' },
