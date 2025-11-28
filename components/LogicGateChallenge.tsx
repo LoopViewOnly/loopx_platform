@@ -464,7 +464,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
                         <button onClick={handleCheckCircuit} disabled={isChallengeComplete} className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600">Check Circuit</button>
                         <button onClick={handleReset} className="px-6 py-2 bg-yellow-600 text-black font-bold rounded-lg hover:bg-yellow-700">Reset Step</button>
                         <button 
-                            onClick={() => {setHintUsed(true); setStepFeedback(`Hint (cost -20pts): For "${currentStep.expression}", consider its simplified form.`)}} 
+                            onClick={() => {setHintUsed(true); setStepFeedback(`Hint (cost -20pts): Try first to do the AND (&) for each two then find a way to connect them with OR (||) `)}} 
                             disabled={hintUsed}
                             className="px-6 py-2 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 disabled:bg-gray-600"
                         >
