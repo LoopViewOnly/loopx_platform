@@ -9,11 +9,13 @@ interface SpanishLoopChallengeProps {
 const SpanishLoopChallenge: React.FC<SpanishLoopChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [answer, setAnswer] = useState('');
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!answer.trim() || submittedCorrectly) return;
+        if (!answer.trim() || submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const correct = answer.trim().toLowerCase() === SPANISH_LOOP_CHALLENGE.answer.toLowerCase();
         
@@ -46,7 +48,7 @@ const SpanishLoopChallenge: React.FC<SpanishLoopChallengeProps> = ({ onComplete,
                     {!submittedCorrectly && (
                          <button 
                             type="submit"
-                            disabled={!answer.trim()}
+                            disabled={!answer.trim() || hasSubmitted}
                             className="bg-blue-600 text-white font-bold px-4 py-2 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-600 disabled:cursor-not-allowed"
                         >
                             Submit

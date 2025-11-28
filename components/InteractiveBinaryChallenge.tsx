@@ -35,6 +35,7 @@ const InteractiveBinaryChallenge: React.FC<InteractiveBinaryChallengeProps> = ({
     const [potentialScore, setPotentialScore] = useState(100);
     const [feedback, setFeedback] = useState<{ message: string; type: 'correct' | 'incorrect' } | null>(null);
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [finalScore, setFinalScore] = useState<number | null>(null);
 
     const currentChallenge = INTERACTIVE_BINARY_DATA[stageIndex];
@@ -53,7 +54,8 @@ const InteractiveBinaryChallenge: React.FC<InteractiveBinaryChallengeProps> = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isComplete) return;
+        if (isComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const userAnswer = bits.join('');
         if (userAnswer === currentChallenge.answer) {
@@ -63,6 +65,7 @@ const InteractiveBinaryChallenge: React.FC<InteractiveBinaryChallengeProps> = ({
                     setStageIndex(prev => prev + 1);
                     setBits(Array(8).fill(0));
                     setFeedback(null);
+                    setHasSubmitted(false);
                 } else {
                     const calculatedFinalScore = Math.max(MINIMUM_SCORE, potentialScore);
                     setFinalScore(calculatedFinalScore);
@@ -73,6 +76,7 @@ const InteractiveBinaryChallenge: React.FC<InteractiveBinaryChallengeProps> = ({
         } else {
             setPotentialScore(prev => Math.max(0, prev - 10));
             setFeedback({ message: 'Incorrect. -10 points. Try again!', type: 'incorrect' });
+            setHasSubmitted(false);
         }
     };
 
@@ -115,6 +119,7 @@ const InteractiveBinaryChallenge: React.FC<InteractiveBinaryChallengeProps> = ({
                 {!isComplete && (
                      <button
                         type="submit"
+                        disabled={hasSubmitted}
                         className="w-full max-w-sm px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Submit

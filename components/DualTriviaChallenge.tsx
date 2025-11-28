@@ -14,11 +14,13 @@ const DualTriviaChallenge: React.FC<DualTriviaChallengeProps> = ({ onComplete, c
     const [whereAnswer, setWhereAnswer] = useState('');
     const [feedback, setFeedback] = useState<{ when: FeedbackState, where: FeedbackState }>({ when: null, where: null });
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isComplete) return;
+        if (isComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const isWhenCorrect = whenAnswer.trim().toLowerCase() === DUAL_TRIVIA_CHALLENGE.answers.when.toLowerCase();
         const isWhereCorrect = whereAnswer.trim().toLowerCase() === DUAL_TRIVIA_CHALLENGE.answers.where.toLowerCase();
@@ -90,7 +92,7 @@ const DualTriviaChallenge: React.FC<DualTriviaChallengeProps> = ({ onComplete, c
                 {!isComplete && (
                     <button
                         type="submit"
-                        disabled={!whenAnswer.trim() || !whereAnswer.trim()}
+                        disabled={!whenAnswer.trim() || !whereAnswer.trim() || hasSubmitted}
                         className="mt-6 w-full max-w-sm px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Check Answers

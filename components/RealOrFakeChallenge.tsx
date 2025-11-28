@@ -53,6 +53,7 @@ const RealOrFakeChallenge: React.FC<RealOrFakeChallengeProps> = ({
     const [imagePair, setImagePair] = useState<ImagePair | null>(null);
     const [selection, setSelection] = useState<'left' | 'right' | null>(null);
     const [isRoundOver, setIsRoundOver] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const setupNewRound = useCallback(() => {
         const realImg = getRandomItem(REAL_OR_FAKE_IMAGES.real);
@@ -73,6 +74,7 @@ const RealOrFakeChallenge: React.FC<RealOrFakeChallengeProps> = ({
 
         setSelection(null);
         setIsRoundOver(false);
+        setHasSubmitted(false);
     }, []);
 
     useEffect(() => {
@@ -80,7 +82,8 @@ const RealOrFakeChallenge: React.FC<RealOrFakeChallengeProps> = ({
     }, [setupNewRound]);
 
     const handleImageClick = (chosenSide: 'left' | 'right') => {
-        if (isRoundOver || !imagePair) return;
+        if (isRoundOver || !imagePair || hasSubmitted) return;
+        setHasSubmitted(true);
 
         setIsRoundOver(true);
         setSelection(chosenSide);

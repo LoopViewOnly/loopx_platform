@@ -56,6 +56,7 @@ import MemoryPatternChallenge from "./MemoryPatternChallenge";
 import SandboxLoginChallenge from "./SandboxLoginChallenge"; // Import new challenge
 import CodingTypingChallenge from "./CodingTypingChallenge"; // Import new CodingTypingChallenge
 import HtmlListChallenge from "./HtmlListChallenge";
+import IpGeolocationChallenge from "./IpGeolocationChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
@@ -151,6 +152,7 @@ export type Challenge =
   | "number_speed_test"
   | "interactive_binary"
   | "memory_pattern"
+  | "ip_geolocation"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -190,6 +192,7 @@ const CHALLENGE_NAMES: Record<string, string> = {
   phishing3: "Phishing Detector 🎣",
   match_connect: "Tech Mix & Match 🔗",
   pinpoint: "LinkedIn Pinpoint 🎯",
+  ip_geolocation: "IP Geolocation 🌐",
   hex_conversion: "Hex Conversion 🔢",
   fizzbuzz: "FizzBuzz Coding 🧑‍💻",
   guess_the_flag: "Guess the Flag 🌎",
@@ -581,6 +584,16 @@ const UserView: React.FC<UserViewProps> = ({
       if (success) {
         updateScore((prev) => prev + 100);
         setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleIpGeolocationComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
       }
     },
     [updateScore, advanceChallenge]
@@ -1167,6 +1180,14 @@ const UserView: React.FC<UserViewProps> = ({
           <GuessTheFlagChallenge
             key="guess_the_flag"
             onComplete={handleGuessTheFlagComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "ip_geolocation":
+        return (
+          <IpGeolocationChallenge
+            key="ip_geolocation"
+            onComplete={handleIpGeolocationComplete}
             challengeTitle={currentTitle}
           />
         );

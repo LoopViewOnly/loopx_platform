@@ -11,10 +11,12 @@ const URLChallenge: React.FC<URLChallengeProps> = ({ onComplete, challengeTitle 
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isCorrect, setIsCorrect] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isCorrect) return;
+        if (isCorrect || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const correctUsername = "John Cena";
         const correctPassword = "bata";
@@ -65,7 +67,7 @@ const URLChallenge: React.FC<URLChallengeProps> = ({ onComplete, challengeTitle 
                 {!isCorrect && (
                     <button
                         type="submit"
-                        disabled={!username.trim() || !password.trim()}
+                        disabled={!username.trim() || !password.trim() || hasSubmitted}
                         className="mt-4 w-full px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Submit Credentials

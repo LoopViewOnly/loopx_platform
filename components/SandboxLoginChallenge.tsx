@@ -67,12 +67,14 @@ const CORRECT_PASSWORD = SANDBOX_CHALLENGE.answer;
 const SandboxLoginChallenge: React.FC<SandboxLoginChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [userAnswer, setUserAnswer] = useState('');
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js'>('html');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (submittedCorrectly) return;
+        if (submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
 
         if (userAnswer.trim() === CORRECT_PASSWORD) {
             setError(null);
@@ -138,7 +140,7 @@ const SandboxLoginChallenge: React.FC<SandboxLoginChallengeProps> = ({ onComplet
                 {!submittedCorrectly && (
                     <button
                         type="submit"
-                        disabled={!userAnswer.trim()}
+                        disabled={!userAnswer.trim() || hasSubmitted}
                         className="mt-6 w-full px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Submit Password

@@ -63,7 +63,7 @@ const App: React.FC = () => {
       "mcq7",
       "prompt",
       "password_strength",
-      "cipher",
+      "ip_geolocation",
       "mcq8",
       "tictactoe",
       "mcq13",
@@ -103,6 +103,7 @@ const App: React.FC = () => {
       "sandbox_login",
       "coding_typing",
       "html_list",
+      "cipher",
     ],
     []
   );
@@ -405,6 +406,8 @@ const App: React.FC = () => {
                     ? "FizzBuzz"
                     : challenge === "guess_the_flag"
                     ? "Guess the Flag"
+                    : challenge === "ip_geolocation"
+                    ? "IP Geolocation"
                     : challenge === "website_count"
                     ? "Website Count"
                     : challenge === "hex_to_binary"

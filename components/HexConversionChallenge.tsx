@@ -13,6 +13,7 @@ const HexConversionChallenge: React.FC<HexConversionChallengeProps> = ({ onCompl
     const [answers, setAnswers] = useState<string[]>(Array(HEX_CONVERSION_CHALLENGE.problems.length).fill(''));
     const [feedback, setFeedback] = useState<FeedbackState[]>(Array(HEX_CONVERSION_CHALLENGE.problems.length).fill(null));
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleInputChange = (index: number, value: string) => {
@@ -24,7 +25,8 @@ const HexConversionChallenge: React.FC<HexConversionChallengeProps> = ({ onCompl
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isComplete) return;
+        if (isComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         let allCorrect = true;
         const newFeedback: FeedbackState[] = [];
@@ -93,7 +95,7 @@ const HexConversionChallenge: React.FC<HexConversionChallengeProps> = ({ onCompl
                 {!isComplete && (
                     <button
                         type="submit"
-                        disabled={answers.some(a => a.trim() === '')}
+                        disabled={answers.some(a => a.trim() === '') || hasSubmitted}
                         className="mt-6 w-full px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Check Answers

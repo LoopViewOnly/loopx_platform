@@ -10,6 +10,7 @@ const HiddenCodeChallenge: React.FC<HiddenCodeChallengeProps> = ({ onComplete })
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const startTimeRef = useRef<number | null>(null);
 
@@ -19,7 +20,8 @@ const HiddenCodeChallenge: React.FC<HiddenCodeChallengeProps> = ({ onComplete })
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!username.trim() || !password.trim() || submittedCorrectly) return;
+        if (!username.trim() || !password.trim() || submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const correct =
             username.trim() === HIDDEN_CODE_CHALLENGE.username &&
@@ -75,7 +77,7 @@ const HiddenCodeChallenge: React.FC<HiddenCodeChallengeProps> = ({ onComplete })
                 {!submittedCorrectly && (
                     <button
                         type="submit"
-                        disabled={!username.trim() || !password.trim()}
+                        disabled={!username.trim() || !password.trim() || hasSubmitted}
                         className="mt-4 w-full px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700
                                    disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300
                                    shadow-lg shadow-blue-600/30"

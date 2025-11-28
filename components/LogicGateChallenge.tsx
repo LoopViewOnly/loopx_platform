@@ -81,6 +81,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
     const [isChallengeComplete, setIsChallengeComplete] = useState(false); // Overall challenge completion
     const [stepFeedback, setStepFeedback] = useState<string | null>(null);
     const [hintUsed, setHintUsed] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [draggingGateId, setDraggingGateId] = useState<string | null>(null);
     const [dragOffset, setDragOffset] = useState<{ x: number, y: number } | null>(null);
     const [currentTotalScore, setCurrentTotalScore] = useState(0);
@@ -287,7 +288,8 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
 
 
     const handleCheckCircuit = () => {
-        if (isChallengeComplete) return;
+        if (isChallengeComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const currentExpression = currentStep.expression;
         const currentTruthTable = currentStep.truthTable;
@@ -335,6 +337,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
                     setCurrentStepIndex(prev => prev + 1);
                     setStepFeedback(null);
                     setHintUsed(false);
+                    setHasSubmitted(false);
                 } else {
                     setIsChallengeComplete(true);
                     onComplete(newTotalScore);
@@ -343,6 +346,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
         } else {
             setOutputLightOn(false); // Ensure light is off for failure
             setStepFeedback(`Incorrect logic. The circuit for "${currentExpression}" does not match the truth table. Try again!`);
+            setHasSubmitted(false);
         }
     };
     
@@ -474,7 +478,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
             <div className="mt-4 flex flex-col items-center gap-3">
                  {!isChallengeComplete ? (
                      <div className="flex gap-4">
-                        <button onClick={handleCheckCircuit} disabled={isChallengeComplete} className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600">Check Circuit</button>
+                        <button onClick={handleCheckCircuit} disabled={isChallengeComplete || hasSubmitted} className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600">Check Circuit</button>
                         <button onClick={handleReset} className="px-6 py-2 bg-yellow-600 text-black font-bold rounded-lg hover:bg-yellow-700">Reset Step</button>
                         {currentStep.hint && (
                             <button 

@@ -10,6 +10,7 @@ interface PromptChallengeProps {
 const PromptChallenge: React.FC<PromptChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [selected, setSelected] = useState<string | null>(null);
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const startTimeRef = useRef<number | null>(null);
 
@@ -18,7 +19,8 @@ const PromptChallenge: React.FC<PromptChallengeProps> = ({ onComplete, challenge
     }, []);
 
     const handleSubmit = () => {
-        if (!selected || submittedCorrectly) return;
+        if (!selected || submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const isCorrect = selected === PROMPT_CHALLENGE.correctAnswer;
         
@@ -30,6 +32,7 @@ const PromptChallenge: React.FC<PromptChallengeProps> = ({ onComplete, challenge
         } else {
              onComplete(null);
              setError("Not quite! The best prompts are more descriptive. Try another one.");
+             setHasSubmitted(false);
         }
     };
     
@@ -67,7 +70,7 @@ const PromptChallenge: React.FC<PromptChallengeProps> = ({ onComplete, challenge
             {!submittedCorrectly && (
                 <button
                     onClick={handleSubmit}
-                    disabled={!selected}
+                    disabled={!selected || hasSubmitted}
                     className="mt-8 w-full max-w-sm mx-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                 >
                     Finalize Choice

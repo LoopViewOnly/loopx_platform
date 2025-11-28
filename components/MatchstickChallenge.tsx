@@ -142,6 +142,7 @@ const MatchstickChallenge: React.FC<{ onComplete: (time: number | null) => void,
     const [boardSegments, setBoardSegments] = useState<number[][]>([]);
     const [heldStick, setHeldStick] = useState<HeldStickState | null>(null);
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [hasMoved, setHasMoved] = useState(false);
@@ -216,7 +217,8 @@ const MatchstickChallenge: React.FC<{ onComplete: (time: number | null) => void,
     }
 
     const handleSubmit = () => {
-        if (submittedCorrectly) return;
+        if (submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
         
         const derivedBoardState = boardSegments.map((segments, index) => {
             if (puzzle.initialState[index] === '=') return '=';
@@ -297,7 +299,7 @@ const MatchstickChallenge: React.FC<{ onComplete: (time: number | null) => void,
                     </button>
                     <button 
                         onClick={handleSubmit} 
-                        disabled={!hasMoved || !!heldStick}
+                        disabled={!hasMoved || !!heldStick || hasSubmitted}
                         className="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600/50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Submit Answer

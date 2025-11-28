@@ -29,8 +29,11 @@ const JsArraySumChallenge: React.FC<JsArraySumChallengeProps> = ({ onComplete, c
     const [stage, setStage] = useState<Stage>('coding');
     const [testResult, setTestResult] = useState<{ actual: number | string | null, passed: boolean } | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const runTest = () => {
+        if (hasSubmitted) return;
+        setHasSubmitted(true);
         setError(null);
         setTestResult(null);
         let userFunction;
@@ -86,7 +89,7 @@ const JsArraySumChallenge: React.FC<JsArraySumChallengeProps> = ({ onComplete, c
             </div>
             <button
                 onClick={runTest}
-                disabled={!code.trim()}
+                disabled={!code.trim() || hasSubmitted}
                 className="mt-8 w-full max-w-sm mx-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
             >
                 Test My Code
