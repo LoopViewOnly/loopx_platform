@@ -1,3 +1,4 @@
+//Testing comment
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SCORE_WEIGHTS } from '../constants';
 
