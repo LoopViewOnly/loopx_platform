@@ -1,4 +1,3 @@
-//Testing comment
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SCORE_WEIGHTS } from '../constants';
 
@@ -47,12 +46,20 @@ const CHALLENGE_STEPS = [
         inputsNeeded: ['INPUT_X', 'INPUT_Y'],
         truthTable: (x: boolean, y: boolean, z: boolean) => (x && y) || y,
         optimalGateCount: 2, // AND, OR
+        hint: {
+            text: "Use AND first then connect it to OR",
+            cost: 15
+        }
     },
     {
         expression: "(X & Y) || (Y & Z) || (X & Z)", // Majority function
         inputsNeeded: ['INPUT_X', 'INPUT_Y', 'INPUT_Z'],
         truthTable: (x: boolean, y: boolean, z: boolean) => (x && y) || (y && z) || (x && z),
         optimalGateCount: 5, // 3 AND, 2 OR
+        hint: {
+            text: "Use 3 AND gates (x & y), (y&z), (x&z) then connect them to 2 OR gates, pssst... connect the end of one OR to another!",
+            cost: 10
+        }
     },
 ];
 
@@ -77,6 +84,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
     const [draggingGateId, setDraggingGateId] = useState<string | null>(null);
     const [dragOffset, setDragOffset] = useState<{ x: number, y: number } | null>(null);
     const [currentTotalScore, setCurrentTotalScore] = useState(0);
+    const [outputLightOn, setOutputLightOn] = useState(false); // New state for the output light
 
     const canvasRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -84,8 +92,6 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
     const currentStep = CHALLENGE_STEPS[currentStepIndex];
 
     const initializeStep = useCallback(() => {
-        // FIX: The original array with a conditional spread was causing a TypeScript type inference issue.
-        // Rewriting it to conditionally push to a typed array is cleaner and resolves the error.
         const initialGates: Gate[] = [
             { id: 'INPUT_X', type: 'INPUT_X', x: 50, y: 100, inputs: [], output: false },
             { id: 'INPUT_Y', type: 'INPUT_Y', x: 50, y: 250, inputs: [], output: false },
@@ -103,6 +109,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
         setHintUsed(false);
         setDraggingGateId(null);
         setDragOffset(null);
+        setOutputLightOn(false); // Ensure light is off at the start of a new step
     }, [currentStepIndex, currentStep.inputsNeeded]);
 
 
@@ -309,16 +316,19 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
         }
         
         if (allPassed) {
+            setOutputLightOn(true); // Turn light on for success
             setStepFeedback(`Success! Circuit for "${currentExpression}" is correct.`);
             const userGateCount = gates.filter(g => !['INPUT_X', 'INPUT_Y', 'INPUT_Z', 'OUTPUT'].includes(g.id)).length;
             
-            let stepScore = SCORE_WEIGHTS.LOGIC_GATE_SCORE_PER_STEP;
-            if (hintUsed) {
-                stepScore = Math.max(0, stepScore - 20);
-            }
-            stepScore = Math.max(0, stepScore - (Math.max(0, userGateCount - currentStep.optimalGateCount) * 10));
+            const baseScoreForStep = hintUsed && currentStep.hint
+                ? SCORE_WEIGHTS.LOGIC_GATE_SCORE_PER_STEP - currentStep.hint.cost
+                : SCORE_WEIGHTS.LOGIC_GATE_SCORE_PER_STEP;
+            
+            const gatePenalty = Math.max(0, userGateCount - currentStep.optimalGateCount) * 10;
+            const stepScore = Math.max(0, baseScoreForStep - gatePenalty);
 
-            setCurrentTotalScore(prev => prev + stepScore);
+            const newTotalScore = currentTotalScore + stepScore;
+            setCurrentTotalScore(newTotalScore);
 
             setTimeout(() => {
                 if (currentStepIndex < CHALLENGE_STEPS.length - 1) {
@@ -327,10 +337,11 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
                     setHintUsed(false);
                 } else {
                     setIsChallengeComplete(true);
-                    onComplete(currentTotalScore + stepScore);
+                    onComplete(newTotalScore);
                 }
             }, 1500);
         } else {
+            setOutputLightOn(false); // Ensure light is off for failure
             setStepFeedback(`Incorrect logic. The circuit for "${currentExpression}" does not match the truth table. Try again!`);
         }
     };
@@ -341,13 +352,11 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
         setHintUsed(false);
     };
 
-    const renderOutputGateStatus = useCallback(() => {
-        if (!gates || gates.length === 0) return false;
-        const inputX_val = false;
-        const inputY_val = true;
-        const inputZ_val = false;
-        return evaluateCircuit(inputX_val, inputY_val, inputZ_val);
-    }, [gates, evaluateCircuit]);
+    const handleUseHint = () => {
+        if (hintUsed || !currentStep.hint) return;
+        setHintUsed(true);
+        setStepFeedback(`Hint: ${currentStep.hint.text}`);
+    }
 
     return (
         <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass">
@@ -400,9 +409,12 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
                     return (
                         <div
                             key={gate.id}
-                            ref={el => {
-                                if (el) itemRefs.current.set(gate.id, el);
-                                else itemRefs.current.delete(gate.id);
+                            ref={(el: HTMLDivElement | null) => {
+                                if (el) {
+                                    itemRefs.current.set(gate.id, el);
+                                } else {
+                                    itemRefs.current.delete(gate.id);
+                                }
                             }}
                             onMouseDown={(e) => handleGateMouseDown(e, gate)}
                             style={{ position: 'absolute', left: gate.x, top: gate.y, width: GATE_DIMS.width, height: GATE_DIMS.height }}
@@ -411,14 +423,14 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
                             `}
                         >
                             {gate.type.startsWith('INPUT') ? gate.type.slice(-1) : gate.type === 'OUTPUT' ?
-                                <div className={`w-6 h-6 rounded-full border-2 border-black ${renderOutputGateStatus() ? 'bg-yellow-300 shadow-[0_0_15px_yellow]' : 'bg-gray-800'}`}/>
+                                <div className={`w-6 h-6 rounded-full border-2 border-black ${outputLightOn ? 'bg-yellow-300 shadow-[0_0_15px_yellow]' : 'bg-gray-800'}`}/>
                                 : gate.type
                             }
                             
                             {Array.from({ length: gateProps.inputs }).map((_, i) => (
                                 <div 
                                     key={i} 
-                                    onClick={(e) => { e.stopPropagation(); handleNodeClick(gate.id, 'input', i); }} 
+                                    onMouseDown={(e) => { e.stopPropagation(); handleNodeClick(gate.id, 'input', i); }} 
                                     style={{ top: `${(100 / (gateProps.inputs + 1)) * (i + 1)}%` }}
                                     className="absolute -left-1.5 -translate-y-1/2 w-3 h-3 bg-gray-300 rounded-full cursor-pointer hover:ring-2 ring-yellow-400"
                                 />
@@ -426,7 +438,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
 
                             {!gate.type.startsWith('OUTPUT') && (
                                 <div 
-                                    onClick={(e) => { e.stopPropagation(); handleNodeClick(gate.id, 'output', 0); }} 
+                                    onMouseDown={(e) => { e.stopPropagation(); handleNodeClick(gate.id, 'output', 0); }} 
                                     className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-gray-300 rounded-full cursor-pointer hover:ring-2 ring-yellow-400" 
                                 />
                             )}
@@ -464,13 +476,15 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
                      <div className="flex gap-4">
                         <button onClick={handleCheckCircuit} disabled={isChallengeComplete} className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600">Check Circuit</button>
                         <button onClick={handleReset} className="px-6 py-2 bg-yellow-600 text-black font-bold rounded-lg hover:bg-yellow-700">Reset Step</button>
-                        <button 
-                            onClick={() => {setHintUsed(true); setStepFeedback(`Hint (cost -20pts): Try first to do the AND (&) for each two then find a way to connect them with OR (||) `)}} 
-                            disabled={hintUsed}
-                            className="px-6 py-2 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 disabled:bg-gray-600"
-                        >
-                            Hint (-20pts)
-                        </button>
+                        {currentStep.hint && (
+                            <button 
+                                onClick={handleUseHint}
+                                disabled={hintUsed}
+                                className="px-6 py-2 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 disabled:bg-gray-600"
+                            >
+                                Hint (-{currentStep.hint.cost}pts)
+                            </button>
+                        )}
                     </div>
                  ) : (
                     <p className="text-2xl font-bold text-green-400">All logic gates complete!</p>
