@@ -254,6 +254,7 @@ export const MATCHSTICK_PUZZLES = [
         question: "Make the equation correct by moving only one matchstick.",
         initialState: ['6', '+', '4', '=', '4'],
         correctState: ['8', '-', '4', '=', '4'],
+        alternateCorrectStates: [['0', '+', '4', '=', '4']],
     },
      {
         id: 3,

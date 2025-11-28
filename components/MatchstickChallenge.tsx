@@ -229,7 +229,9 @@ const MatchstickChallenge: React.FC<{ onComplete: (time: number | null) => void,
             return;
         }
 
-        const isCorrect = JSON.stringify(derivedBoardState) === JSON.stringify(puzzle.correctState);
+        const derivedString = JSON.stringify(derivedBoardState);
+        const isCorrect = derivedString === JSON.stringify(puzzle.correctState) ||
+            (puzzle.alternateCorrectStates?.some(alt => derivedString === JSON.stringify(alt)) ?? false);
 
         if (isCorrect) {
             const elapsedTime = (Date.now() - (startTimeRef.current || Date.now())) / 1000;
