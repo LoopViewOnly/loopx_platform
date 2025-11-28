@@ -409,7 +409,7 @@ export const SPANISH_LOOP_CHALLENGE = {
 };
 
 export const BINARY_CHALLENGE = {
-    question: "Convert the following word to binary using the ASCII standard: LoopX",
+    question: "Convert the following word to binary: LoopX",
     example: "01001001 00100000 01100001 01101101",
     answer: "01001100 01101111 01101111 01110000 01011000"
 };
