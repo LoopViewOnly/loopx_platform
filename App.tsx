@@ -39,6 +39,7 @@ const App: React.FC = () => {
       "mcq2",
       "js",
       "sequence",
+      "star_pattern",
       "mcq3",
       "memory",
       "magic",
@@ -73,6 +74,7 @@ const App: React.FC = () => {
       "mcq9",
       "similarity",
       "hiddencode",
+      "console_hack",
       "dino",
       "mcq10",
       "loopshirt",
@@ -408,6 +410,10 @@ const App: React.FC = () => {
                     ? "Guess the Flag"
                     : challenge === "ip_geolocation"
                     ? "IP Geolocation"
+                    : challenge === "console_hack"
+                    ? "Console Hack"
+                    : challenge === "star_pattern"
+                    ? "Star Pattern"
                     : challenge === "website_count"
                     ? "Website Count"
                     : challenge === "hex_to_binary"
