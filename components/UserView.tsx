@@ -54,6 +54,7 @@ import ConnectionsGridChallenge from './ConnectionsGridChallenge';
 import NumberSpeedTestChallenge from './NumberSpeedTestChallenge';
 import InteractiveBinaryChallenge from './InteractiveBinaryChallenge';
 import MemoryPatternChallenge from './MemoryPatternChallenge';
+import SandboxLoginChallenge from './SandboxLoginChallenge'; // Import new challenge
 import { UserScore } from '../types';
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from '../constants';
 import { MCQ_CHALLENGES, PHISHING_CHALLENGES, TYPING_CHALLENGE_2_TEXT, TYPING_CHALLENGE_TEXT } from '../challenges/content';
@@ -129,6 +130,7 @@ const CHALLENGE_NAMES: Record<string, string> = {
     number_speed_test: "1-100 Speed Test ⏱️",
     interactive_binary: "Dec to Binary 💡",
     memory_pattern: "Memory Pattern 🧠",
+    sandbox_login: "Sandbox Login 🕵️‍♂️",
 };
 
 const UserView: React.FC<UserViewProps> = ({ 
@@ -515,6 +517,14 @@ const UserView: React.FC<UserViewProps> = ({
         setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
     }, [updateScore, advanceChallenge]);
 
+
+    const handleSandboxLoginComplete = useCallback((success: boolean) => {
+        if (success) {
+            updateScore(prev => prev + 100); // Award points for successful login
+            setTimeout(() => advanceChallenge(), 1500);
+        }
+    }, [updateScore, advanceChallenge]);
+
     const renderChallenge = () => {
         if (currentChallenge.startsWith('mcq')) {
             const index = parseInt(currentChallenge.replace('mcq', ''), 10) - 1;
@@ -583,6 +593,7 @@ const UserView: React.FC<UserViewProps> = ({
             case 'number_speed_test': return <NumberSpeedTestChallenge key="number_speed_test" onComplete={handleNumberSpeedTestComplete} challengeTitle={currentTitle} />;
             case 'interactive_binary': return <InteractiveBinaryChallenge key="interactive_binary" onComplete={handleInteractiveBinaryComplete} challengeTitle={currentTitle} />;
             case 'memory_pattern': return <MemoryPatternChallenge key="memory_pattern" onComplete={handleMemoryPatternComplete} challengeTitle={currentTitle} />;
+            case 'sandbox_login': return <SandboxLoginChallenge key="sandbox_login" onComplete={handleSandboxLoginComplete} challengeTitle={currentTitle} />;
             
             case 'done':
                 return (

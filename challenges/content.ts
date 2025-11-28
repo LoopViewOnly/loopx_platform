@@ -85,6 +85,11 @@ export const PYTHON_MENTOR_CHALLENGE = {
     answer: "LOOPCS"
 };
 
+export const SANDBOX_CHALLENGE = {
+    question: "What is the hidden password?",
+    answer: "6122025"
+};
+
 export const MATCH_CONNECT_DATA = {
     companies: [
         { id: 'google', name: 'Google' },

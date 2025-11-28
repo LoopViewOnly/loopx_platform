@@ -100,6 +100,7 @@ const App: React.FC = () => {
       "lua_maxof3",
       "mcq15",
       "memory_pattern",
+      "sandbox_login",
     ],
     []
   );
@@ -436,7 +437,10 @@ const App: React.FC = () => {
                     ? "Dec to Binary"
                     : challenge === "memory_pattern"
                     ? "Memory Pattern"
-                    : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
+                    : challenge === "sandbox_login"
+                    ? "Sandbox Login"
+                    : challenge.charAt(0).toUpperCase() + challenge.slice(1)
+                    }
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>
                   )}
