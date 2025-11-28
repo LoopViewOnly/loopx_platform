@@ -57,6 +57,8 @@ import SandboxLoginChallenge from "./SandboxLoginChallenge"; // Import new chall
 import CodingTypingChallenge from "./CodingTypingChallenge"; // Import new CodingTypingChallenge
 import HtmlListChallenge from "./HtmlListChallenge";
 import IpGeolocationChallenge from "./IpGeolocationChallenge";
+import ConsoleHackChallenge from "./ConsoleHackChallenge";
+import StarPatternChallenge from "./StarPatternChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
@@ -153,6 +155,8 @@ export type Challenge =
   | "interactive_binary"
   | "memory_pattern"
   | "ip_geolocation"
+  | "console_hack"
+  | "star_pattern"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -193,6 +197,8 @@ const CHALLENGE_NAMES: Record<string, string> = {
   match_connect: "Tech Mix & Match 🔗",
   pinpoint: "LinkedIn Pinpoint 🎯",
   ip_geolocation: "IP Geolocation 🌐",
+  console_hack: "Console Hack 🔓",
+  star_pattern: "Star Pattern ⭐",
   hex_conversion: "Hex Conversion 🔢",
   fizzbuzz: "FizzBuzz Coding 🧑‍💻",
   guess_the_flag: "Guess the Flag 🌎",
@@ -590,6 +596,24 @@ const UserView: React.FC<UserViewProps> = ({
   );
 
   const handleIpGeolocationComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleConsoleHackComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleStarPatternComplete = useCallback(
     (success: boolean) => {
       if (success) {
         updateScore((prev) => prev + 100);
@@ -1188,6 +1212,22 @@ const UserView: React.FC<UserViewProps> = ({
           <IpGeolocationChallenge
             key="ip_geolocation"
             onComplete={handleIpGeolocationComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "console_hack":
+        return (
+          <ConsoleHackChallenge
+            key="console_hack"
+            onComplete={handleConsoleHackComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "star_pattern":
+        return (
+          <StarPatternChallenge
+            key="star_pattern"
+            onComplete={handleStarPatternComplete}
             challengeTitle={currentTitle}
           />
         );
