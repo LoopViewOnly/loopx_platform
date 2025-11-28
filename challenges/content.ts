@@ -429,3 +429,39 @@ export const BINARY_CHALLENGE = {
     example: "01001001 00100000 01100001 01101101",
     answer: "01001100 01101111 01101111 01110000 01011000"
 };
+
+
+export const BALL_CHALLENGES = [
+    {
+        id: 'ball_challenge_1',
+        title: "Ball: Move Right",
+        description: `Make the ball move to the right twice.
+Use the function: ball.moveRight()`,
+        initialCode: `// Use ball.moveRight() to move the ball\n// Example: ball.moveUp()\n`,
+        expectedMoves: ['moveRight', 'moveRight'],
+    },
+    {
+        id: 'ball_challenge_2',
+        title: "Ball: Draw Square",
+        description: `Make the ball draw a square shape (e.g., right, down, left, up).
+Available functions: ball.moveRight(), ball.moveDown(), ball.moveLeft(), ball.moveUp()`,
+        initialCode: `// Make the ball draw a square\n// One example path: Right, Down, Left, Up\nball.moveRight();\n`,
+        expectedMoves: ['moveRight', 'moveDown', 'moveLeft', 'moveUp'],
+    },
+    {
+        id: 'ball_challenge_3',
+        title: "Ball: Diagonal Down-Right",
+        description: `Make the ball move diagonally down-right twice.
+Combine ball.moveDown() and ball.moveRight()`,
+        initialCode: `// Move the ball diagonally down-right twice\n`,
+        expectedMoves: ['moveDown', 'moveRight', 'moveDown', 'moveRight'],
+    },
+    {
+        id: 'ball_challenge_4',
+        title: "Ball: Zig Zag",
+        description: `Make the ball move in a zig-zag pattern (e.g., Right, Up, Right, Down).
+Available functions: ball.moveRight(), ball.moveUp(), ball.moveRight(), ball.moveDown()`,
+        initialCode: `// Implement a zig-zag movement\n// Example: Right, Up, Right, Down\n`,
+        expectedMoves: ['moveRight', 'moveUp', 'moveRight', 'moveDown'],
+    },
+];

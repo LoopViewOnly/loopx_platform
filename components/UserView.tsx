@@ -59,6 +59,7 @@ import HtmlListChallenge from "./HtmlListChallenge";
 import IpGeolocationChallenge from "./IpGeolocationChallenge";
 import ConsoleHackChallenge from "./ConsoleHackChallenge";
 import StarPatternChallenge from "./StarPatternChallenge";
+import BallCodingChallenge from "./BallCodingChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
@@ -67,6 +68,7 @@ import {
   TYPING_CHALLENGE_2_TEXT,
   TYPING_CHALLENGE_TEXT,
   JS_CALCULATOR_CODE_TYPING_CHALLENGE_TEXT,
+  BALL_CHALLENGES,
 } from "../challenges/content";
 
 interface UserViewProps {
@@ -157,6 +159,10 @@ export type Challenge =
   | "ip_geolocation"
   | "console_hack"
   | "star_pattern"
+  | "ball_challenge_1"
+  | "ball_challenge_2"
+  | "ball_challenge_3"
+  | "ball_challenge_4"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -222,6 +228,10 @@ const CHALLENGE_NAMES: Record<string, string> = {
   sandbox_login: "Sandbox Login 🕵️‍♂️",
   coding_typing: "Coding Typing 💻",
   html_list: "HTML List 📄",
+  ball_challenge_1: "Ball: Move Right ➡️", // New Ball Challenge 1
+  ball_challenge_2: "Ball: Draw Square 🔲", // New Ball Challenge 2
+  ball_challenge_3: "Ball: Diagonal Move ↘️", // New Ball Challenge 3
+  ball_challenge_4: "Ball: Zig Zag ⚡", // New Ball Challenge 4
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -286,6 +296,16 @@ const UserView: React.FC<UserViewProps> = ({
     }
     return `Challenge ${challengeNum}: ${CHALLENGE_NAMES[key] || "Unknown"}`;
   };
+
+  const handleBallChallengeComplete = useCallback((success: boolean, challengeId: string) => {
+    if (success) {
+        updateScore(prev => prev + 100); // Fixed score for completing a ball challenge
+        setTimeout(() => advanceChallenge(), 1500);
+    } else {
+        // Optionally deduct points for failure or just re-try (handled by the challenge itself)
+        // For now, if not success, the challenge handles retries.
+    }
+}, [updateScore, advanceChallenge]);
 
   const currentTitle = getChallengeTitle(
     currentChallenge,
@@ -868,6 +888,19 @@ const UserView: React.FC<UserViewProps> = ({
             minCpm={50}
           />
         ); // Render new challenge
+        case 'ball_challenge_1': 
+                const ballCh1 = BALL_CHALLENGES.find(c => c.id === 'ball_challenge_1')!;
+                return <BallCodingChallenge key="ball_challenge_1" onComplete={(success) => handleBallChallengeComplete(success, 'ball_challenge_1')} challengeTitle={currentTitle} description={ballCh1.description} initialCode={ballCh1.initialCode} expectedMoves={ballCh1.expectedMoves} />;
+            case 'ball_challenge_2': 
+                const ballCh2 = BALL_CHALLENGES.find(c => c.id === 'ball_challenge_2')!;
+                return <BallCodingChallenge key="ball_challenge_2" onComplete={(success) => handleBallChallengeComplete(success, 'ball_challenge_2')} challengeTitle={currentTitle} description={ballCh2.description} initialCode={ballCh2.initialCode} expectedMoves={ballCh2.expectedMoves} />;
+            case 'ball_challenge_3': 
+                const ballCh3 = BALL_CHALLENGES.find(c => c.id === 'ball_challenge_3')!;
+                return <BallCodingChallenge key="ball_challenge_3" onComplete={(success) => handleBallChallengeComplete(success, 'ball_challenge_3')} challengeTitle={currentTitle} description={ballCh3.description} initialCode={ballCh3.initialCode} expectedMoves={ballCh3.expectedMoves} />;
+            case 'ball_challenge_4': 
+                const ballCh4 = BALL_CHALLENGES.find(c => c.id === 'ball_challenge_4')!;
+                return <BallCodingChallenge key="ball_challenge_4" onComplete={(success) => handleBallChallengeComplete(success, 'ball_challenge_4')} challengeTitle={currentTitle} description={ballCh4.description} initialCode={ballCh4.initialCode} expectedMoves={ballCh4.expectedMoves} />;
+           
       case "click":
         return (
           <ClickChallenge
