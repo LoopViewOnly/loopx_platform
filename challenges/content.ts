@@ -115,7 +115,7 @@ export const CONNECTIONS_GRID_DATA = [
     },
     {
         title: "FIRST COMPUTERS",
-        items: ["IBM Model 5150", "Macintosh", "Dell Turbo PC", "HP 2116A"],
+        items: ["IBM Model 5150", "Macintosh 128K", "Dell Turbo PC", "HP 2116A"],
         color: 'bg-blue-800/50'
     },
     {
