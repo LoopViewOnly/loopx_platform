@@ -22,6 +22,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 const MCQChallenge: React.FC<MCQChallengeProps> = ({ question, options, correctAnswer, challengeTitle, onComplete, isCode }) => {
     const [selected, setSelected] = useState<string | null>(null);
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [mistakes, setMistakes] = useState(0);
     
@@ -35,7 +36,8 @@ const MCQChallenge: React.FC<MCQChallengeProps> = ({ question, options, correctA
     }, []);
 
     const handleSubmit = () => {
-        if (!selected || submittedCorrectly) return;
+        if (!selected || submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const isCorrect = selected === correctAnswer;
         
@@ -46,6 +48,7 @@ const MCQChallenge: React.FC<MCQChallengeProps> = ({ question, options, correctA
         } else {
              setMistakes(prev => prev + 1);
              setError("Incorrect answer. Please try again.");
+             setHasSubmitted(false);
         }
     };
     
@@ -83,7 +86,7 @@ const MCQChallenge: React.FC<MCQChallengeProps> = ({ question, options, correctA
             {!submittedCorrectly && (
                 <button
                     onClick={handleSubmit}
-                    disabled={!selected}
+                    disabled={!selected || hasSubmitted}
                     className="mt-8 w-full max-w-sm mx-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                 >
                     Submit Answer

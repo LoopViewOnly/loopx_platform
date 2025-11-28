@@ -11,6 +11,7 @@ interface InstagramChallengeProps {
 const InstagramChallenge: React.FC<InstagramChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [answer, setAnswer] = useState('');
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const startTimeRef = useRef<number | null>(null);
 
@@ -20,7 +21,8 @@ const InstagramChallenge: React.FC<InstagramChallengeProps> = ({ onComplete, cha
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!answer.trim() || submittedCorrectly) return;
+        if (!answer.trim() || submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const correct = answer.trim() === INSTAGRAM_CHALLENGE.answer;
         
@@ -64,7 +66,7 @@ const InstagramChallenge: React.FC<InstagramChallengeProps> = ({ onComplete, cha
                     {!submittedCorrectly && (
                          <button 
                             type="submit"
-                            disabled={!answer.trim()}
+                            disabled={!answer.trim() || hasSubmitted}
                             className="bg-pink-600 text-white font-bold px-4 py-2 rounded-lg hover:bg-indigo-500 transition disabled:bg-gray-600 disabled:cursor-not-allowed"
                         >
                             Submit

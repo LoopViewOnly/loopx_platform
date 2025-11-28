@@ -11,10 +11,12 @@ const HiddenPasswordChallenge: React.FC<HiddenPasswordChallengeProps> = ({ onCom
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isCorrect, setIsCorrect] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isCorrect) return;
+        if (isCorrect || hasSubmitted) return;
+        setHasSubmitted(true);
 
         if (password.trim() === CORRECT_PASSWORD) {
             setError(null);
@@ -67,7 +69,7 @@ const HiddenPasswordChallenge: React.FC<HiddenPasswordChallengeProps> = ({ onCom
                 {!isCorrect && (
                     <button
                         type="submit"
-                        disabled={!password.trim()}
+                        disabled={!password.trim() || hasSubmitted}
                         className="mt-6 w-full px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Submit Password

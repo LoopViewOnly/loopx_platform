@@ -10,6 +10,7 @@ interface CaesarCipherChallengeProps {
 const CaesarCipherChallenge: React.FC<CaesarCipherChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [answer, setAnswer] = useState('');
     const [submittedCorrectly, setSubmittedCorrectly] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const startTimeRef = useRef<number | null>(null);
 
@@ -19,7 +20,8 @@ const CaesarCipherChallenge: React.FC<CaesarCipherChallengeProps> = ({ onComplet
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!answer.trim() || submittedCorrectly) return;
+        if (!answer.trim() || submittedCorrectly || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const correct = answer.trim().toLowerCase() === CAESAR_CHALLENGE.answer.toLowerCase();
 
@@ -57,7 +59,7 @@ const CaesarCipherChallenge: React.FC<CaesarCipherChallengeProps> = ({ onComplet
                 {!submittedCorrectly && (
                     <button
                         type="submit"
-                        disabled={!answer.trim()}
+                        disabled={!answer.trim() || hasSubmitted}
                         className="mt-6 w-full px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Submit Decryption

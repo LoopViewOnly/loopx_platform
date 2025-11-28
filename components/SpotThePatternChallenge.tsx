@@ -17,6 +17,7 @@ const SpotThePatternChallenge: React.FC<SpotThePatternChallengeProps> = ({ onCom
     const [feedbackType, setFeedbackType] = useState<'correct' | 'incorrect' | 'hint' | null>(null);
     const [hintsUsed, setHintsUsed] = useState<boolean[]>(Array(SPOT_THE_PATTERN_DATA.length).fill(false));
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     
     const currentChallenge = SPOT_THE_PATTERN_DATA[currentQuestionIndex];
 
@@ -35,7 +36,8 @@ const SpotThePatternChallenge: React.FC<SpotThePatternChallengeProps> = ({ onCom
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isComplete || !userAnswer) return;
+        if (isComplete || !userAnswer || hasSubmitted) return;
+        setHasSubmitted(true);
         
         const answerAsNumber = parseInt(userAnswer, 10);
 
@@ -49,6 +51,7 @@ const SpotThePatternChallenge: React.FC<SpotThePatternChallengeProps> = ({ onCom
                     setCurrentQuestionIndex(prev => prev + 1);
                     setFeedbackMessage(null);
                     setFeedbackType(null);
+                    setHasSubmitted(false);
                 } else {
                     const finalScore = Math.max(MINIMUM_SCORE, potentialScore);
                     setFeedbackMessage(`All patterns solved! Final score: ${finalScore}`);
@@ -63,6 +66,7 @@ const SpotThePatternChallenge: React.FC<SpotThePatternChallengeProps> = ({ onCom
             setFeedbackMessage('Incorrect. -10 points. Try again!');
             setFeedbackType('incorrect');
             setUserAnswer('');
+            setHasSubmitted(false);
         }
     };
 
@@ -108,7 +112,7 @@ const SpotThePatternChallenge: React.FC<SpotThePatternChallengeProps> = ({ onCom
                         )}
                         <button
                             type="submit"
-                            disabled={!userAnswer}
+                            disabled={!userAnswer || hasSubmitted}
                             className="flex-grow px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                         >
                             Submit

@@ -16,6 +16,7 @@ const ColorConfusionChallenge: React.FC<ColorConfusionChallengeProps> = ({ onCom
     const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
     const [feedback, setFeedback] = useState<{ message: string; color: string } | null>(null);
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -51,7 +52,8 @@ const ColorConfusionChallenge: React.FC<ColorConfusionChallengeProps> = ({ onCom
     }, [timeLeft, isComplete, gameHasStarted]);
 
     const handleOptionClick = (optionText: string) => {
-        if (isComplete) return;
+        if (isComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const currentStage = COLOR_CONFUSION_DATA[stageIndex];
         if (optionText === currentStage.correctAnswer) {
@@ -60,6 +62,7 @@ const ColorConfusionChallenge: React.FC<ColorConfusionChallengeProps> = ({ onCom
                 if (stageIndex + 1 < COLOR_CONFUSION_DATA.length) {
                     setStageIndex(prev => prev + 1);
                     setFeedback(null);
+                    setHasSubmitted(false);
                 } else {
                     if (timerRef.current) clearInterval(timerRef.current);
                     setIsComplete(true);
@@ -71,6 +74,7 @@ const ColorConfusionChallenge: React.FC<ColorConfusionChallengeProps> = ({ onCom
         } else {
             setPotentialScore(prev => Math.max(0, prev - 10));
             setFeedback({ message: 'Incorrect! -10 points.', color: 'text-red-500' });
+            setHasSubmitted(false);
         }
     };
 
@@ -134,7 +138,7 @@ const ColorConfusionChallenge: React.FC<ColorConfusionChallengeProps> = ({ onCom
                         <button
                             key={index}
                             onClick={() => handleOptionClick(option.text)}
-                            disabled={isComplete}
+                            disabled={isComplete || hasSubmitted}
                             className={`p-6 rounded-lg text-2xl font-bold border-2 border-transparent transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ${textColorClass}`}
                         >
                             {option.text.charAt(0).toUpperCase() + option.text.slice(1)}

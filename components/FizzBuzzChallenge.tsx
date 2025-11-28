@@ -42,8 +42,11 @@ const FizzBuzzChallenge: React.FC<FizzBuzzChallengeProps> = ({ onComplete, chall
     const [stage, setStage] = useState<Stage>('coding');
     const [testResults, setTestResults] = useState<TestResult[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const runTests = () => {
+        if (hasSubmitted) return;
+        setHasSubmitted(true);
         setError(null);
         let userFunction;
 
@@ -102,7 +105,7 @@ const FizzBuzzChallenge: React.FC<FizzBuzzChallengeProps> = ({ onComplete, chall
             </div>
             <button
                 onClick={runTests}
-                disabled={!code.trim()}
+                disabled={!code.trim() || hasSubmitted}
                 className="mt-8 w-full max-w-sm mx-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
             >
                 Test My Code

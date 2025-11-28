@@ -18,10 +18,12 @@ interface PhishingChallengeProps {
 const PhishingChallenge: React.FC<PhishingChallengeProps> = ({ challenge, challengeTitle, userName, onComplete, advanceChallenge }) => {
     const [isCorrectlyAnswered, setIsCorrectlyAnswered] = useState(false);
     const [userSelection, setUserSelection] = useState<boolean | null>(null);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [mistakes, setMistakes] = useState(0);
 
     const selectOption = (isPhishingGuess: boolean) => {
-        if (isCorrectlyAnswered) return;
+        if (isCorrectlyAnswered || hasSubmitted) return;
+        setHasSubmitted(true);
 
         setUserSelection(isPhishingGuess);
 
@@ -33,6 +35,7 @@ const PhishingChallenge: React.FC<PhishingChallengeProps> = ({ challenge, challe
             onComplete(score);
         } else {
             setMistakes(prev => prev + 1);
+            setHasSubmitted(false);
         }
     };
     
@@ -79,14 +82,14 @@ const PhishingChallenge: React.FC<PhishingChallengeProps> = ({ challenge, challe
                 <div className="grid grid-cols-2 gap-4 pt-2">
                     <button
                         onClick={() => selectOption(true)}
-                        disabled={isCorrectlyAnswered}
+                        disabled={isCorrectlyAnswered || hasSubmitted}
                         className={`w-full py-4 text-white font-bold rounded-lg shadow-md transition-all duration-200 transform disabled:cursor-not-allowed text-lg ${getButtonClass(true)}`}
                     >
                         Phishing
                     </button>
                     <button
                         onClick={() => selectOption(false)}
-                        disabled={isCorrectlyAnswered}
+                        disabled={isCorrectlyAnswered || hasSubmitted}
                         className={`w-full py-4 text-white font-bold rounded-lg shadow-md transition-all duration-200 transform disabled:cursor-not-allowed text-lg ${getButtonClass(false)}`}
                     >
                         Safe

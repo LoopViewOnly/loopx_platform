@@ -28,6 +28,7 @@ const GuessTheFlagChallenge: React.FC<GuessTheFlagChallengeProps> = ({ onComplet
     const [answers, setAnswers] = useState<string[]>(['', '', '']);
     const [feedback, setFeedback] = useState<FeedbackState[]>([null, null, null]);
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     useEffect(() => {
         // This function shuffles the list of 6 provided flags
@@ -49,7 +50,8 @@ const GuessTheFlagChallenge: React.FC<GuessTheFlagChallengeProps> = ({ onComplet
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isComplete) return;
+        if (isComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         let allCorrect = true;
         const newFeedback: FeedbackState[] = answers.map((answer, index) => {
@@ -117,7 +119,7 @@ const GuessTheFlagChallenge: React.FC<GuessTheFlagChallengeProps> = ({ onComplet
                 {!isComplete && (
                     <button
                         type="submit"
-                        disabled={answers.some(a => a.trim() === '')}
+                        disabled={answers.some(a => a.trim() === '') || hasSubmitted}
                         className="mt-10 w-full max-w-sm px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Check Answers

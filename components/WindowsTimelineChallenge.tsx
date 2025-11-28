@@ -32,6 +32,7 @@ const WindowsTimelineChallenge: React.FC<WindowsTimelineChallengeProps> = ({ onC
     const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [potentialScore, setPotentialScore] = useState(INITIAL_MAX_SCORE);
     const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
@@ -71,7 +72,8 @@ const WindowsTimelineChallenge: React.FC<WindowsTimelineChallengeProps> = ({ onC
     };
 
     const handleCheckOrder = () => {
-        if (isComplete) return;
+        if (isComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         let incorrectCount = 0;
         const newFeedbackItems = items.map((item, index) => {
@@ -101,6 +103,7 @@ const WindowsTimelineChallenge: React.FC<WindowsTimelineChallengeProps> = ({ onC
     
     const handleReplay = () => {
         setIsSubmitted(false);
+        setHasSubmitted(false);
         setFeedbackMessage(null);
         setItems(prevItems => prevItems.map(item => ({ ...item, feedback: null })));
     };
@@ -162,7 +165,8 @@ const WindowsTimelineChallenge: React.FC<WindowsTimelineChallengeProps> = ({ onC
                 ) : (
                     <button
                         onClick={handleCheckOrder}
-                        className="w-full max-w-sm px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
+                        disabled={hasSubmitted}
+                        className="w-full max-w-sm px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Check Order
                     </button>

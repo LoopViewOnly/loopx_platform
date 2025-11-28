@@ -14,6 +14,7 @@ const HexToBinaryChallenge: React.FC<HexToBinaryChallengeProps> = ({ onComplete,
     const [nibbles, setNibbles] = useState<string[]>(['', '', '', '']);
     const [feedback, setFeedback] = useState<FeedbackState[]>(Array(4).fill(null));
     const [isComplete, setIsComplete] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     
     const inputRefs = [
@@ -38,7 +39,8 @@ const HexToBinaryChallenge: React.FC<HexToBinaryChallengeProps> = ({ onComplete,
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isComplete) return;
+        if (isComplete || hasSubmitted) return;
+        setHasSubmitted(true);
 
         const fullAnswer = nibbles.join('');
         const correct = fullAnswer === HEX_TO_BINARY_CHALLENGE.answer;
@@ -112,7 +114,7 @@ const HexToBinaryChallenge: React.FC<HexToBinaryChallengeProps> = ({ onComplete,
                 {!isComplete && (
                     <button
                         type="submit"
-                        disabled={nibbles.some(n => n.length !== 4)}
+                        disabled={nibbles.some(n => n.length !== 4) || hasSubmitted}
                         className="mt-6 w-full max-w-sm px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
                     >
                         Check Answer
