@@ -83,6 +83,7 @@ const App: React.FC = () => {
       "pinpoint",
       "hex_conversion",
       "fizzbuzz",
+      "ball_challenge_1",
       "guess_the_flag",
       "website_count",
       "hex_to_binary",
@@ -96,15 +97,18 @@ const App: React.FC = () => {
       "color_confusion",
       "python_calculator",
       "arduino_blink",
+      "ball_challenge_2",
       "connections_grid",
       "number_speed_test",
       "interactive_binary",
       "lua_maxof3",
       "mcq15",
+      "ball_challenge_3",
       "memory_pattern",
       "sandbox_login",
       "coding_typing",
       "html_list",
+      "ball_challenge_4",
       "cipher",
     ],
     []
@@ -454,6 +458,14 @@ const App: React.FC = () => {
                     ? "Coding Typing"
                     : challenge === "html_list"
                     ? "HTML List"
+                    : challenge === "ball_challenge_1"
+                    ? "Ball: Move Right"
+                    : challenge === "ball_challenge_2"
+                    ? "Ball: Draw Square"
+                    : challenge === "ball_challenge_3"
+                    ? "Ball: Diagonal Move"
+                    : challenge === "ball_challenge_4"
+                    ? "Ball: Zig Zag"
                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>
