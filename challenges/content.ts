@@ -158,6 +158,111 @@ export const WINDOWS_TIMELINE_DATA: string[] = [
     "Windows 11",
 ];
 
+export const APPLE_TIMELINE_DATA: string[] = [
+    "Apple I",
+    "Macintosh",
+    "iMac",
+    "iPod",
+    "iPhone",
+    "MacBook Air",
+    "iPad",
+    "Apple Watch",
+    "AirPods",
+    "Apple Vision Pro",
+];
+
+export const TECH_TIMELINE_DATA = {
+    companies: [
+        { name: "Microsoft", year: 1975 },
+        { name: "Apple", year: 1976 },
+        { name: "Nvidia", year: 1993 },
+        { name: "Google", year: 1998 },
+        { name: "Meta", year: 2004 },
+        { name: "OpenAI", year: 2015 },
+        { name: "Loop", year: 2015 },
+    ],
+    stage1MaxScore: 70,
+    stage2MaxScore: 70,
+    minimumScore: 70,
+    deductionPerError: 5,
+};
+
+export const GOOGLE_APPS_CHALLENGE = {
+    googleApps: [
+        "Gmail",
+        "Earth",
+        "Sheets",
+        "One",
+        "YouTube",
+        "Meet",
+        "Gemini",
+        "Translate",
+        "Drive",
+        "Keep",
+    ],
+    nonGoogleApps: [
+        "Safari",
+        "Word",
+        "Teams",
+        "WhatsApp",
+        "Discord",
+        "OneDrive",
+    ],
+    maxAttempts: 3,
+    penaltyPerWrong: 5,
+    maxScore: 100,
+};
+
+export const SHAPE_PATTERN_COLOR_CHALLENGE = {
+    // The three constant target objects
+    targets: [
+        { id: 'target-triangle', shape: 'triangle', pattern: 'dots', color: 'green' },
+        { id: 'target-square', shape: 'square', pattern: 'stripes', color: 'blue' },
+        { id: 'target-circle', shape: 'circle', pattern: 'xs', color: 'red' },
+    ],
+    stages: [
+        {
+            id: 1,
+            name: 'Shape',
+            matchBy: 'shape',
+            instruction: 'Match by SHAPE',
+            // Objects to drag - same shapes but different colors/patterns
+            objects: [
+                { id: 'obj1-triangle', shape: 'triangle', pattern: 'stripes', color: 'purple', matchesTarget: 'target-triangle' },
+                { id: 'obj1-square', shape: 'square', pattern: 'xs', color: 'orange', matchesTarget: 'target-square' },
+                { id: 'obj1-circle', shape: 'circle', pattern: 'dots', color: 'yellow', matchesTarget: 'target-circle' },
+            ],
+        },
+        {
+            id: 2,
+            name: 'Pattern',
+            matchBy: 'pattern',
+            instruction: 'Match by PATTERN',
+            // Objects to drag - same patterns but different shapes/colors
+            objects: [
+                { id: 'obj2-dots', shape: 'square', pattern: 'dots', color: 'pink', matchesTarget: 'target-triangle' },
+                { id: 'obj2-stripes', shape: 'circle', pattern: 'stripes', color: 'purple', matchesTarget: 'target-square' },
+                { id: 'obj2-xs', shape: 'triangle', pattern: 'xs', color: 'orange', matchesTarget: 'target-circle' },
+            ],
+        },
+        {
+            id: 3,
+            name: 'Color',
+            matchBy: 'color',
+            instruction: 'Match by COLOR',
+            // Objects to drag - same colors but different shapes/patterns
+            objects: [
+                { id: 'obj3-green', shape: 'circle', pattern: 'stripes', color: 'green', matchesTarget: 'target-triangle' },
+                { id: 'obj3-blue', shape: 'triangle', pattern: 'xs', color: 'blue', matchesTarget: 'target-square' },
+                { id: 'obj3-red', shape: 'square', pattern: 'dots', color: 'red', matchesTarget: 'target-circle' },
+            ],
+        },
+    ],
+    pointsPerStage: 30,
+    penaltyPerWrong: 5,
+    timePerStage: 15,
+};
+
 export const SPOT_THE_PATTERN_DATA = [
     {
         sequence: [3, 6, 12, 24],
@@ -406,6 +511,16 @@ export const MCQ_CHALLENGES = [
             "LoopX.jpeg"
         ],
         correctAnswer: "LoopX.pdf.exe"
+    },
+    { // MCQ 18 - HTTPS
+        question: "What does HTTPS stand for?",
+        options: [
+            "Hypertext Transport Protocol Security",
+            "Hyperlink Transfer Protocol Secure",
+            "HyperText Transfer Protocol Secure",
+            "High-Traffic Transfer Protocol Server"
+        ],
+        correctAnswer: "HyperText Transfer Protocol Secure"
     }
 ];
 

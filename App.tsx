@@ -100,6 +100,7 @@ const App: React.FC = () => {
       "spot_the_pattern",
       "az_speed_test",
       "js_array_sum",
+      "mcq15",
       "python_random_loop",
       "color_confusion",
       "python_calculator",
@@ -109,7 +110,7 @@ const App: React.FC = () => {
       "number_speed_test",
       "interactive_binary",
       "lua_maxof3",
-      "mcq15",
+      "mcq16",
       "ball_challenge_3",
       "memory_pattern",
       "sql_challenge_1",
@@ -120,7 +121,7 @@ const App: React.FC = () => {
       "html_list",
       "ball_challenge_4",
       "cipher",
-      "mcq16",
+      "mcq17",
       "secure_or_not",
       "timezone",
       "ascii_challenge",
@@ -128,7 +129,11 @@ const App: React.FC = () => {
       "ip_trivia_2",
       "list_slicer",
       "logic_gates_visual",
-      "mcq17",
+      "apple_timeline",
+      "google_apps",
+      "shape_pattern_color",
+      "mcq18",
+      "tech_timeline",
     ],
     []
   );
@@ -515,6 +520,14 @@ const App: React.FC = () => {
                                     ? "Complete Sentence"
                                     : challenge === "molecule_builder"
                                     ? "Molecule Builder"
+                                    : challenge === "apple_timeline"
+                                    ? "Apple Timeline"
+                                    : challenge === "google_apps"
+                                    ? "Google Apps"
+                                    : challenge === "shape_pattern_color"
+                                    ? "Shape vs Pattern vs Color"
+                                    : challenge === "tech_timeline"
+                                    ? "Tech Timeline"
                                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>

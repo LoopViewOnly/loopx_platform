@@ -59,6 +59,10 @@ const LuaMaxOf3Challenge = lazy(() => import("./LuaMaxOf3Challenge"));
 const LogicGateChallenge = lazy(() => import("./LogicGateChallenge"));
 const DualTriviaChallenge = lazy(() => import("./DualTriviaChallenge"));
 const WindowsTimelineChallenge = lazy(() => import("./WindowsTimelineChallenge"));
+const AppleTimelineChallenge = lazy(() => import("./AppleTimelineChallenge"));
+const TechTimelineChallenge = lazy(() => import("./TechTimelineChallenge"));
+const GoogleAppsChallenge = lazy(() => import("./GoogleAppsChallenge"));
+const ShapePatternColorChallenge = lazy(() => import("./ShapePatternColorChallenge"));
 const SpotThePatternChallenge = lazy(() => import("./SpotThePatternChallenge"));
 const AZSpeedTestChallenge = lazy(() => import("./AZSpeedTestChallenge"));
 const JsArraySumChallenge = lazy(() => import("./JsArraySumChallenge"));
@@ -163,6 +167,7 @@ export type Challenge =
   | "mcq15"
   | "mcq16"
   | "mcq17"
+  | "mcq18"
   | "match_connect"
   | "pinpoint"
   | "hex_conversion"
@@ -211,6 +216,10 @@ export type Challenge =
   | "pc_build"
   | "fill_blank"
   | "molecule_builder"
+  | "apple_timeline"
+  | "google_apps"
+  | "shape_pattern_color"
+  | "tech_timeline"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -296,6 +305,10 @@ const CHALLENGE_NAMES: Record<string, string> = {
   pc_build: "PC Builder 🖥️",
   fill_blank: "Complete the Sentence 🦉",
   molecule_builder: "Molecule Builder ⚗️",
+  apple_timeline: "Apple Products Timeline 🍎",
+  google_apps: "Google Apps 🔍",
+  shape_pattern_color: "Shape vs. Pattern vs. Color 🔷",
+  tech_timeline: "Tech Timeline 🏢",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -819,6 +832,38 @@ const UserView: React.FC<UserViewProps> = ({
     (score: number) => {
       updateScore((prev) => prev + score);
       setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleAppleTimelineComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleTechTimelineComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleGoogleAppsComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleShapePatternColorComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
     },
     [updateScore, advanceChallenge]
   );
@@ -1529,6 +1574,38 @@ const UserView: React.FC<UserViewProps> = ({
           <WindowsTimelineChallenge
             key="windows_timeline"
             onComplete={handleWindowsTimelineComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "apple_timeline":
+        return (
+          <AppleTimelineChallenge
+            key="apple_timeline"
+            onComplete={handleAppleTimelineComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "tech_timeline":
+        return (
+          <TechTimelineChallenge
+            key="tech_timeline"
+            onComplete={handleTechTimelineComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "google_apps":
+        return (
+          <GoogleAppsChallenge
+            key="google_apps"
+            onComplete={handleGoogleAppsComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "shape_pattern_color":
+        return (
+          <ShapePatternColorChallenge
+            key="shape_pattern_color"
+            onComplete={handleShapePatternColorComplete}
             challengeTitle={currentTitle}
           />
         );
