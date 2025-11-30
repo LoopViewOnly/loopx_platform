@@ -48,7 +48,7 @@ const App: React.FC = () => {
       "python_average",
       "python_mentor",
       "spanishloop",
-      "mcq14",
+      "mcq5",
       "binary",
       "phishing1",
       "phishing2",
@@ -60,26 +60,26 @@ const App: React.FC = () => {
       "typing2",
       "mcq6",
       "matchstick",
-      "mcq12",
-      "wordle",
       "mcq7",
+      "wordle",
+      "mcq8",
       "prompt",
       "password_strength",
       "ip_geolocation",
-      "mcq8",
+      "mcq9",
       "tictactoe",
-      "mcq13",
+      "mcq10",
       "persona",
       "URL",
       "imageTrivia",
-      "mcq9",
+      "mcq11",
       "similarity",
       "hiddencode",
       "console_hack",
       "dino",
-      "mcq10",
+      "mcq12",
       "loopshirt",
-      "mcq5",
+      "mcq13",
       "match_connect",
       "pinpoint",
       "hex_conversion",
@@ -88,6 +88,7 @@ const App: React.FC = () => {
       "guess_the_flag",
       "website_count",
       "python_random_loop",
+      "mcq14",
       "hex_to_binary",
       "lua_prime",
       "logic_gate",
@@ -115,6 +116,9 @@ const App: React.FC = () => {
       "html_list",
       "ball_challenge_4",
       "cipher",
+      "mcq16",
+      "secure_or_not",
+      "timezone",
     ],
     []
   );
@@ -482,6 +486,13 @@ const App: React.FC = () => {
                                     : challenge === "sql_challenge_3"
                                     ? "SQL: Sort & Filter"
                                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
+                    : challenge === "ball_challenge_4"
+                    ? "Ball: Zig Zag"
+                    : challenge === "secure_or_not"
+                    ? "Secure or Not?"
+                    : challenge === "timezone"
+                    ? "Time Zones"
+                    : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>
                   )}

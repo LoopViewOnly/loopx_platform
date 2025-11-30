@@ -63,6 +63,8 @@ import BallCodingChallenge from "./BallCodingChallenge";
 import NumberGuessingChallenge from "./NumberGuessingChallenge";
 import PythonRandomLoopChallenge from "./PythonRandomLoopChallenge";
 import SQLChallenge from "./SQLChallenge";
+import SecureOrNotChallenge from "./SecureOrNotChallenge";
+import TimeZoneChallenge from "./TimeZoneChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
@@ -138,6 +140,7 @@ export type Challenge =
   | "mcq13"
   | "mcq14"
   | "mcq15"
+  | "mcq16"
   | "match_connect"
   | "pinpoint"
   | "hex_conversion"
@@ -160,6 +163,7 @@ export type Challenge =
   | "number_speed_test"
   | "interactive_binary"
   | "memory_pattern"
+  | "sandbox_login"
   | "ip_geolocation"
   | "console_hack"
   | "star_pattern"
@@ -172,6 +176,10 @@ export type Challenge =
   | "sql_challenge_1"
   | "sql_challenge_2"
   | "sql_challenge_3"
+  | "coding_typing"
+  | "html_list"
+  | "secure_or_not"
+  | "timezone"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -246,6 +254,8 @@ const CHALLENGE_NAMES: Record<string, string> = {
   sql_challenge_1: "SQL: Select All 🗃️",
   sql_challenge_2: "SQL: Filter Age 🗃️",
   sql_challenge_3: "SQL: Sort & Filter 🗃️",
+  secure_or_not: "Secure or Not? 🔒",
+  timezone: "Time Zones 🌍",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -847,6 +857,10 @@ const UserView: React.FC<UserViewProps> = ({
         updateScore((prev) => prev + 100);
         setTimeout(() => advanceChallenge(), 1500);
       }
+  const handleSecureOrNotComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
     },
     [updateScore, advanceChallenge]
   );
@@ -868,6 +882,10 @@ const UserView: React.FC<UserViewProps> = ({
         updateScore((prev) => prev + 100);
         setTimeout(() => advanceChallenge(), 1500);
       }
+  const handleTimeZoneComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
     },
     [updateScore, advanceChallenge]
   );
@@ -1468,6 +1486,37 @@ const UserView: React.FC<UserViewProps> = ({
             onComplete={handleNumberGuessingComplete}
             challengeTitle={currentTitle}
           />
+      case "secure_or_not":
+        return (
+          <SecureOrNotChallenge
+            key="secure_or_not"
+            onComplete={handleSecureOrNotComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "timezone":
+        return (
+          <TimeZoneChallenge
+            key="timezone"
+            onComplete={handleTimeZoneComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "done":
+        return (
+          <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
+            <h2 className="text-3xl font-bold text-green-400 mb-4">
+              Congratulations, {userName}!
+            </h2>
+            <p className="text-gray-200 text-xl mb-2">
+              You have completed all the challenges.
+            </p>
+            <p className="text-gray-300 mb-6">Your final score is:</p>
+            <p className="text-5xl font-bold my-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+              {Math.round(currentScore)}
+            </p>
+          </div>
         );
       case "python_random_loop":
         return (
