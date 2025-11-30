@@ -386,6 +386,16 @@ export const MCQ_CHALLENGES = [
         question: "Who won the FIFA World Cup in 2014?",
         options: ["Brazil", "Germany", "Argentina", "Spain"],
         correctAnswer: "Germany"
+    },
+    { // MCQ 16
+        question: "What is 2FA used for?",
+        options: [
+            "Works like a constant security guard for the network.",
+            "Encrypts all data sent between you and the website.",
+            "Makes databases faster using two servers.",
+            "Adds an extra security step by checking two different ways you prove your identity."
+        ],
+        correctAnswer: "Adds an extra security step by checking two different ways you prove your identity."
     }
 ];
 
@@ -430,6 +440,62 @@ export const BINARY_CHALLENGE = {
     answer: "01001100 01101111 01101111 01110000 01011000"
 };
 
+
+export const SECURE_OR_NOT_CHALLENGE = {
+    instruction: "Only one of the following links uses the correct protocol (HTTPS) and is free of common phishing/typosquatting tricks. Select the safe and legitimate link.",
+    hint: "Safe links must use HTTPS and have no misleading typos or subdomains. http:// and typos like 'gooogle' (three 'o's) or 'micros0ft' (zero instead of 'o') are dangerous.",
+    stages: [
+        {
+            links: [
+                "http://wikipedia.org/",
+                "https://www.gooogle.com/",
+                "https://github.com/",
+                "http://loop.org.il/"
+            ],
+            safeLink: "https://github.com/"
+        },
+        {
+            links: [
+                "http://linkedin.com/",
+                "https://pay-pal.com/",
+                "https://www.google.com/",
+                "https://micros0ft.com/"
+            ],
+            safeLink: "https://www.google.com/"
+        },
+        {
+            links: [
+                "http://openai.com/",
+                "https://www.githuub.com/",
+                "https://loop.org.il/",
+                "https://apple.com.secure-login.net/"
+            ],
+            safeLink: "https://loop.org.il/"
+        }
+    ]
+};
+
+export const TIMEZONE_CHALLENGE = {
+    timePerStage: 15, // seconds
+    pointsPerStage: 25,
+    stages: [
+        {
+            location: "Japan",
+            flag: "🇯🇵",
+            answer: { sign: "+", number: 9 }
+        },
+        {
+            location: "Australia",
+            flag: "🇦🇺",
+            answer: { sign: "+", number: 11 }
+        },
+        {
+            location: "Los Angeles",
+            flag: "🇺🇸",
+            answer: { sign: "-", number: 8 }
+        }
+    ]
+};
 
 export const BALL_CHALLENGES = [
     {

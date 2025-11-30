@@ -60,6 +60,8 @@ import IpGeolocationChallenge from "./IpGeolocationChallenge";
 import ConsoleHackChallenge from "./ConsoleHackChallenge";
 import StarPatternChallenge from "./StarPatternChallenge";
 import BallCodingChallenge from "./BallCodingChallenge";
+import SecureOrNotChallenge from "./SecureOrNotChallenge";
+import TimeZoneChallenge from "./TimeZoneChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
@@ -134,6 +136,7 @@ export type Challenge =
   | "mcq13"
   | "mcq14"
   | "mcq15"
+  | "mcq16"
   | "match_connect"
   | "pinpoint"
   | "hex_conversion"
@@ -156,6 +159,7 @@ export type Challenge =
   | "number_speed_test"
   | "interactive_binary"
   | "memory_pattern"
+  | "sandbox_login"
   | "ip_geolocation"
   | "console_hack"
   | "star_pattern"
@@ -163,6 +167,10 @@ export type Challenge =
   | "ball_challenge_2"
   | "ball_challenge_3"
   | "ball_challenge_4"
+  | "coding_typing"
+  | "html_list"
+  | "secure_or_not"
+  | "timezone"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -232,6 +240,8 @@ const CHALLENGE_NAMES: Record<string, string> = {
   ball_challenge_2: "Ball: Draw Square 🔲", // New Ball Challenge 2
   ball_challenge_3: "Ball: Diagonal Move ↘️", // New Ball Challenge 3
   ball_challenge_4: "Ball: Zig Zag ⚡", // New Ball Challenge 4
+  secure_or_not: "Secure or Not? 🔒",
+  timezone: "Time Zones 🌍",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -827,6 +837,22 @@ const UserView: React.FC<UserViewProps> = ({
     [updateScore, advanceChallenge]
   );
 
+  const handleSecureOrNotComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleTimeZoneComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
   const renderChallenge = () => {
     if (currentChallenge.startsWith("mcq")) {
       const index = parseInt(currentChallenge.replace("mcq", ""), 10) - 1;
@@ -1413,6 +1439,22 @@ const UserView: React.FC<UserViewProps> = ({
           <HtmlListChallenge
             key="html_list"
             onComplete={handleHtmlListComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "secure_or_not":
+        return (
+          <SecureOrNotChallenge
+            key="secure_or_not"
+            onComplete={handleSecureOrNotComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "timezone":
+        return (
+          <TimeZoneChallenge
+            key="timezone"
+            onComplete={handleTimeZoneComplete}
             challengeTitle={currentTitle}
           />
         );
