@@ -441,6 +441,39 @@ export const BINARY_CHALLENGE = {
 };
 
 
+export const SQL_CHALLENGES = [
+    {
+        id: 'sql_challenge_1',
+        task: 'Write a query to display ALL data from the Customers table.',
+        expectedKeywords: ['select', '*', 'from', 'Customers'],
+        hints: [
+            'Use SELECT to choose what to display',
+            'Use * to select all columns',
+            'Use FROM to specify the table name',
+        ],
+    },
+    {
+        id: 'sql_challenge_2',
+        task: 'Write a query to display all customers who are YOUNGER than 30 years old.',
+        expectedKeywords: ['select', 'from', 'Customers', 'where', 'age', '<', '30'],
+        hints: [
+            'Start with SELECT and FROM',
+            'Use WHERE to filter rows',
+            'Use < to compare age with 30',
+        ],
+    },
+    {
+        id: 'sql_challenge_3',
+        task: 'Write a query to display all customers from USA, ordered from OLDEST to YOUNGEST.',
+        expectedKeywords: ['select', 'from', 'Customers', 'where', 'country', 'usa', 'order by', 'age', 'desc'],
+        hints: [
+            'Filter by country using WHERE',
+            'Use ORDER BY to sort results',
+            'Use DESC for descending order (oldest first)',
+        ],
+    },
+];
+
 export const SECURE_OR_NOT_CHALLENGE = {
     instruction: "Only one of the following links uses the correct protocol (HTTPS) and is free of common phishing/typosquatting tricks. Select the safe and legitimate link.",
     hint: "Safe links must use HTTPS and have no misleading typos or subdomains. http:// and typos like 'gooogle' (three 'o's) or 'micros0ft' (zero instead of 'o') are dangerous.",

@@ -19,6 +19,9 @@ import DinoGameChallenge from "./DinoGameChallenge";
 import LoopShirtChallenge from "./LoopShirtChallenge";
 import RearrangeChallenge from "./RearrangeChallenge";
 import RealOrFakeChallenge from "./RealOrFakeChallenge";
+import NumberGuessingChallenge from "./NumberGuessingChallenge";
+import PythonRandomLoopChallenge from "./PythonRandomLoopChallenge";
+import SQLChallenge from "./SQLChallenge";
 import WordleChallenge from "./WordleChallenge";
 import MemoryGameChallenge from "./MemoryGameChallenge";
 import MagicChallenge from "./MagicChallenge";
@@ -62,12 +65,14 @@ import StarPatternChallenge from "./StarPatternChallenge";
 import BallCodingChallenge from "./BallCodingChallenge";
 import SecureOrNotChallenge from "./SecureOrNotChallenge";
 import TimeZoneChallenge from "./TimeZoneChallenge";
+import ReactionTestChallenge from "./ReactionTestChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
   MCQ_CHALLENGES,
   PHISHING_CHALLENGES,
   TYPING_CHALLENGE_2_TEXT,
+  SQL_CHALLENGES,
   TYPING_CHALLENGE_TEXT,
   JS_CALCULATOR_CODE_TYPING_CHALLENGE_TEXT,
   BALL_CHALLENGES,
@@ -171,6 +176,12 @@ export type Challenge =
   | "html_list"
   | "secure_or_not"
   | "timezone"
+  | "number_guessing"
+  | "python_random_loop"
+  | "sql_challenge_1"
+  | "sql_challenge_2"
+  | "sql_challenge_3"
+  | "reaction_test"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -242,6 +253,12 @@ const CHALLENGE_NAMES: Record<string, string> = {
   ball_challenge_4: "Ball: Zig Zag ⚡", // New Ball Challenge 4
   secure_or_not: "Secure or Not? 🔒",
   timezone: "Time Zones 🌍",
+  number_guessing: "Number Guessing 🎯",
+  python_random_loop: "Python Random Loop 🐍",
+  sql_challenge_1: "SQL: Select All 🗃️",
+  sql_challenge_2: "SQL: Filter Age 🗃️",
+  sql_challenge_3: "SQL: Sort & Filter 🗃️",
+  reaction_test: "Reaction Test ⚡",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -476,6 +493,56 @@ const UserView: React.FC<UserViewProps> = ({
     [updateScore, advanceChallenge]
   );
 
+
+  const handleNumberGuessingComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+  const handlePythonRandomLoopComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+  const handleSQLChallengeComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleReactionTestComplete = useCallback(
+    (reactionTime: number) => {
+      // Score based on reaction time - faster = more points
+      let points = 20; // minimum
+      if (reactionTime < 150) points = 100;
+      else if (reactionTime < 180) points = 95;
+      else if (reactionTime < 200) points = 90;
+      else if (reactionTime < 220) points = 85;
+      else if (reactionTime < 250) points = 80;
+      else if (reactionTime < 280) points = 70;
+      else if (reactionTime < 300) points = 60;
+      else if (reactionTime < 350) points = 50;
+      else if (reactionTime < 400) points = 40;
+      else if (reactionTime < 500) points = 30;
+      
+      updateScore((prev) => prev + points);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+  
   const handlePythonMentorComplete = useCallback(
     (correct: boolean) => {
       if (correct) {
@@ -994,6 +1061,14 @@ const UserView: React.FC<UserViewProps> = ({
             challengeTitle={currentTitle}
           />
         );
+      case "reaction_test":
+        return (
+          <ReactionTestChallenge
+            key="reaction_test"
+            onComplete={handleReactionTestComplete}
+            challengeTitle={currentTitle}
+          />
+        );
       case "URL":
         return (
           <URLChallenge
@@ -1458,6 +1533,66 @@ const UserView: React.FC<UserViewProps> = ({
             challengeTitle={currentTitle}
           />
         );
+
+      case "number_guessing":
+        return (
+          <NumberGuessingChallenge
+            key="number_guessing"
+            onComplete={handleNumberGuessingComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "python_random_loop":
+        return (
+          <PythonRandomLoopChallenge
+            key="python_random_loop"
+            onComplete={handlePythonRandomLoopComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "sql_challenge_1": {
+        const sqlCh1 = SQL_CHALLENGES.find(c => c.id === 'sql_challenge_1')!;
+        return (
+          <SQLChallenge
+            key="sql_challenge_1"
+            onComplete={handleSQLChallengeComplete}
+            challengeTitle={currentTitle}
+            task={sqlCh1.task}
+            expectedKeywords={sqlCh1.expectedKeywords}
+            hints={sqlCh1.hints}
+          />
+        );
+      }
+
+      case "sql_challenge_2": {
+        const sqlCh2 = SQL_CHALLENGES.find(c => c.id === 'sql_challenge_2')!;
+        return (
+          <SQLChallenge
+            key="sql_challenge_2"
+            onComplete={handleSQLChallengeComplete}
+            challengeTitle={currentTitle}
+            task={sqlCh2.task}
+            expectedKeywords={sqlCh2.expectedKeywords}
+            hints={sqlCh2.hints}
+          />
+        );
+      }
+
+      case "sql_challenge_3": {
+        const sqlCh3 = SQL_CHALLENGES.find(c => c.id === 'sql_challenge_3')!;
+        return (
+          <SQLChallenge
+            key="sql_challenge_3"
+            onComplete={handleSQLChallengeComplete}
+            challengeTitle={currentTitle}
+            task={sqlCh3.task}
+            expectedKeywords={sqlCh3.expectedKeywords}
+            hints={sqlCh3.hints}
+          />
+        );
+      }
 
       case "done":
         return (
