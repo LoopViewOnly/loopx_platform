@@ -54,6 +54,7 @@ const App: React.FC = () => {
       "phishing2",
       "phishing3",
       "realorfake",
+      "number_guessing",
       "connections",
       "rearrange",
       "typing2",
@@ -86,6 +87,7 @@ const App: React.FC = () => {
       "ball_challenge_1",
       "guess_the_flag",
       "website_count",
+      "python_random_loop",
       "hex_to_binary",
       "lua_prime",
       "logic_gate",
@@ -105,6 +107,9 @@ const App: React.FC = () => {
       "mcq15",
       "ball_challenge_3",
       "memory_pattern",
+      "sql_challenge_1",
+      "sql_challenge_2",
+      "sql_challenge_3",
       "sandbox_login",
       "coding_typing",
       "html_list",
@@ -464,9 +469,19 @@ const App: React.FC = () => {
                     ? "Ball: Draw Square"
                     : challenge === "ball_challenge_3"
                     ? "Ball: Diagonal Move"
-                    : challenge === "ball_challenge_4"
-                    ? "Ball: Zig Zag"
-                    : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
+: challenge === "ball_challenge_4"
+                                    ? "Ball: Zig Zag"
+                                    : challenge === "number_guessing"
+                                    ? "Number Guessing"
+                                    : challenge === "python_random_loop"
+                                    ? "Python Random Loop"
+                                    : challenge === "sql_challenge_1"
+                                    ? "SQL: Select All"
+                                    : challenge === "sql_challenge_2"
+                                    ? "SQL: Filter Age"
+                                    : challenge === "sql_challenge_3"
+                                    ? "SQL: Sort & Filter"
+                                    : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>
                   )}

@@ -60,6 +60,9 @@ import IpGeolocationChallenge from "./IpGeolocationChallenge";
 import ConsoleHackChallenge from "./ConsoleHackChallenge";
 import StarPatternChallenge from "./StarPatternChallenge";
 import BallCodingChallenge from "./BallCodingChallenge";
+import NumberGuessingChallenge from "./NumberGuessingChallenge";
+import PythonRandomLoopChallenge from "./PythonRandomLoopChallenge";
+import SQLChallenge from "./SQLChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
@@ -69,6 +72,7 @@ import {
   TYPING_CHALLENGE_TEXT,
   JS_CALCULATOR_CODE_TYPING_CHALLENGE_TEXT,
   BALL_CHALLENGES,
+  SQL_CHALLENGES,
 } from "../challenges/content";
 
 interface UserViewProps {
@@ -163,6 +167,11 @@ export type Challenge =
   | "ball_challenge_2"
   | "ball_challenge_3"
   | "ball_challenge_4"
+  | "number_guessing"
+  | "python_random_loop"
+  | "sql_challenge_1"
+  | "sql_challenge_2"
+  | "sql_challenge_3"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -232,6 +241,11 @@ const CHALLENGE_NAMES: Record<string, string> = {
   ball_challenge_2: "Ball: Draw Square 🔲", // New Ball Challenge 2
   ball_challenge_3: "Ball: Diagonal Move ↘️", // New Ball Challenge 3
   ball_challenge_4: "Ball: Zig Zag ⚡", // New Ball Challenge 4
+  number_guessing: "Number Guessing 🎯",
+  python_random_loop: "Python Random Loop 🐍",
+  sql_challenge_1: "SQL: Select All 🗃️",
+  sql_challenge_2: "SQL: Filter Age 🗃️",
+  sql_challenge_3: "SQL: Sort & Filter 🗃️",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -820,6 +834,37 @@ const UserView: React.FC<UserViewProps> = ({
   const handleHtmlListComplete = useCallback(
     (correct: boolean) => {
       if (correct) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleNumberGuessingComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handlePythonRandomLoopComplete = useCallback(
+    (success: boolean, pointsDeducted: number = 0) => {
+      if (success) {
+        const finalPoints = 100 - pointsDeducted;
+        updateScore((prev) => prev + finalPoints);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleSQLChallengeComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
         updateScore((prev) => prev + 100);
         setTimeout(() => advanceChallenge(), 1500);
       }
@@ -1416,22 +1461,133 @@ const UserView: React.FC<UserViewProps> = ({
             challengeTitle={currentTitle}
           />
         );
-
-      case "done":
+      case "number_guessing":
         return (
-          <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
-            <h2 className="text-3xl font-bold text-green-400 mb-4">
-              Congratulations, {userName}!
-            </h2>
-            <p className="text-gray-200 text-xl mb-2">
-              You have completed all the challenges.
-            </p>
-            <p className="text-gray-300 mb-6">Your final score is:</p>
-            <p className="text-5xl font-bold my-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-              {Math.round(currentScore)}
-            </p>
-          </div>
+          <NumberGuessingChallenge
+            key="number_guessing"
+            onComplete={handleNumberGuessingComplete}
+            challengeTitle={currentTitle}
+          />
         );
+      case "python_random_loop":
+        return (
+          <PythonRandomLoopChallenge
+            key="python_random_loop"
+            onComplete={handlePythonRandomLoopComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "sql_challenge_1": {
+        const sqlCh1 = SQL_CHALLENGES.find(c => c.id === 'sql_challenge_1')!;
+        return (
+          <SQLChallenge
+            key="sql_challenge_1"
+            onComplete={handleSQLChallengeComplete}
+            challengeTitle={currentTitle}
+            task={sqlCh1.task}
+            expectedKeywords={sqlCh1.expectedKeywords}
+            hints={sqlCh1.hints}
+          />
+        );
+      }
+      case "sql_challenge_2": {
+        const sqlCh2 = SQL_CHALLENGES.find(c => c.id === 'sql_challenge_2')!;
+        return (
+          <SQLChallenge
+            key="sql_challenge_2"
+            onComplete={handleSQLChallengeComplete}
+            challengeTitle={currentTitle}
+            task={sqlCh2.task}
+            expectedKeywords={sqlCh2.expectedKeywords}
+            hints={sqlCh2.hints}
+          />
+        );
+      }
+      case "sql_challenge_3": {
+        const sqlCh3 = SQL_CHALLENGES.find(c => c.id === 'sql_challenge_3')!;
+        return (
+          <SQLChallenge
+            key="sql_challenge_3"
+            onComplete={handleSQLChallengeComplete}
+            challengeTitle={currentTitle}
+            task={sqlCh3.task}
+            expectedKeywords={sqlCh3.expectedKeywords}
+            hints={sqlCh3.hints}
+          />
+        );
+      }
+
+      case "done": {
+        const totalChallenges = challengeOrder.length;
+        const completedCount = completedChallenges.size;
+        const allCompleted = completedCount >= totalChallenges;
+
+        if (allCompleted) {
+          // All challenges completed - show congratulations
+          return (
+            <div className="p-8 bg-gradient-to-br from-black/50 via-green-900/20 to-black/50 backdrop-blur-xl border-2 border-green-500/50 rounded-2xl shadow-[0_0_50px_rgba(34,197,94,0.3)] text-center">
+              <div className="text-6xl mb-4 animate-bounce">🏆</div>
+              <h2 className="text-4xl font-bold text-green-400 mb-4" style={{ textShadow: '0 0 20px rgba(34,197,94,0.5)' }}>
+                Congratulations, {userName}!
+              </h2>
+              <div className="bg-green-900/30 border border-green-500/30 rounded-xl p-4 mb-6 inline-block">
+                <p className="text-green-300 text-lg font-mono">
+                  🎯 {completedCount} / {totalChallenges} Challenges Complete!
+                </p>
+              </div>
+              <p className="text-gray-200 text-xl mb-2">
+                You have completed ALL the challenges!
+              </p>
+              <p className="text-gray-300 mb-4">Your final score is:</p>
+              <p className="text-6xl font-bold my-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 animate-pulse">
+                {Math.round(currentScore)}
+              </p>
+              <div className="mt-6 flex justify-center gap-2 flex-wrap">
+                <span className="text-3xl">🎉</span>
+                <span className="text-3xl">⭐</span>
+                <span className="text-3xl">🌟</span>
+                <span className="text-3xl">✨</span>
+                <span className="text-3xl">🎊</span>
+              </div>
+            </div>
+          );
+        } else {
+          // Not all challenges completed - show progress screen
+          const remainingCount = totalChallenges - completedCount;
+          return (
+            <div className="p-8 bg-gradient-to-br from-black/50 via-blue-900/20 to-black/50 backdrop-blur-xl border-2 border-blue-500/50 rounded-2xl shadow-[0_0_30px_rgba(59,130,246,0.3)] text-center">
+              <div className="text-5xl mb-4">📊</div>
+              <h2 className="text-3xl font-bold text-blue-300 mb-4">
+                Progress Update, {userName}!
+              </h2>
+              <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-4 mb-6">
+                <p className="text-blue-300 text-2xl font-mono font-bold">
+                  {completedCount} / {totalChallenges}
+                </p>
+                <p className="text-gray-400 text-sm mt-1">Challenges Completed</p>
+              </div>
+              
+              {/* Progress Bar */}
+              <div className="w-full bg-gray-800 rounded-full h-4 mb-6 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 h-4 rounded-full transition-all duration-500"
+                  style={{ width: `${(completedCount / totalChallenges) * 100}%` }}
+                />
+              </div>
+              
+              <p className="text-yellow-400 text-lg mb-4">
+                ⚠️ You still have <span className="font-bold text-yellow-300">{remainingCount}</span> challenge{remainingCount !== 1 ? 's' : ''} remaining!
+              </p>
+              <p className="text-gray-300 mb-6">
+                Complete all challenges to see your final score and unlock the congratulations screen!
+              </p>
+              <p className="text-gray-400 text-sm">
+                Current Score: <span className="text-blue-400 font-bold">{Math.round(currentScore)}</span>
+              </p>
+            </div>
+          );
+        }
+      }
       default:
         return <div>Loading challenge...</div>;
     }

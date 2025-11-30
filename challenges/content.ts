@@ -431,6 +431,39 @@ export const BINARY_CHALLENGE = {
 };
 
 
+export const SQL_CHALLENGES = [
+    {
+        id: 'sql_challenge_1',
+        task: 'Write a query to display ALL data from the Customers table.',
+        expectedKeywords: ['select', '*', 'from', 'Customers'],
+        hints: [
+            'Use SELECT to choose what to display',
+            'Use * to select all columns',
+            'Use FROM to specify the table name',
+        ],
+    },
+    {
+        id: 'sql_challenge_2',
+        task: 'Write a query to display all customers who are YOUNGER than 30 years old.',
+        expectedKeywords: ['select', 'from', 'Customers', 'where', 'age', '<', '30'],
+        hints: [
+            'Start with SELECT and FROM',
+            'Use WHERE to filter rows',
+            'Use < to compare age with 30',
+        ],
+    },
+    {
+        id: 'sql_challenge_3',
+        task: 'Write a query to display all customers from USA, ordered from OLDEST to YOUNGEST.',
+        expectedKeywords: ['select', 'from', 'Customers', 'where', 'country', 'usa', 'order by', 'age', 'desc'],
+        hints: [
+            'Filter by country using WHERE',
+            'Use ORDER BY to sort results',
+            'Use DESC for descending order (oldest first)',
+        ],
+    },
+];
+
 export const BALL_CHALLENGES = [
     {
         id: 'ball_challenge_1',
