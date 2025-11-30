@@ -120,6 +120,12 @@ const App: React.FC = () => {
       "mcq16",
       "secure_or_not",
       "timezone",
+      "ascii_challenge",
+      "http_status",
+      "ip_trivia_2",
+      "list_slicer",
+      "logic_gates_visual",
+      "mcq17",
     ],
     []
   );
@@ -490,6 +496,16 @@ const App: React.FC = () => {
                                     ? "SQL: Filter Age"
                                     : challenge === "reaction_test"
                                     ? "Reaction Test"
+                                    : challenge === "ascii_challenge"
+                                    ? "ASCII Decode"
+                                    : challenge === "http_status"
+                                    ? "HTTP Status Codes"
+                                    : challenge === "ip_trivia_2"
+                                    ? "IP Trivia"
+                                    : challenge === "list_slicer"
+                                    ? "List Slicer"
+                                    : challenge === "logic_gates_visual"
+                                    ? "Logic Gates Visual"
                                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>

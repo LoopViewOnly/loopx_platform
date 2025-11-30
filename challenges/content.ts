@@ -396,6 +396,16 @@ export const MCQ_CHALLENGES = [
             "Adds an extra security step by checking two different ways you prove your identity."
         ],
         correctAnswer: "Adds an extra security step by checking two different ways you prove your identity."
+    },
+    { // MCQ 17 - Suspicious Attachment
+        question: "Which of these file names looks suspicious?",
+        options: [
+            "LoopX.pdf",
+            "LoopX.pdf.exe",
+            "LoopX.png",
+            "LoopX.jpeg"
+        ],
+        correctAnswer: "LoopX.pdf.exe"
     }
 ];
 
@@ -473,6 +483,78 @@ export const SQL_CHALLENGES = [
         ],
     },
 ];
+
+export const LOGIC_GATES_VISUAL_CHALLENGE = {
+    pointsPerStage: 40,
+    hintCost: 5,
+    wrongPenalty: 5,
+    stages: [
+        {
+            id: 1,
+            description: "OR(AND(x,y), z)",
+            inputs: { x: 1, y: 1, z: 0 },
+            answer: 1,
+            hint: "AND(x=1, y=1) = 1"
+        },
+        {
+            id: 2,
+            description: "XOR(x,y)",
+            inputs: { x: 1, y: 1 },
+            answer: 0,
+            hint: "XOR outputs 1 if the inputs are opposites"
+        },
+        {
+            id: 3,
+            description: "OR(AND(x,y), NOT(z))",
+            inputs: { x: 1, y: 0, z: 0 },
+            answer: 1,
+            hint: "AND(x=1, y=0) = 0"
+        }
+    ]
+};
+
+export const LIST_SLICER_CHALLENGE = {
+    functionName: "listSlicer",
+    description: "Write a function called listSlicer that takes a list as input and returns the first half of the list.",
+    testList: "['Loop', 2015, 'X', 'December', 10, 'Looper']",
+    expectedOutput: "['Loop', 2015, 'X']",
+    hint: "Use list slicing with len() to find the middle index: list[:len(list)//2]"
+};
+
+export const IP_TRIVIA_CHALLENGE = {
+    ip: "1.0.0.1",
+    questions: {
+        location: {
+            question: "Where is this IP rooted?",
+            answer: "australia",
+            points: 50
+        },
+        owner: {
+            question: "Who owns this IP?",
+            answer: "cloudflare",
+            points: 30
+        }
+    }
+};
+
+export const HTTP_STATUS_CHALLENGE = {
+    pairs: [
+        { code: "200", meaning: "Success" },
+        { code: "301", meaning: "Moved Permanently" },
+        { code: "400", meaning: "Bad Request" },
+        { code: "401", meaning: "Unauthorized" },
+        { code: "403", meaning: "Forbidden" },
+        { code: "404", meaning: "Not Found" },
+        { code: "500", meaning: "Internal Server Error" },
+        { code: "503", meaning: "Service Unavailable" },
+    ]
+};
+
+export const ASCII_CHALLENGE = {
+    message: "76, 111, 111, 112, 32, 105, 115, 32, 71, 114, 101, 97, 116",
+    answer: "Loop is Great"
+};
+
 
 export const SECURE_OR_NOT_CHALLENGE = {
     instruction: "Only one of the following links uses the correct protocol (HTTPS) and is free of common phishing/typosquatting tricks. Select the safe and legitimate link.",

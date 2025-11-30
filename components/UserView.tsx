@@ -66,6 +66,11 @@ import BallCodingChallenge from "./BallCodingChallenge";
 import SecureOrNotChallenge from "./SecureOrNotChallenge";
 import TimeZoneChallenge from "./TimeZoneChallenge";
 import ReactionTestChallenge from "./ReactionTestChallenge";
+import ASCIIChallenge from "./ASCIIChallenge";
+import HTTPStatusChallenge from "./HTTPStatusChallenge";
+import IPTriviaChallenge2 from "./IPTriviaChallenge2";
+import ListSlicerChallenge from "./ListSlicerChallenge";
+import LogicGatesVisualChallenge from "./LogicGatesVisualChallenge";
 import { UserScore } from "../types";
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
@@ -142,6 +147,7 @@ export type Challenge =
   | "mcq14"
   | "mcq15"
   | "mcq16"
+  | "mcq17"
   | "match_connect"
   | "pinpoint"
   | "hex_conversion"
@@ -182,6 +188,11 @@ export type Challenge =
   | "sql_challenge_2"
   | "sql_challenge_3"
   | "reaction_test"
+  | "ascii_challenge"
+  | "http_status"
+  | "ip_trivia_2"
+  | "list_slicer"
+  | "logic_gates_visual"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -259,6 +270,11 @@ const CHALLENGE_NAMES: Record<string, string> = {
   sql_challenge_2: "SQL: Filter Age 🗃️",
   sql_challenge_3: "SQL: Sort & Filter 🗃️",
   reaction_test: "Reaction Test ⚡",
+  ascii_challenge: "ASCII Decode 🔢",
+  http_status: "HTTP Status Codes 🌐",
+  ip_trivia_2: "IP Trivia 🔍",
+  list_slicer: "List Slicer 🐍",
+  logic_gates_visual: "Logic Gates Visual 🧠",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -913,6 +929,50 @@ const UserView: React.FC<UserViewProps> = ({
   );
 
   const handleTimeZoneComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleASCIIComplete = useCallback(
+    (correct: boolean) => {
+      if (correct) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleHTTPStatusComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleIPTrivia2Complete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleListSlicerComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleLogicGatesVisualComplete = useCallback(
     (score: number) => {
       updateScore((prev) => prev + score);
       setTimeout(() => advanceChallenge(), 1500);
@@ -1593,6 +1653,51 @@ const UserView: React.FC<UserViewProps> = ({
           />
         );
       }
+
+      case "ascii_challenge":
+        return (
+          <ASCIIChallenge
+            key="ascii_challenge"
+            onComplete={handleASCIIComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "http_status":
+        return (
+          <HTTPStatusChallenge
+            key="http_status"
+            onComplete={handleHTTPStatusComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "ip_trivia_2":
+        return (
+          <IPTriviaChallenge2
+            key="ip_trivia_2"
+            onComplete={handleIPTrivia2Complete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "list_slicer":
+        return (
+          <ListSlicerChallenge
+            key="list_slicer"
+            onComplete={handleListSlicerComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "logic_gates_visual":
+        return (
+          <LogicGatesVisualChallenge
+            key="logic_gates_visual"
+            onComplete={handleLogicGatesVisualComplete}
+            challengeTitle={currentTitle}
+          />
+        );
 
       case "done":
         return (
