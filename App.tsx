@@ -51,6 +51,7 @@ const App: React.FC = () => {
       "spanishloop",
       "mcq5",
       "binary",
+      "pc_build",
       "phishing1",
       "phishing2",
       "phishing3",
@@ -80,10 +81,12 @@ const App: React.FC = () => {
       "dino",
       "mcq12",
       "loopshirt",
+      "fill_blank",
       "mcq13",
       "match_connect",
       "pinpoint",
       "hex_conversion",
+      "molecule_builder",
       "fizzbuzz",
       "ball_challenge_1",
       "guess_the_flag",
@@ -506,6 +509,12 @@ const App: React.FC = () => {
                                     ? "List Slicer"
                                     : challenge === "logic_gates_visual"
                                     ? "Logic Gates Visual"
+                                    : challenge === "pc_build"
+                                    ? "PC Builder"
+                                    : challenge === "fill_blank"
+                                    ? "Complete Sentence"
+                                    : challenge === "molecule_builder"
+                                    ? "Molecule Builder"
                                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>

@@ -1,77 +1,92 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import TypingChallenge from "./TypingChallenge";
-import ClickChallenge from "./ClickChallenge";
-import TriviaChallenge from "./TriviaChallenge";
-import PromptChallenge from "./PromptChallenge";
-import CaesarCipherChallenge from "./CaesarCipherChallenge";
-import TicTacToeChallenge from "./TicTacToeChallenge";
-import SequenceChallenge from "./SequenceChallenge";
-import URLChallenge from "./UrlChallenge";
-import HiddenCodeChallenge from "./HiddenCodeChallenge";
-import ImageSimilarityChallenge from "./ImageSimilarityChallenge";
-import JsCodingChallenge from "./JsCodingChallenge";
-import HtmlCodingChallenge from "./HtmlCodingChallenge";
-import HtmlDebugChallenge from "./HtmlDebugChallenge";
-import MatchstickChallenge from "./MatchstickChallenge";
-import ImageTriviaChallenge from "./ImageTriviaChallenge";
-import ConnectionsChallenge from "./ConnectionsChallenge";
-import DinoGameChallenge from "./DinoGameChallenge";
-import LoopShirtChallenge from "./LoopShirtChallenge";
-import RearrangeChallenge from "./RearrangeChallenge";
-import RealOrFakeChallenge from "./RealOrFakeChallenge";
-import NumberGuessingChallenge from "./NumberGuessingChallenge";
-import PythonRandomLoopChallenge from "./PythonRandomLoopChallenge";
-import SQLChallenge from "./SQLChallenge";
-import WordleChallenge from "./WordleChallenge";
-import MemoryGameChallenge from "./MemoryGameChallenge";
-import MagicChallenge from "./MagicChallenge";
-import HiddenPasswordChallenge from "./HiddenPasswordChallenge";
-import SpanishLoopChallenge from "./SpanishLoopChallenge";
-import BinaryChallenge from "./BinaryChallenge";
-import MCQChallenge from "./MCQChallenge";
-import PythonAverageChallenge from "./PythonAverageChallenge";
-import PythonMentorChallenge from "./PythonMentorChallenge";
-import PasswordStrengthChallenge from "./PasswordStrengthChallenge";
-import PersonaChallenge from "./PersonaChallenge";
-import PhishingChallenge from "./PhishingChallenge";
-import MatchConnectChallenge from "./MatchConnectChallenge"; // Import new challenge
-import PinpointChallenge from "./PinpointChallenge"; // Import PinpointChallenge
-import HexConversionChallenge from "./HexConversionChallenge"; // Import new challenge
-import FizzBuzzChallenge from "./FizzBuzzChallenge"; // Import new challenge
-import GuessTheFlagChallenge from "./GuessTheFlagChallenge"; // Import new challenge
-import WebsiteCountChallenge from "./WebsiteCountChallenge"; // Import new challenge
-import HexToBinaryChallenge from "./HexToBinaryChallenge"; // Import new challenge
-import LuaPrimeChallenge from "./LuaPrimeChallenge"; // Import new challenge
-import LuaMaxOf3Challenge from "./LuaMaxOf3Challenge"; // Import new challenge
-import LogicGateChallenge from "./LogicGateChallenge"; // Import new challenge
-import DualTriviaChallenge from "./DualTriviaChallenge"; // Import new challenge
-import WindowsTimelineChallenge from "./WindowsTimelineChallenge"; // Import new challenge
-import SpotThePatternChallenge from "./SpotThePatternChallenge"; // Import new challenge
-import AZSpeedTestChallenge from "./AZSpeedTestChallenge"; // Import new challenge
-import JsArraySumChallenge from "./JsArraySumChallenge";
-import ColorConfusionChallenge from "./ColorConfusionChallenge";
-import PythonCalculatorChallenge from "./PythonCalculatorChallenge";
-import ArduinoBlinkChallenge from "./ArduinoBlinkChallenge";
-import ConnectionsGridChallenge from "./ConnectionsGridChallenge";
-import NumberSpeedTestChallenge from "./NumberSpeedTestChallenge";
-import InteractiveBinaryChallenge from "./InteractiveBinaryChallenge";
-import MemoryPatternChallenge from "./MemoryPatternChallenge";
-import SandboxLoginChallenge from "./SandboxLoginChallenge"; // Import new challenge
-import CodingTypingChallenge from "./CodingTypingChallenge"; // Import new CodingTypingChallenge
-import HtmlListChallenge from "./HtmlListChallenge";
-import IpGeolocationChallenge from "./IpGeolocationChallenge";
-import ConsoleHackChallenge from "./ConsoleHackChallenge";
-import StarPatternChallenge from "./StarPatternChallenge";
-import BallCodingChallenge from "./BallCodingChallenge";
-import SecureOrNotChallenge from "./SecureOrNotChallenge";
-import TimeZoneChallenge from "./TimeZoneChallenge";
-import ReactionTestChallenge from "./ReactionTestChallenge";
-import ASCIIChallenge from "./ASCIIChallenge";
-import HTTPStatusChallenge from "./HTTPStatusChallenge";
-import IPTriviaChallenge2 from "./IPTriviaChallenge2";
-import ListSlicerChallenge from "./ListSlicerChallenge";
-import LogicGatesVisualChallenge from "./LogicGatesVisualChallenge";
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from "react";
 import { UserScore } from "../types";
+
+// Loading component for Suspense fallback
+const ChallengeLoader = () => (
+  <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
+    <div className="flex flex-col items-center justify-center py-12">
+      <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p className="text-gray-400">Loading challenge...</p>
+    </div>
+  </div>
+);
+
+// Lazy load all challenge components
+const TypingChallenge = lazy(() => import("./TypingChallenge"));
+const ClickChallenge = lazy(() => import("./ClickChallenge"));
+const TriviaChallenge = lazy(() => import("./TriviaChallenge"));
+const PromptChallenge = lazy(() => import("./PromptChallenge"));
+const CaesarCipherChallenge = lazy(() => import("./CaesarCipherChallenge"));
+const TicTacToeChallenge = lazy(() => import("./TicTacToeChallenge"));
+const SequenceChallenge = lazy(() => import("./SequenceChallenge"));
+const URLChallenge = lazy(() => import("./UrlChallenge"));
+const HiddenCodeChallenge = lazy(() => import("./HiddenCodeChallenge"));
+const ImageSimilarityChallenge = lazy(() => import("./ImageSimilarityChallenge"));
+const JsCodingChallenge = lazy(() => import("./JsCodingChallenge"));
+const HtmlCodingChallenge = lazy(() => import("./HtmlCodingChallenge"));
+const HtmlDebugChallenge = lazy(() => import("./HtmlDebugChallenge"));
+const MatchstickChallenge = lazy(() => import("./MatchstickChallenge"));
+const ImageTriviaChallenge = lazy(() => import("./ImageTriviaChallenge"));
+const ConnectionsChallenge = lazy(() => import("./ConnectionsChallenge"));
+const DinoGameChallenge = lazy(() => import("./DinoGameChallenge"));
+const LoopShirtChallenge = lazy(() => import("./LoopShirtChallenge"));
+const RearrangeChallenge = lazy(() => import("./RearrangeChallenge"));
+const RealOrFakeChallenge = lazy(() => import("./RealOrFakeChallenge"));
+const NumberGuessingChallenge = lazy(() => import("./NumberGuessingChallenge"));
+const PythonRandomLoopChallenge = lazy(() => import("./PythonRandomLoopChallenge"));
+const SQLChallenge = lazy(() => import("./SQLChallenge"));
+const WordleChallenge = lazy(() => import("./WordleChallenge"));
+const MemoryGameChallenge = lazy(() => import("./MemoryGameChallenge"));
+const MagicChallenge = lazy(() => import("./MagicChallenge"));
+const HiddenPasswordChallenge = lazy(() => import("./HiddenPasswordChallenge"));
+const SpanishLoopChallenge = lazy(() => import("./SpanishLoopChallenge"));
+const BinaryChallenge = lazy(() => import("./BinaryChallenge"));
+const MCQChallenge = lazy(() => import("./MCQChallenge"));
+const PythonAverageChallenge = lazy(() => import("./PythonAverageChallenge"));
+const PythonMentorChallenge = lazy(() => import("./PythonMentorChallenge"));
+const PasswordStrengthChallenge = lazy(() => import("./PasswordStrengthChallenge"));
+const PersonaChallenge = lazy(() => import("./PersonaChallenge"));
+const PhishingChallenge = lazy(() => import("./PhishingChallenge"));
+const MatchConnectChallenge = lazy(() => import("./MatchConnectChallenge"));
+const PinpointChallenge = lazy(() => import("./PinpointChallenge"));
+const HexConversionChallenge = lazy(() => import("./HexConversionChallenge"));
+const FizzBuzzChallenge = lazy(() => import("./FizzBuzzChallenge"));
+const GuessTheFlagChallenge = lazy(() => import("./GuessTheFlagChallenge"));
+const WebsiteCountChallenge = lazy(() => import("./WebsiteCountChallenge"));
+const HexToBinaryChallenge = lazy(() => import("./HexToBinaryChallenge"));
+const LuaPrimeChallenge = lazy(() => import("./LuaPrimeChallenge"));
+const LuaMaxOf3Challenge = lazy(() => import("./LuaMaxOf3Challenge"));
+const LogicGateChallenge = lazy(() => import("./LogicGateChallenge"));
+const DualTriviaChallenge = lazy(() => import("./DualTriviaChallenge"));
+const WindowsTimelineChallenge = lazy(() => import("./WindowsTimelineChallenge"));
+const SpotThePatternChallenge = lazy(() => import("./SpotThePatternChallenge"));
+const AZSpeedTestChallenge = lazy(() => import("./AZSpeedTestChallenge"));
+const JsArraySumChallenge = lazy(() => import("./JsArraySumChallenge"));
+const ColorConfusionChallenge = lazy(() => import("./ColorConfusionChallenge"));
+const PythonCalculatorChallenge = lazy(() => import("./PythonCalculatorChallenge"));
+const ArduinoBlinkChallenge = lazy(() => import("./ArduinoBlinkChallenge"));
+const ConnectionsGridChallenge = lazy(() => import("./ConnectionsGridChallenge"));
+const NumberSpeedTestChallenge = lazy(() => import("./NumberSpeedTestChallenge"));
+const InteractiveBinaryChallenge = lazy(() => import("./InteractiveBinaryChallenge"));
+const MemoryPatternChallenge = lazy(() => import("./MemoryPatternChallenge"));
+const SandboxLoginChallenge = lazy(() => import("./SandboxLoginChallenge"));
+const CodingTypingChallenge = lazy(() => import("./CodingTypingChallenge"));
+const HtmlListChallenge = lazy(() => import("./HtmlListChallenge"));
+const IpGeolocationChallenge = lazy(() => import("./IpGeolocationChallenge"));
+const ConsoleHackChallenge = lazy(() => import("./ConsoleHackChallenge"));
+const StarPatternChallenge = lazy(() => import("./StarPatternChallenge"));
+const BallCodingChallenge = lazy(() => import("./BallCodingChallenge"));
+const SecureOrNotChallenge = lazy(() => import("./SecureOrNotChallenge"));
+const TimeZoneChallenge = lazy(() => import("./TimeZoneChallenge"));
+const ReactionTestChallenge = lazy(() => import("./ReactionTestChallenge"));
+const ASCIIChallenge = lazy(() => import("./ASCIIChallenge"));
+const HTTPStatusChallenge = lazy(() => import("./HTTPStatusChallenge"));
+const IPTriviaChallenge2 = lazy(() => import("./IPTriviaChallenge2"));
+const ListSlicerChallenge = lazy(() => import("./ListSlicerChallenge"));
+const LogicGatesVisualChallenge = lazy(() => import("./LogicGatesVisualChallenge"));
+const PCBuildChallenge = lazy(() => import("./PCBuildChallenge"));
+const FillBlankChallenge = lazy(() => import("./FillBlankChallenge"));
+const MoleculeBuilderChallenge = lazy(() => import("./MoleculeBuilderChallenge"));
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
   MCQ_CHALLENGES,
@@ -193,6 +208,9 @@ export type Challenge =
   | "ip_trivia_2"
   | "list_slicer"
   | "logic_gates_visual"
+  | "pc_build"
+  | "fill_blank"
+  | "molecule_builder"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -275,6 +293,9 @@ const CHALLENGE_NAMES: Record<string, string> = {
   ip_trivia_2: "IP Trivia 🔍",
   list_slicer: "List Slicer 🐍",
   logic_gates_visual: "Logic Gates Visual 🧠",
+  pc_build: "PC Builder 🖥️",
+  fill_blank: "Complete the Sentence 🦉",
+  molecule_builder: "Molecule Builder ⚗️",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -976,6 +997,36 @@ const UserView: React.FC<UserViewProps> = ({
     (score: number) => {
       updateScore((prev) => prev + score);
       setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handlePCBuildComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleFillBlankComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleMoleculeBuilderComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
     },
     [updateScore, advanceChallenge]
   );
@@ -1699,6 +1750,33 @@ const UserView: React.FC<UserViewProps> = ({
           />
         );
 
+      case "pc_build":
+        return (
+          <PCBuildChallenge
+            key="pc_build"
+            onComplete={handlePCBuildComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "fill_blank":
+        return (
+          <FillBlankChallenge
+            key="fill_blank"
+            onComplete={handleFillBlankComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "molecule_builder":
+        return (
+          <MoleculeBuilderChallenge
+            key="molecule_builder"
+            onComplete={handleMoleculeBuilderComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
       case "done":
         return (
           <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
@@ -1719,7 +1797,13 @@ const UserView: React.FC<UserViewProps> = ({
     }
   };
 
-  return <div className="w-full max-w-6xl mx-auto">{renderChallenge()}</div>;
+  return (
+    <div className="w-full max-w-6xl mx-auto">
+      <Suspense fallback={<ChallengeLoader />}>
+        {renderChallenge()}
+      </Suspense>
+    </div>
+  );
 };
 
 export default UserView;

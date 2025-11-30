@@ -5,8 +5,6 @@ interface StarPatternChallengeProps {
     challengeTitle: string;
 }
 
-type Stage = 'coding' | 'testing';
-
 const EXPECTED_OUTPUT = `*
 **
 ***
@@ -15,8 +13,8 @@ const EXPECTED_OUTPUT = `*
 
 const challengeDescription = (
     <div className="text-gray-300 text-md text-left max-w-2xl mx-auto bg-black/20 p-4 rounded-lg border border-white/10">
-        <p className="mb-3">Write Python code using <code className="bg-black/40 px-2 py-1 rounded text-yellow-300">print()</code> statements to output the following star pattern:</p>
-        <pre className="bg-black/40 p-4 rounded-lg text-green-400 font-mono text-lg my-4">
+        <p className="mb-3">Write Python code using <code className="bg-black/40 px-2 py-1 rounded text-yellow-300">print()</code> statements to output this pattern:</p>
+        <pre className="bg-black/40 p-4 rounded-lg text-green-400 font-mono text-lg my-4 text-left">
 {`*
 **
 ***
@@ -30,16 +28,13 @@ const initialCode = `print("Hello Loop!")`;
 
 const StarPatternChallenge: React.FC<StarPatternChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [code, setCode] = useState(initialCode);
-    const [stage, setStage] = useState<Stage>('coding');
-    const [testResult, setTestResult] = useState<{ actual: string | null, passed: boolean } | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [hasSubmitted, setHasSubmitted] = useState(false);
+    const [result, setResult] = useState<{ passed: boolean; error?: string } | null>(null);
+    const [isChecking, setIsChecking] = useState(false);
 
     const runTest = () => {
-        if (hasSubmitted) return;
-        setHasSubmitted(true);
-        setError(null);
-        setTestResult(null);
+        if (isChecking) return;
+        setIsChecking(true);
+        setResult(null);
 
         try {
             // Create a mock print function that captures output
@@ -57,24 +52,25 @@ const StarPatternChallenge: React.FC<StarPatternChallengeProps> = ({ onComplete,
             const normalizedExpected = EXPECTED_OUTPUT.trim();
             const passed = normalizedActual === normalizedExpected;
 
-            setTestResult({ actual, passed });
-            setStage('testing');
+            setResult({ passed });
 
             if (passed) {
                 setTimeout(() => onComplete(true), 1500);
             } else {
-                setHasSubmitted(false);
+                setIsChecking(false);
             }
         } catch (e: any) {
-            setError(`Error: ${e.message}`);
-            setStage('testing');
-            setHasSubmitted(false);
+            setResult({ passed: false, error: e.message });
+            setIsChecking(false);
         }
     };
 
-    const renderCodingStage = () => (
-        <>
+    return (
+        <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
+            <h2 className="text-2xl font-bold text-blue-300 mb-4">{challengeTitle}</h2>
+            
             <div className="text-gray-300 mb-6 text-md">{challengeDescription}</div>
+            
             <div className="w-full max-w-2xl mx-auto bg-[#282c34] rounded-lg shadow-lg overflow-hidden border border-white/10">
                 <div className="flex items-center px-4 py-2 bg-gray-800">
                     <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
@@ -85,75 +81,41 @@ const StarPatternChallenge: React.FC<StarPatternChallengeProps> = ({ onComplete,
                 <div className="p-4">
                     <textarea
                         value={code}
-                        onChange={(e) => setCode(e.target.value)}
+                        onChange={(e) => { setCode(e.target.value); setResult(null); }}
                         className="w-full h-48 bg-transparent text-white font-mono text-sm resize-none focus:outline-none"
                         spellCheck="false"
                         placeholder='print("*")'
+                        disabled={result?.passed}
                     />
                 </div>
             </div>
-            <button
-                onClick={runTest}
-                disabled={!code.trim() || hasSubmitted}
-                className="mt-8 w-full max-w-sm mx-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
-            >
-                Test My Code
-            </button>
-        </>
-    );
 
-    const renderTestingStage = () => {
-        const allPassed = testResult?.passed;
-
-        return (
-            <div className="max-w-xl mx-auto">
-                <h3 className="text-xl font-bold text-gray-200 mb-4">Test Result</h3>
-                {error ? (
-                    <div className="bg-red-900/30 border border-red-500/50 p-4 rounded-lg">
-                        <p className="text-red-400 font-bold">Error during execution:</p>
-                        <p className="text-red-300 font-mono mt-2">{error}</p>
-                    </div>
-                ) : testResult && (
-                    <div className="p-4 rounded-lg bg-black/40 border border-white/10">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <p className="text-sm text-gray-400 mb-2">Expected Output:</p>
-                                <pre className="bg-black/40 p-3 rounded text-green-400 font-mono text-sm whitespace-pre">
-{EXPECTED_OUTPUT}
-                                </pre>
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-400 mb-2">Your Output:</p>
-                                <pre className={`bg-black/40 p-3 rounded font-mono text-sm whitespace-pre ${testResult.passed ? 'text-green-400' : 'text-red-400'}`}>
-{testResult.actual || '(empty)'}
-                                </pre>
-                            </div>
+            {/* Result feedback */}
+            {result && (
+                <div className={`mt-6 p-4 rounded-lg ${result.passed ? 'bg-green-900/40 border border-green-500' : 'bg-red-900/40 border border-red-500'}`}>
+                    {result.error ? (
+                        <p className="text-red-400 font-mono text-sm">❌ Error: {result.error}</p>
+                    ) : result.passed ? (
+                        <div>
+                            <p className="text-3xl mb-2">🎉</p>
+                            <p className="text-green-400 font-bold text-xl">Pattern matched! Challenge complete!</p>
                         </div>
-                        <div className={`mt-4 px-3 py-2 rounded-full font-bold text-center ${testResult.passed ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                            {testResult.passed ? '✓ PASS' : '✗ FAIL'}
-                        </div>
-                    </div>
-                )}
-                <div className="mt-6 text-center">
-                    {allPassed ? (
-                        <p className="text-2xl font-bold text-green-400">Pattern matched! Challenge complete!</p>
                     ) : (
-                        <button
-                            onClick={() => { setStage('coding'); setHasSubmitted(false); }}
-                            className="w-full max-w-sm px-8 py-4 bg-yellow-600 text-black font-bold rounded-lg hover:bg-yellow-700 transform hover:scale-105 transition-all duration-300 shadow-lg"
-                        >
-                            Back to Editor
-                        </button>
+                        <p className="text-red-400 font-bold">❌ Output doesn't match. Try again!</p>
                     )}
                 </div>
-            </div>
-        );
-    };
+            )}
 
-    return (
-        <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
-            <h2 className="text-2xl font-bold text-blue-300 mb-4">{challengeTitle}</h2>
-            {stage === 'coding' ? renderCodingStage() : renderTestingStage()}
+            {/* Run button */}
+            {!result?.passed && (
+                <button
+                    onClick={runTest}
+                    disabled={!code.trim() || isChecking}
+                    className="mt-6 w-full max-w-sm mx-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/30"
+                >
+                    {isChecking ? '⏳ Checking...' : '▶ Run Code'}
+                </button>
+            )}
         </div>
     );
 };
