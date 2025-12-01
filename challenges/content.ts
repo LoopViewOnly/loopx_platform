@@ -1,7 +1,7 @@
 import { SIMILARITY_IMAGE_PLACEHOLDER_B64, SIMILARITY_SPONGEBOB_B64 } from './assets';
 
 export const TYPING_CHALLENGE_TEXT = "Welcome to LoopX, are you ready to feel the magic?";
-export const TYPING_CHALLENGE_2_TEXT = "i like to move it move, i like to move it move it, i like to MOVE IT";
+export const TYPING_CHALLENGE_2_TEXT = "i like to move it move it, i like to move it move it, i like to move it move it, i like to MOVE IT";
 
 export const TRIVIA_CHALLENGE = {
     question: "What year was Loop founded?",
@@ -81,7 +81,7 @@ export const PHISHING_CHALLENGES = [
 ];
 
 export const PYTHON_MENTOR_CHALLENGE = {
-    question: "Write a for Loop in Python that prints all the numbers from 10 down to 1. Show your code to a mentor, and they will tell you the password to proceed.",
+    question: "Use the pen and paper in front of you to write a for loop in Python that prints all the numbers from 10 down to 1. Show your code to a mentor, and they will tell you the password to proceed.",
     answer: "LOOPCS"
 };
 
@@ -365,7 +365,7 @@ export const MATCHSTICK_PUZZLES = [
         id: 3,
         question: "Make the equation correct by moving only one matchstick.",
         initialState: ['9', '+', '3', '=', '5'],
-        correctState: ['8', '+', '3', '=', '5'],
+        correctState: ['8', '-', '3', '=', '5'],
     }
 ];
 

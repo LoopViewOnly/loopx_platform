@@ -5,7 +5,7 @@ interface JsCodingChallengeProps {
     challengeTitle: string;
 }
 
-const challengeDescription = "print all even numbers between 10 and 100\n(10, 12,14 ..., 100)";
+const challengeDescription = "Write JavaScript code to print all even numbers between 10 and 100 (inclusive)\n(10, 12, 14, ..., 100)";
 const initialCode = `function getEvenNumbers() {
   // Your code here
 }`;

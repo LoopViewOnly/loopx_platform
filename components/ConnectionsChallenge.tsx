@@ -168,6 +168,7 @@ const ConnectionsChallenge: React.FC<ConnectionsChallengeProps> = ({ onComplete,
         const a = item.getBoundingClientRect();
         const b = container.getBoundingClientRect();
 
+        // Connect to the center of the connection dots (dots are positioned at -6px from edge, 12px wide)
         return {
             x: (side === 'right' ? a.right - b.left : a.left - b.left),
             y: a.top - b.top + a.height / 2,
@@ -203,8 +204,8 @@ const ConnectionsChallenge: React.FC<ConnectionsChallengeProps> = ({ onComplete,
                     else itemRefs.current.delete(item);
                 }}
                 onClick={() => handleItemClick(item, colIndex)}
-                className={`relative flex items-center justify-center px-2 py-1 my-4 border-2 rounded-lg transition-all
-                    min-h-[48px] 
+                className={`relative flex items-center justify-center my-4 border-2 rounded-lg transition-all
+                    h-[52px] w-full
                     ${isComplete ? 'border-green-500 bg-green-900/50 cursor-default' : ''}
                     ${isConnected && !isComplete ? 'border-blue-400 bg-blue-900/50' : ''}
                     ${isActive ? 'border-yellow-400 scale-105 shadow-lg' : ''}
@@ -232,24 +233,17 @@ const ConnectionsChallenge: React.FC<ConnectionsChallengeProps> = ({ onComplete,
             </p>
 
             <div className="relative max-w-3xl mx-auto" ref={containerRef}>
-                <div className="grid grid-cols-3 gap-4 md:gap-8">
-                    <div>{models.map(m => renderItem(m, 0))}</div>
-                    <div>{companies.map(c => renderItem(c, 1))}</div>
-                    <div>{logos.map(l => renderItem(l, 2))}</div>
+                <div className="grid grid-cols-3 gap-4 md:gap-8 relative z-0">
+                    <div className="flex flex-col">{models.map(m => renderItem(m, 0))}</div>
+                    <div className="flex flex-col">{companies.map(c => renderItem(c, 1))}</div>
+                    <div className="flex flex-col">{logos.map(l => renderItem(l, 2))}</div>
                 </div>
 
                 {/* Lines */}
-                <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
-                    <defs>
-                        <filter id="neon-glow">
-                            <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-                            <feMerge>
-                                <feMergeNode in="coloredBlur" />
-                                <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                        </filter>
-                    </defs>
-
+                <svg 
+                    className="absolute top-0 left-0 w-full h-full pointer-events-none z-50"
+                    style={{ overflow: 'visible', filter: 'drop-shadow(0 0 6px #60a5fa)' }}
+                >
                     {connections.map(({ from, to }) => {
                         const p1 = getConnectionPoint(from.id, 'right');
                         const p2 = getConnectionPoint(to.id, 'left');
@@ -262,10 +256,9 @@ const ConnectionsChallenge: React.FC<ConnectionsChallengeProps> = ({ onComplete,
                                 y1={p1.y}
                                 x2={p2.x}
                                 y2={p2.y}
-                                stroke="white"
-                                strokeWidth="2"
+                                stroke="#60a5fa"
+                                strokeWidth="3"
                                 strokeLinecap="round"
-                                filter="url(#neon-glow)"
                             />
                         );
                     })}

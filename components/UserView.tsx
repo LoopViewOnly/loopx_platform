@@ -91,6 +91,7 @@ const LogicGatesVisualChallenge = lazy(() => import("./LogicGatesVisualChallenge
 const PCBuildChallenge = lazy(() => import("./PCBuildChallenge"));
 const FillBlankChallenge = lazy(() => import("./FillBlankChallenge"));
 const MoleculeBuilderChallenge = lazy(() => import("./MoleculeBuilderChallenge"));
+const FixTheLogoChallenge = lazy(() => import("./FixTheLogoChallenge"));
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
   MCQ_CHALLENGES,
@@ -220,6 +221,7 @@ export type Challenge =
   | "google_apps"
   | "shape_pattern_color"
   | "tech_timeline"
+  | "fix_the_logo"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -309,6 +311,7 @@ const CHALLENGE_NAMES: Record<string, string> = {
   google_apps: "Google Apps 🔍",
   shape_pattern_color: "Shape vs. Pattern vs. Color 🔷",
   tech_timeline: "Tech Timeline 🏢",
+  fix_the_logo: "Fix The Logo 🧩",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -1072,6 +1075,14 @@ const UserView: React.FC<UserViewProps> = ({
         updateScore((prev) => prev + 100);
         setTimeout(() => advanceChallenge(), 1500);
       }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleFixTheLogoComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
     },
     [updateScore, advanceChallenge]
   );
@@ -1850,6 +1861,15 @@ const UserView: React.FC<UserViewProps> = ({
           <MoleculeBuilderChallenge
             key="molecule_builder"
             onComplete={handleMoleculeBuilderComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "fix_the_logo":
+        return (
+          <FixTheLogoChallenge
+            key="fix_the_logo"
+            onComplete={handleFixTheLogoComplete}
             challengeTitle={currentTitle}
           />
         );

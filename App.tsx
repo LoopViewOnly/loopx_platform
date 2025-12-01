@@ -37,7 +37,6 @@ const App: React.FC = () => {
       "html_debug",
       "click",
       "mcq2",
-      "js",
       "sequence",
       "reaction_test",
       "star_pattern",
@@ -64,6 +63,7 @@ const App: React.FC = () => {
       "matchstick",
       "mcq7",
       "wordle",
+      "js",
       "mcq8",
       "prompt",
       "password_strength",
@@ -134,6 +134,7 @@ const App: React.FC = () => {
       "shape_pattern_color",
       "mcq18",
       "tech_timeline",
+      "fix_the_logo",
     ],
     []
   );
@@ -528,6 +529,8 @@ const App: React.FC = () => {
                                     ? "Shape vs Pattern vs Color"
                                     : challenge === "tech_timeline"
                                     ? "Tech Timeline"
+                                    : challenge === "fix_the_logo"
+                                    ? "Fix The Logo"
                                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>

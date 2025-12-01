@@ -12,6 +12,7 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
     const [userInput, setUserInput] = useState('');
     const [cpm, setCpm] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
+    const [isPassing, setIsPassing] = useState(false);
     const [attempts, setAttempts] = useState(1);
     const startTimeRef = useRef<number | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -21,20 +22,21 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
     }, []);
 
     useEffect(() => {
-        if (isComplete) {
+        if (isComplete && isPassing) {
             // Automatically advance after showing the score for a moment.
             const timer = setTimeout(() => {
                 onComplete(cpm, attempts);
             }, 1500);
             return () => clearTimeout(timer);
         }
-    }, [isComplete, onComplete, cpm, attempts]);
+    }, [isComplete, isPassing, onComplete, cpm, attempts]);
     
     const resetChallenge = () => {
         setAttempts(prev => prev + 1);
         setUserInput('');
         setCpm(0);
         setIsComplete(false);
+        setIsPassing(false);
         startTimeRef.current = null;
         inputRef.current?.focus();
     };
@@ -58,6 +60,7 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
             const finalCpm = Math.round((challengeText.length / elapsedTime) * 60);
             setCpm(finalCpm);
             setIsComplete(true);
+            setIsPassing(finalCpm >= minCpm);
         }
     };
     
@@ -97,12 +100,26 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
             />
             
             <div className="mt-6 text-center min-h-[80px] flex flex-col justify-center">
-                {isComplete && (
+                {isComplete && isPassing && (
                      <>
                         <p className="text-4xl font-bold text-green-400">
                             {cpm} <span className="text-xl text-gray-300">CPM</span>
                         </p>
                         <p className="text-green-400 font-bold text-lg mt-2">Challenge Complete! Advancing...</p>
+                    </>
+                )}
+                {isComplete && !isPassing && (
+                    <>
+                        <p className="text-4xl font-bold text-red-400">
+                            {cpm} <span className="text-xl text-gray-300">CPM</span>
+                        </p>
+                        <p className="text-red-400 font-bold text-lg mt-2">Too slow! You need at least {minCpm} CPM.</p>
+                        <button
+                            onClick={resetChallenge}
+                            className="mt-4 px-6 py-2 bg-yellow-600 text-white font-bold rounded-lg hover:bg-yellow-700 transition-colors"
+                        >
+                            Try Again
+                        </button>
                     </>
                 )}
                 {!isComplete && (
