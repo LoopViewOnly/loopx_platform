@@ -521,6 +521,16 @@ export const MCQ_CHALLENGES = [
             "High-Traffic Transfer Protocol Server"
         ],
         correctAnswer: "HyperText Transfer Protocol Secure"
+    },
+    { // MCQ 19 - First Video Game (Twist Challenge)
+        question: "What is the first video game ever made?",
+        options: [
+            "Mario Kart",
+            "Tennis for Two",
+            "Tetris",
+            "Pac-Man"
+        ],
+        correctAnswer: "Tennis for Two"
     }
 ];
 

@@ -92,6 +92,10 @@ const PCBuildChallenge = lazy(() => import("./PCBuildChallenge"));
 const FillBlankChallenge = lazy(() => import("./FillBlankChallenge"));
 const MoleculeBuilderChallenge = lazy(() => import("./MoleculeBuilderChallenge"));
 const FixTheLogoChallenge = lazy(() => import("./FixTheLogoChallenge"));
+const BashChallenge = lazy(() => import("./BashChallenge"));
+const MCQTwistChallenge = lazy(() => import("./MCQTwistChallenge"));
+const FixTheBugsChallenge = lazy(() => import("./FixTheBugsChallenge"));
+const ColorCodeMatchChallenge = lazy(() => import("./ColorCodeMatchChallenge"));
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
   MCQ_CHALLENGES,
@@ -169,6 +173,7 @@ export type Challenge =
   | "mcq16"
   | "mcq17"
   | "mcq18"
+  | "mcq19"
   | "match_connect"
   | "pinpoint"
   | "hex_conversion"
@@ -222,6 +227,9 @@ export type Challenge =
   | "shape_pattern_color"
   | "tech_timeline"
   | "fix_the_logo"
+  | "bash_challenge"
+  | "fix_the_bugs"
+  | "color_code_match"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -312,6 +320,9 @@ const CHALLENGE_NAMES: Record<string, string> = {
   shape_pattern_color: "Shape vs. Pattern vs. Color 🔷",
   tech_timeline: "Tech Timeline 🏢",
   fix_the_logo: "Fix The Logo 🧩",
+  bash_challenge: "Bash Commands 💻",
+  fix_the_bugs: "Fix The Bugs 🐛",
+  color_code_match: "Color Code Match 🎨",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -1087,7 +1098,50 @@ const UserView: React.FC<UserViewProps> = ({
     [updateScore, advanceChallenge]
   );
 
+  const handleBashChallengeComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleMCQTwistComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleFixTheBugsComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleColorCodeMatchComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
   const renderChallenge = () => {
+    // Special case for MCQ19 (twist challenge)
+    if (currentChallenge === "mcq19") {
+      return (
+        <MCQTwistChallenge
+          key="mcq19"
+          onComplete={handleMCQTwistComplete}
+          challengeTitle={currentTitle}
+        />
+      );
+    }
+
     if (currentChallenge.startsWith("mcq")) {
       const index = parseInt(currentChallenge.replace("mcq", ""), 10) - 1;
       const challengeData = MCQ_CHALLENGES[index];
@@ -1870,6 +1924,33 @@ const UserView: React.FC<UserViewProps> = ({
           <FixTheLogoChallenge
             key="fix_the_logo"
             onComplete={handleFixTheLogoComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "bash_challenge":
+        return (
+          <BashChallenge
+            key="bash_challenge"
+            onComplete={handleBashChallengeComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "fix_the_bugs":
+        return (
+          <FixTheBugsChallenge
+            key="fix_the_bugs"
+            onComplete={handleFixTheBugsComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "color_code_match":
+        return (
+          <ColorCodeMatchChallenge
+            key="color_code_match"
+            onComplete={handleColorCodeMatchComplete}
             challengeTitle={currentTitle}
           />
         );

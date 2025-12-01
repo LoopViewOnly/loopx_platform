@@ -135,6 +135,10 @@ const App: React.FC = () => {
       "mcq18",
       "tech_timeline",
       "fix_the_logo",
+      "bash_challenge",
+      "mcq19",
+      "fix_the_bugs",
+      "color_code_match",
     ],
     []
   );
@@ -531,6 +535,12 @@ const App: React.FC = () => {
                                     ? "Tech Timeline"
                                     : challenge === "fix_the_logo"
                                     ? "Fix The Logo"
+                                    : challenge === "bash_challenge"
+                                    ? "Bash Commands"
+                                    : challenge === "fix_the_bugs"
+                                    ? "Fix The Bugs"
+                                    : challenge === "color_code_match"
+                                    ? "Color Code Match"
                                     : challenge.charAt(0).toUpperCase() + challenge.slice(1)}
                   {completedChallenges.has(challenge) && (
                     <span className="ml-2 text-green-400">✅</span>
