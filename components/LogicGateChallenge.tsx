@@ -137,28 +137,15 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
         const handleMouseUp = () => {
             setDraggingGateId(null);
             setDragOffset(null);
-            // Cancel wiring if clicking on empty space (not on a node)
-            if (wiringState) {
-                setWiringState(null);
-            }
-        };
-
-        const handleKeyDown = (e: KeyboardEvent) => {
-            // Cancel wiring when pressing Escape
-            if (e.key === 'Escape' && wiringState) {
-                setWiringState(null);
-            }
         };
 
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
-        window.addEventListener('keydown', handleKeyDown);
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
-            window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [draggingGateId, dragOffset, wiringState]);
+    }, [draggingGateId, dragOffset]);
 
     const getNodePosition = useCallback((gateId: string, type: 'input' | 'output', index: number = 0): Point | null => {
         const gate = gates.find(g => g.id === gateId);
@@ -177,6 +164,24 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
 
     const handlePaletteDragStart = (e: React.DragEvent<HTMLDivElement>, gateType: GateType) => {
         e.dataTransfer.setData('gateType', gateType);
+    };
+
+    const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        // Cancel wiring if clicking on empty canvas (not on a gate or node)
+        if (wiringState) {
+            const target = e.target as HTMLElement;
+            // Check if click was on a gate
+            const isClickOnGate = target.closest('[data-gate-element]') !== null;
+            // Check if click was on a node (has cursor-pointer class and bg-gray-300)
+            const isClickOnNode = (target.classList.contains('cursor-pointer') && 
+                                   target.classList.contains('bg-gray-300')) ||
+                                  target.closest('.cursor-pointer.bg-gray-300') !== null;
+            
+            // If click is not on a gate or node (i.e., empty canvas), cancel wiring
+            if (!isClickOnGate && !isClickOnNode) {
+                setWiringState(null);
+            }
+        }
     };
 
     const handleCanvasDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -411,6 +416,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
 
             <div
                 ref={canvasRef}
+                onClick={handleCanvasClick}
                 onDragOver={handleCanvasDragOver}
                 onDrop={handleCanvasDrop}
                 className="relative w-full h-[550px] bg-black/20 rounded-lg border-2 border-dashed border-gray-600 overflow-hidden"
@@ -426,6 +432,7 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
                     return (
                         <div
                             key={gate.id}
+                            data-gate-element
                             ref={(el: HTMLDivElement | null) => {
                                 if (el) {
                                     itemRefs.current.set(gate.id, el);
