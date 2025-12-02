@@ -1,114 +1,125 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 interface NumberSpeedTestChallengeProps {
-    onComplete: (success: boolean) => void;
+    onComplete: (timeElapsed: number) => void;
     challengeTitle: string;
 }
 
-const TIME_LIMIT = 50; // seconds
 const ALL_NUMBERS = Array.from({ length: 100 }, (_, i) => i + 1);
 
 const NumberSpeedTestChallenge: React.FC<NumberSpeedTestChallengeProps> = ({ onComplete, challengeTitle }) => {
     const [foundNumbers, setFoundNumbers] = useState<Set<number>>(new Set());
     const [currentInput, setCurrentInput] = useState('');
-    const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
+    const [elapsedTime, setElapsedTime] = useState(0);
     const [gameState, setGameState] = useState<'waiting' | 'running' | 'success' | 'failed'>('waiting');
+    const startTimeRef = useRef<number | null>(null);
     
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-    const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
 
-    // Game timer logic
+    // Game timer logic - counts up instead of down
     useEffect(() => {
-        if (gameState === 'running' && timeLeft > 0) {
+        if (gameState === 'running') {
             timerRef.current = setInterval(() => {
-                setTimeLeft(prev => prev - 1);
-            }, 1000);
-        } else if (gameState === 'running' && timeLeft === 0) {
-            setGameState('failed');
+                if (startTimeRef.current) {
+                    const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+                    setElapsedTime(elapsed);
+                }
+            }, 100); // Update every 100ms for smoother display
+        } else {
             if (timerRef.current) clearInterval(timerRef.current);
         }
 
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
         };
-    }, [gameState, timeLeft]);
+    }, [gameState]);
 
     // Check for win condition
     useEffect(() => {
         if (foundNumbers.size === 100 && gameState === 'running') {
             if (timerRef.current) clearInterval(timerRef.current);
+            const finalTime = startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current) / 1000) : elapsedTime;
+            setElapsedTime(finalTime);
             setGameState('success');
         }
-    }, [foundNumbers, gameState]);
+    }, [foundNumbers, gameState, elapsedTime]);
 
     const startTimer = () => {
         if (gameState === 'waiting') {
+            startTimeRef.current = Date.now();
             setGameState('running');
         }
     };
 
-    // Debounce logic for auto-submitting the number
-    useEffect(() => {
-        if (debounceTimeoutRef.current) {
-            clearTimeout(debounceTimeoutRef.current);
-        }
-
-        if (currentInput) {
-            debounceTimeoutRef.current = setTimeout(() => {
-                const num = parseInt(currentInput, 10);
-                if (!isNaN(num) && num >= 1 && num <= 100) {
-                    startTimer(); // Start timer on the first valid submission
-                    setFoundNumbers(prev => {
-                        const newSet = new Set(prev);
-                        newSet.add(num);
-                        return newSet;
-                    });
-                    setCurrentInput(''); // Clear input after submission
-                }
-            }, 250); // Reduced delay for a faster, more "immediate" feel
-        }
-
-        return () => {
-            if (debounceTimeoutRef.current) {
-                clearTimeout(debounceTimeoutRef.current);
-            }
-        };
-    }, [currentInput]);
-
-
+    // Instant recognition - check when valid number is entered (no debounce)
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // Only allow numbers in the input
         const value = e.target.value.replace(/[^0-9]/g, '');
         setCurrentInput(value);
+
+        // Start timer on first input
+        if (gameState === 'waiting' && value.length > 0) {
+            startTimer();
+        }
+
+        // Instant check when user types a valid number
+        const num = parseInt(value, 10);
+        if (!isNaN(num) && num >= 1 && num <= 100 && !foundNumbers.has(num)) {
+            // Add the number and clear input immediately
+            setFoundNumbers(prev => {
+                const newSet = new Set(prev);
+                newSet.add(num);
+                return newSet;
+            });
+            setCurrentInput(''); // Clear input immediately after recognition
+        }
     };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && currentInput) {
+            const num = parseInt(currentInput, 10);
+            if (!isNaN(num) && num >= 1 && num <= 100) {
+                if (gameState === 'waiting') {
+                    startTimer();
+                }
+                setFoundNumbers(prev => {
+                    const newSet = new Set(prev);
+                    newSet.add(num);
+                    return newSet;
+                });
+                setCurrentInput('');
+            }
+        }
+    };
+
 
     const resetChallenge = () => {
         setFoundNumbers(new Set());
         setCurrentInput('');
-        setTimeLeft(TIME_LIMIT);
+        setElapsedTime(0);
         setGameState('waiting');
+        startTimeRef.current = null;
         if (timerRef.current) clearInterval(timerRef.current);
         inputRef.current?.focus();
     };
     
     const handleSuccess = () => {
-        onComplete(true);
+        onComplete(elapsedTime);
     };
 
     return (
         <div className="p-8 bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass text-center">
             <h2 className="text-2xl font-bold text-blue-300 mb-4">{challengeTitle}</h2>
-            <p className="text-gray-300 mb-6">Find and type all numbers from 1 to 100. Numbers are submitted automatically after a brief pause. You have {TIME_LIMIT} seconds!</p>
+            <p className="text-gray-300 mb-6">Find and type all numbers from 1 to 100. Numbers are recognized instantly as you type!</p>
 
             <div className="flex justify-between items-center max-w-md mx-auto mb-6">
                 <div className="text-center">
-                    <p className="text-5xl font-mono font-bold text-blue-400">{timeLeft}</p>
-                    <p className="text-sm text-gray-400">Seconds Left</p>
+                    <p className="text-5xl font-mono font-bold text-blue-400">{elapsedTime}</p>
+                    <p className="text-sm text-gray-400">Seconds</p>
                 </div>
                  <div className="text-center">
                     <p className="text-5xl font-mono font-bold text-green-400">{foundNumbers.size}</p>
@@ -121,8 +132,9 @@ const NumberSpeedTestChallenge: React.FC<NumberSpeedTestChallengeProps> = ({ onC
                 type="text"
                 value={currentInput}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 autoComplete="off"
-                disabled={gameState === 'success' || gameState === 'failed'}
+                disabled={gameState === 'success'}
                 className="w-full max-w-xs mx-auto mb-6 px-4 py-3 bg-black/40 border-2 border-blue-500/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 font-mono text-2xl tracking-widest text-center"
                 placeholder="Type a number..."
             />
@@ -144,22 +156,14 @@ const NumberSpeedTestChallenge: React.FC<NumberSpeedTestChallengeProps> = ({ onC
                 {gameState === 'success' && (
                      <>
                         <p className="text-3xl font-bold text-green-400">Success!</p>
-                        <p className="text-lg text-gray-300 mt-2">You found all numbers with {timeLeft} second(s) to spare.</p>
+                        <p className="text-lg text-gray-300 mt-2">You found all numbers in {elapsedTime} seconds!</p>
                         <button onClick={handleSuccess} className="mt-4 px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transform hover:scale-105 transition-all duration-300">
                             Next Challenge
                         </button>
                     </>
                 )}
-                {gameState === 'failed' && (
-                     <>
-                        <p className="text-3xl font-bold text-red-500">Time's Up!</p>
-                        <button onClick={resetChallenge} className="mt-4 px-6 py-3 bg-yellow-600 text-black font-bold rounded-lg hover:bg-yellow-700 transform hover:scale-105 transition-all duration-300">
-                            Try Again
-                        </button>
-                    </>
-                )}
                 {gameState === 'waiting' && (
-                    <p className="text-gray-400">Start typing a number to begin.</p>
+                    <p className="text-gray-400">Start typing a number to begin the timer.</p>
                 )}
             </div>
         </div>

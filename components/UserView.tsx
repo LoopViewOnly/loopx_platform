@@ -1054,11 +1054,14 @@ const UserView: React.FC<UserViewProps> = ({
   );
 
   const handleNumberSpeedTestComplete = useCallback(
-    (success: boolean) => {
-      if (success) {
-        updateScore((prev) => prev + 100);
-        setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
-      }
+    (timeElapsed: number) => {
+      // Score based on time: faster = higher score
+      // Base score: 200 points
+      // Time bonus: subtract time from base, minimum 50 points
+      // Formula: max(50, 200 - timeElapsed)
+      const score = Math.max(50, 200 - timeElapsed);
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500); // Added delay for consistency
     },
     [updateScore, advanceChallenge]
   );
