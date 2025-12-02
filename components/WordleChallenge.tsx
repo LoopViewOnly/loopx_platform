@@ -28,6 +28,7 @@ const WordleChallenge: React.FC<WordleChallengeProps> = ({ onComplete, challenge
             onComplete(false); // Optional, depends on if you want to punish guessing
             setError('That is not the correct word. Check your Wordle solution and try again!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

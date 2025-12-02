@@ -54,10 +54,32 @@ const RealOrFakeChallenge: React.FC<RealOrFakeChallengeProps> = ({
     const [selection, setSelection] = useState<'left' | 'right' | null>(null);
     const [isRoundOver, setIsRoundOver] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
+    const [usedRealImages, setUsedRealImages] = useState<Set<string>>(new Set());
+    const [usedFakeImages, setUsedFakeImages] = useState<Set<string>>(new Set());
 
     const setupNewRound = useCallback(() => {
-        const realImg = getRandomItem(REAL_OR_FAKE_IMAGES.real);
-        const fakeImg = getRandomItem(REAL_OR_FAKE_IMAGES.fake);
+        // Get available images (not yet used)
+        const availableReal = REAL_OR_FAKE_IMAGES.real.filter(img => !usedRealImages.has(img));
+        const availableFake = REAL_OR_FAKE_IMAGES.fake.filter(img => !usedFakeImages.has(img));
+
+        // If we've used all images, reset the pools
+        const realPool = availableReal.length > 0 ? availableReal : REAL_OR_FAKE_IMAGES.real;
+        const fakePool = availableFake.length > 0 ? availableFake : REAL_OR_FAKE_IMAGES.fake;
+
+        // Reset used sets if pools were exhausted
+        if (availableReal.length === 0) {
+            setUsedRealImages(new Set());
+        }
+        if (availableFake.length === 0) {
+            setUsedFakeImages(new Set());
+        }
+
+        const realImg = getRandomItem(realPool);
+        const fakeImg = getRandomItem(fakePool);
+
+        // Track used images
+        setUsedRealImages(prev => new Set([...prev, realImg]));
+        setUsedFakeImages(prev => new Set([...prev, fakeImg]));
 
         const isRealOnLeft = Math.random() > 0.5;
 
@@ -75,7 +97,7 @@ const RealOrFakeChallenge: React.FC<RealOrFakeChallengeProps> = ({
         setSelection(null);
         setIsRoundOver(false);
         setHasSubmitted(false);
-    }, []);
+    }, [usedRealImages, usedFakeImages]);
 
     useEffect(() => {
         setupNewRound();

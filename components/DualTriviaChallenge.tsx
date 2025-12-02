@@ -38,6 +38,7 @@ const DualTriviaChallenge: React.FC<DualTriviaChallengeProps> = ({ onComplete, c
         } else {
             setErrorMessage('One or both answers are incorrect. Review the highlighted fields.');
             onComplete(false); // Signal an incorrect attempt
+            setHasSubmitted(false);
         }
     };
 

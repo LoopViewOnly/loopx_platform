@@ -8,9 +8,91 @@ export const TRIVIA_CHALLENGE = {
     answer: "2015"
 };
 
+export const WWW_TRIVIA_CHALLENGE = {
+    question: "What does WWW stand for?",
+    answer: "world wide web"
+};
+
+export const HACKER_TYPES_CHALLENGE = {
+    hackerTypes: [
+        { id: 'white_hat', name: 'White Hat Hacker' },
+        { id: 'grey_hat', name: 'Grey Hat Hacker' },
+        { id: 'black_hat', name: 'Black Hat Hacker' },
+    ],
+    descriptions: [
+        { id: 'desc_white', text: 'Found a security flaw, reports it to the company with permission.', correctHackerId: 'white_hat' },
+        { id: 'desc_black', text: 'Hacks into a company system to steal credit-card numbers.', correctHackerId: 'black_hat' },
+        { id: 'desc_grey', text: 'Finds a bug, tries to warn the company, but uses an unauthorized method to prove the flaw.', correctHackerId: 'grey_hat' },
+    ]
+};
+
+export const BIGBEN_WALKING_CHALLENGE = {
+    question: "How many minutes do you need to walk from Big Ben to London Eye?",
+    answer: 9,
+    minValue: 0,
+    maxValue: 30
+};
+
+export const EIFFEL_TOWER_CHALLENGE = {
+    question: "How tall is the Eiffel Tower in centimeters (cm)?",
+    answer: "32400",
+    hint: "It's over 300 meters tall..."
+};
+
+export const AXIS_3D_CHALLENGE = {
+    question: "Identify each axis in the 3D coordinate system",
+    axes: [
+        { id: 'up', label: 'Points UP ↑', answer: 'y' },
+        { id: 'right', label: 'Points RIGHT →', answer: 'x' },
+        { id: 'towards', label: 'Points TOWARDS you ●', answer: 'z' }
+    ]
+};
+
+export const GPT_ACRONYM_CHALLENGE = {
+    question: "What does GPT stand for?",
+    letters: [
+        { letter: 'G', answer: 'generative' },
+        { letter: 'P', answer: 'pre-trained' },
+        { letter: 'T', answer: 'transformer' }
+    ]
+};
+
+export const JS_ARRAY_PRINT_CHALLENGE = {
+    description: "Print all the elements inside the given array using a loop.",
+    array: '["Elsa", "Tarzan", "Simba", "Mulan", "Mufasa", "Olaf", "Harry Potter", "John Cena", "Jerry Bata", "Snow White"]',
+    arrayName: 'arr',
+    initialCode: `const arr = ["Elsa", "Tarzan", "Simba", "Mulan", "Mufasa", "Olaf", "Harry Potter", "John Cena", "Jerry Bata", "Snow White"];
+
+// Write your code below to print all elements
+`,
+    expectedKeywords: ['for', 'console.log', 'arr'],
+};
+
+export const LUA_RECEIPT_CHALLENGE = {
+    description: `Define 3 variables for prices and print them as a receipt.
+
+Variables to define:
+• oreo_price = 3
+• kinder_price = 5
+• cola_price = 7
+
+Then print them as a receipt showing each item with its price and a total.`,
+    expectedKeywords: ['cola_price', 'Cola', 'oreo_price', 'Oreo', 'kinder_price', 'Kinder', 'print', 'Total', '3', '5', '7', '*', '-'],
+    initialCode: `-- Define your price variables here
+
+-- Print the receipt
+`,
+    testCases: [
+        { description: 'Oreo price defined as 3', check: 'oreo_price' },
+        { description: 'Kinder price defined as 5', check: 'kinder_price' },
+        { description: 'Cola price defined as 7', check: 'cola_price' },
+        { description: 'Receipt format with asterisks', check: '*' },
+    ]
+};
+
 export const IMAGE_TRIVIA_CHALLENGE = {
     question: "Find the Latitude: of Loop's Nazareth Campus (خط العرض على سطح الأرض)",
-    answer: "32.7053984"
+    answer: "32.705"
 };
 
 export const INSTAGRAM_CHALLENGE = {
@@ -531,6 +613,36 @@ export const MCQ_CHALLENGES = [
             "Pac-Man"
         ],
         correctAnswer: "Tennis for Two"
+    },
+    { // MCQ 20 - Unity Definition
+        question: "What is Unity?",
+        options: [
+            "A 3D modeling software like Blender",
+            "A game engine used to create 2D and 3D games",
+            "A programming language used for game development",
+            "A graphic design tool used for animation"
+        ],
+        correctAnswer: "A game engine used to create 2D and 3D games"
+    },
+    { // MCQ 21 - Unity Programming Language
+        question: "Which programming language is primarily used in Unity?",
+        options: [
+            "Python",
+            "Java",
+            "C#",
+            "Ruby"
+        ],
+        correctAnswer: "C#"
+    },
+    { // MCQ 22 - Unity Platforms
+        question: "Which of the following platforms can Unity deploy games to?",
+        options: [
+            "Windows",
+            "Mobile devices",
+            "Game consoles",
+            "All of the above"
+        ],
+        correctAnswer: "All of the above"
     }
 ];
 

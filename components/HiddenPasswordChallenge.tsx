@@ -25,6 +25,7 @@ const HiddenPasswordChallenge: React.FC<HiddenPasswordChallengeProps> = ({ onCom
         } else {
             setError("Incorrect password. The secret is closer than you think. Try inspecting the box!");
             setPassword('');
+            setHasSubmitted(false);
         }
     };
 

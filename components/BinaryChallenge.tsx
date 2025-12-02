@@ -30,6 +30,7 @@ const BinaryChallenge: React.FC<BinaryChallengeProps> = ({ onComplete, challenge
         } else {
             onComplete(false);
             setError("Incorrect binary sequence. Check your conversion and spacing!");
+            setHasSubmitted(false);
             // Don't clear the answer so the user can edit it
         }
     };

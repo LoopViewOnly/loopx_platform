@@ -65,6 +65,7 @@ const HexToBinaryChallenge: React.FC<HexToBinaryChallengeProps> = ({ onComplete,
             }
             setFeedback(newFeedback);
             setErrorMessage('One or more groups are incorrect. Please review the highlighted fields.');
+            setHasSubmitted(false);
         }
     };
 

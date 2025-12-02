@@ -2,7 +2,7 @@ import { LOOPERS_SHIRT } from './challenges/content';
 import { UserScore } from './types';
 
 // Challenge thresholds
-export const TYPING_MIN_CPM = 100; // Characters Per Minute
+export const TYPING_MIN_CPM = 70; // Characters Per Minute
 export const TYPING_2_MIN_CPM = 120; // CPM for the second typing challenge
 export const CLICK_CHALLENGE_DURATION = 10; // in seconds
 export const CLICK_MIN_CPS = 5; // Clicks Per Second

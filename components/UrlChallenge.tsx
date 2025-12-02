@@ -30,6 +30,7 @@ const URLChallenge: React.FC<URLChallengeProps> = ({ onComplete, challengeTitle 
         } else {
             onComplete(false);
             setError("Incorrect username or password. Check the URL carefully!");
+            setHasSubmitted(false);
         }
     };
 

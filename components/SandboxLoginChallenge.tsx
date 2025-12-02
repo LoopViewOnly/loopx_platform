@@ -83,6 +83,7 @@ const SandboxLoginChallenge: React.FC<SandboxLoginChallengeProps> = ({ onComplet
         } else {
             setError("Incorrect password. Inspect the code carefully!");
             setUserAnswer('');
+            setHasSubmitted(false);
         }
     };
 

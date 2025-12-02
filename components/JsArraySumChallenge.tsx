@@ -127,7 +127,7 @@ const JsArraySumChallenge: React.FC<JsArraySumChallengeProps> = ({ onComplete, c
                         <p className="text-2xl font-bold text-green-400">Test passed! Challenge complete!</p>
                     ) : (
                         <button
-                            onClick={() => setStage('coding')}
+                            onClick={() => { setStage('coding'); setHasSubmitted(false); }}
                             className="w-full max-w-sm px-8 py-4 bg-yellow-600 text-black font-bold rounded-lg hover:bg-yellow-700 transform hover:scale-105 transition-all duration-300 shadow-lg"
                         >
                             Back to Editor

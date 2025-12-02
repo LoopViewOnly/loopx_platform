@@ -35,6 +35,7 @@ const PersonaChallenge: React.FC<PersonaChallengeProps> = ({ onComplete, challen
             onComplete(null);
             setError('Incorrect password. Combine clues from the ID card!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

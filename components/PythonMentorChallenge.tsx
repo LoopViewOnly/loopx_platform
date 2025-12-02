@@ -27,6 +27,7 @@ const PythonMentorChallenge: React.FC<PythonMentorChallengeProps> = ({ onComplet
             onComplete(false);
             setError('That is not the correct password. Check with your mentor again!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

@@ -27,6 +27,7 @@ const MagicChallenge: React.FC<MagicChallengeProps> = ({ onComplete, challengeTi
             onComplete(false);
             setError("❌ Incorrect. The magic number is different. Check the page again!");
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

@@ -27,6 +27,7 @@ const SpanishLoopChallenge: React.FC<SpanishLoopChallengeProps> = ({ onComplete,
             onComplete(false);
             setError("❌ Incorrect. That's not the right translation. Try again!");
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

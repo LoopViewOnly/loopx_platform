@@ -8,12 +8,15 @@ interface TypingChallengeProps {
     minCpm: number;
 }
 
+const MAX_ATTEMPTS = 3;
+
 const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challengeTitle, challengeText, minCpm }) => {
     const [userInput, setUserInput] = useState('');
     const [cpm, setCpm] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
     const [isPassing, setIsPassing] = useState(false);
     const [attempts, setAttempts] = useState(1);
+    const [outOfAttempts, setOutOfAttempts] = useState(false);
     const startTimeRef = useRef<number | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -22,17 +25,25 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
     }, []);
 
     useEffect(() => {
-        if (isComplete && isPassing) {
+        if (isComplete && (isPassing || outOfAttempts)) {
             // Automatically advance after showing the score for a moment.
             const timer = setTimeout(() => {
                 onComplete(cpm, attempts);
             }, 1500);
             return () => clearTimeout(timer);
         }
-    }, [isComplete, isPassing, onComplete, cpm, attempts]);
+    }, [isComplete, isPassing, outOfAttempts, onComplete, cpm, attempts]);
     
     const resetChallenge = () => {
-        setAttempts(prev => prev + 1);
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        
+        if (newAttempts > MAX_ATTEMPTS) {
+            // Out of attempts - auto-advance with current (low) score
+            setOutOfAttempts(true);
+            return;
+        }
+        
         setUserInput('');
         setCpm(0);
         setIsComplete(false);
@@ -108,18 +119,27 @@ const TypingChallenge: React.FC<TypingChallengeProps> = ({ onComplete, challenge
                         <p className="text-green-400 font-bold text-lg mt-2">Challenge Complete! Advancing...</p>
                     </>
                 )}
-                {isComplete && !isPassing && (
+                {isComplete && !isPassing && !outOfAttempts && (
                     <>
                         <p className="text-4xl font-bold text-red-400">
                             {cpm} <span className="text-xl text-gray-300">CPM</span>
                         </p>
                         <p className="text-red-400 font-bold text-lg mt-2">Too slow! You need at least {minCpm} CPM.</p>
+                        <p className="text-gray-400 text-sm mt-1">Attempt {attempts} of {MAX_ATTEMPTS}</p>
                         <button
                             onClick={resetChallenge}
                             className="mt-4 px-6 py-2 bg-yellow-600 text-white font-bold rounded-lg hover:bg-yellow-700 transition-colors"
                         >
-                            Try Again
+                            Try Again ({MAX_ATTEMPTS - attempts} left)
                         </button>
+                    </>
+                )}
+                {isComplete && outOfAttempts && (
+                    <>
+                        <p className="text-4xl font-bold text-orange-400">
+                            {cpm} <span className="text-xl text-gray-300">CPM</span>
+                        </p>
+                        <p className="text-orange-400 font-bold text-lg mt-2">Out of attempts! Moving on...</p>
                     </>
                 )}
                 {!isComplete && (

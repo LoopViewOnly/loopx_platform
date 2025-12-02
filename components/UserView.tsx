@@ -96,6 +96,14 @@ const BashChallenge = lazy(() => import("./BashChallenge"));
 const MCQTwistChallenge = lazy(() => import("./MCQTwistChallenge"));
 const FixTheBugsChallenge = lazy(() => import("./FixTheBugsChallenge"));
 const ColorCodeMatchChallenge = lazy(() => import("./ColorCodeMatchChallenge"));
+const WWWTriviaChallenge = lazy(() => import("./WWWTriviaChallenge"));
+const HackerTypesChallenge = lazy(() => import("./HackerTypesChallenge"));
+const LuaReceiptChallenge = lazy(() => import("./LuaReceiptChallenge"));
+const JsArrayPrintChallenge = lazy(() => import("./JsArrayPrintChallenge"));
+const GPTAcronymChallenge = lazy(() => import("./GPTAcronymChallenge"));
+const Axis3DChallenge = lazy(() => import("./Axis3DChallenge"));
+const EiffelTowerChallenge = lazy(() => import("./EiffelTowerChallenge"));
+const WheelPickerChallenge = lazy(() => import("./WheelPickerChallenge"));
 import { SCORE_WEIGHTS, TYPING_2_MIN_CPM, TYPING_MIN_CPM } from "../constants";
 import {
   MCQ_CHALLENGES,
@@ -174,6 +182,9 @@ export type Challenge =
   | "mcq17"
   | "mcq18"
   | "mcq19"
+  | "mcq20"
+  | "mcq21"
+  | "mcq22"
   | "match_connect"
   | "pinpoint"
   | "hex_conversion"
@@ -230,6 +241,14 @@ export type Challenge =
   | "bash_challenge"
   | "fix_the_bugs"
   | "color_code_match"
+  | "www_trivia"
+  | "hacker_types"
+  | "lua_receipt"
+  | "js_array_print"
+  | "gpt_acronym"
+  | "axis_3d"
+  | "eiffel_tower"
+  | "wheel_picker"
   | "done";
 
 const CHALLENGE_NAMES: Record<string, string> = {
@@ -323,6 +342,14 @@ const CHALLENGE_NAMES: Record<string, string> = {
   bash_challenge: "Bash Commands 💻",
   fix_the_bugs: "Fix The Bugs 🐛",
   color_code_match: "Color Code Match 🎨",
+  www_trivia: "WWW Trivia 🌐",
+  hacker_types: "Hacker Types 🎭",
+  lua_receipt: "Lua Receipt 🧾",
+  js_array_print: "JS Array Print 📋",
+  gpt_acronym: "GPT Acronym 🤖",
+  axis_3d: "3D Axes 📐",
+  eiffel_tower: "Eiffel Tower 🗼",
+  wheel_picker: "London Walk 🚶",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -833,6 +860,86 @@ const UserView: React.FC<UserViewProps> = ({
   );
 
   const handleDualTriviaComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleWWWTriviaComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleHackerTypesComplete = useCallback(
+    (scoreChange: number, allCorrect: boolean) => {
+      if (allCorrect) {
+        updateScore((prev) => prev + scoreChange);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleLuaReceiptComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleJsArrayPrintComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleGPTAcronymComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleAxis3DComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleEiffelTowerComplete = useCallback(
+    (success: boolean) => {
+      if (success) {
+        updateScore((prev) => prev + 100);
+        setTimeout(() => advanceChallenge(), 1500);
+      }
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleWheelPickerComplete = useCallback(
     (success: boolean) => {
       if (success) {
         updateScore((prev) => prev + 100);
@@ -1631,6 +1738,70 @@ const UserView: React.FC<UserViewProps> = ({
           <DualTriviaChallenge
             key="dual_trivia"
             onComplete={handleDualTriviaComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "www_trivia":
+        return (
+          <WWWTriviaChallenge
+            key="www_trivia"
+            onComplete={handleWWWTriviaComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "hacker_types":
+        return (
+          <HackerTypesChallenge
+            key="hacker_types"
+            onComplete={handleHackerTypesComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "lua_receipt":
+        return (
+          <LuaReceiptChallenge
+            key="lua_receipt"
+            onComplete={handleLuaReceiptComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "js_array_print":
+        return (
+          <JsArrayPrintChallenge
+            key="js_array_print"
+            onComplete={handleJsArrayPrintComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "gpt_acronym":
+        return (
+          <GPTAcronymChallenge
+            key="gpt_acronym"
+            onComplete={handleGPTAcronymComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "axis_3d":
+        return (
+          <Axis3DChallenge
+            key="axis_3d"
+            onComplete={handleAxis3DComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "eiffel_tower":
+        return (
+          <EiffelTowerChallenge
+            key="eiffel_tower"
+            onComplete={handleEiffelTowerComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+      case "wheel_picker":
+        return (
+          <WheelPickerChallenge
+            key="wheel_picker"
+            onComplete={handleWheelPickerComplete}
             challengeTitle={currentTitle}
           />
         );

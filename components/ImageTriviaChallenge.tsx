@@ -34,6 +34,7 @@ const ImageTriviaChallenge: React.FC<ImageTriviaChallengeProps> = ({ onComplete,
             onComplete(null);
             setError('Incorrect answer. Give it another thought!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 
@@ -42,7 +43,7 @@ const ImageTriviaChallenge: React.FC<ImageTriviaChallengeProps> = ({ onComplete,
             <h2 className="text-2xl font-bold text-blue-300 mb-4">{challengeTitle}</h2>
 
             <p className="text-gray-300 mb-2 text-lg">{IMAGE_TRIVIA_CHALLENGE.question}</p>
-            <p className="text-gray-400 mb-6 text-md">Example: 32.0853</p>
+            <p className="text-gray-400 mb-6 text-md">Example: 32.087 (3 decimal places)</p>
 
             <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
                 <input

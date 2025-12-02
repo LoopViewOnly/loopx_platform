@@ -37,6 +37,7 @@ const RearrangeChallenge: React.FC<RearrangeChallengeProps> = ({ onComplete, cha
             onComplete(null);
             setError('Not quite right. Try rearranging the letters again!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

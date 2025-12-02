@@ -34,6 +34,7 @@ const CaesarCipherChallenge: React.FC<CaesarCipherChallengeProps> = ({ onComplet
             onComplete(null);
             setError('Incorrect decryption. Check your cipher and try again!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

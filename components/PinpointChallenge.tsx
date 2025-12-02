@@ -28,6 +28,7 @@ const PinpointChallenge: React.FC<PinpointChallengeProps> = ({ onComplete, chall
             onComplete(false);
             setError('That is not the correct word. Check your Pinpoint solution and try again!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

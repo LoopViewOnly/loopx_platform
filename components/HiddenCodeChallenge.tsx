@@ -36,6 +36,7 @@ const HiddenCodeChallenge: React.FC<HiddenCodeChallengeProps> = ({ onComplete })
             onComplete(null);
             setError('Incorrect username or code. Try again!');
             setPassword('');
+            setHasSubmitted(false);
         }
     };
 

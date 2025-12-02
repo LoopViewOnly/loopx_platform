@@ -137,15 +137,28 @@ const LogicGateChallenge: React.FC<LogicGateChallengeProps> = ({ onComplete, cha
         const handleMouseUp = () => {
             setDraggingGateId(null);
             setDragOffset(null);
+            // Cancel wiring if clicking on empty space (not on a node)
+            if (wiringState) {
+                setWiringState(null);
+            }
+        };
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Cancel wiring when pressing Escape
+            if (e.key === 'Escape' && wiringState) {
+                setWiringState(null);
+            }
         };
 
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('keydown', handleKeyDown);
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [draggingGateId, dragOffset]);
+    }, [draggingGateId, dragOffset, wiringState]);
 
     const getNodePosition = useCallback((gateId: string, type: 'input' | 'output', index: number = 0): Point | null => {
         const gate = gates.find(g => g.id === gateId);

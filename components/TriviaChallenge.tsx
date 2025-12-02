@@ -34,6 +34,7 @@ const TriviaChallenge: React.FC<TriviaChallengeProps> = ({ onComplete, challenge
             onComplete(null);
             setError('Incorrect. That\'s not the right year. Try again!');
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 

@@ -28,6 +28,7 @@ const WebsiteCountChallenge: React.FC<WebsiteCountChallengeProps> = ({ onComplet
             onComplete(false);
             setError("❌ Incorrect. The count is different. Use Ctrl+F on the homepage and try again!");
             setAnswer('');
+            setHasSubmitted(false);
         }
     };
 
