@@ -643,6 +643,21 @@ export const MCQ_CHALLENGES = [
             "All of the above"
         ],
         correctAnswer: "All of the above"
+    },
+    { // MCQ 23 - Spotify T/F
+        question: "True or False: Spotify is a software.",
+        options: ["True", "False"],
+        correctAnswer: "True"
+    },
+    { // MCQ 24 - Minecraft Sales T/F
+        question: "True or False: GTA V is the best selling game in history.",
+        options: ["True", "False"],
+        correctAnswer: "False"
+    },
+    { // MCQ 25 - NASA T/F
+        question: "True or False: NASA is the oldest space company.",
+        options: ["True", "False"],
+        correctAnswer: "False"
     }
 ];
 
