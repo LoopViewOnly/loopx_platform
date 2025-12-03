@@ -96,6 +96,13 @@ const BashChallenge = lazy(() => import("./BashChallenge"));
 const MCQTwistChallenge = lazy(() => import("./MCQTwistChallenge"));
 const FixTheBugsChallenge = lazy(() => import("./FixTheBugsChallenge"));
 const ColorCodeMatchChallenge = lazy(() => import("./ColorCodeMatchChallenge"));
+const ProgrammingEmojiChallenge = lazy(() => import("./ProgrammingEmojiChallenge"));
+const KeyboardShortcutsChallenge = lazy(() => import("./KeyboardShortcutsChallenge"));
+const MovementCodingChallenge = lazy(() => import("./MovementCodingChallenge"));
+const MathCopyPreventionChallenge = lazy(() => import("./MathCopyPreventionChallenge"));
+const HighFiveChallenge = lazy(() => import("./HighFiveChallenge"));
+const CableDragDropChallenge = lazy(() => import("./CableDragDropChallenge"));
+const WordSearchChallenge = lazy(() => import("./WordSearchChallenge"));
 const WWWTriviaChallenge = lazy(() => import("./WWWTriviaChallenge"));
 const HackerTypesChallenge = lazy(() => import("./HackerTypesChallenge"));
 const LuaReceiptChallenge = lazy(() => import("./LuaReceiptChallenge"));
@@ -241,6 +248,13 @@ export type Challenge =
   | "bash_challenge"
   | "fix_the_bugs"
   | "color_code_match"
+  | "programming_emoji"
+  | "keyboard_shortcuts"
+  | "movement_coding"
+  | "math_copy_prevention"
+  | "high_five"
+  | "cable_drag_drop"
+  | "word_search"
   | "www_trivia"
   | "hacker_types"
   | "lua_receipt"
@@ -350,6 +364,13 @@ const CHALLENGE_NAMES: Record<string, string> = {
   axis_3d: "3D Axes 📐",
   eiffel_tower: "Eiffel Tower 🗼",
   wheel_picker: "London Walk 🚶",
+  programming_emoji: "Programming Emojis 🐍",
+  keyboard_shortcuts: "Keyboard Shortcuts ⌨️",
+  movement_coding: "Movement Coding 🎮",
+  math_copy_prevention: "Math Challenge ➗",
+  high_five: "High-Five Challenge 🙌",
+  cable_drag_drop: "Cable Types 🖱️",
+  word_search: "Word Search Challenge 🔍",
 };
 
 const UserView: React.FC<UserViewProps> = ({
@@ -1233,6 +1254,62 @@ const UserView: React.FC<UserViewProps> = ({
   );
 
   const handleColorCodeMatchComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleProgrammingEmojiComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleKeyboardShortcutsComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleMovementCodingComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleMathCopyPreventionComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleHighFiveComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleCableDragDropComplete = useCallback(
+    (score: number) => {
+      updateScore((prev) => prev + score);
+      setTimeout(() => advanceChallenge(), 1500);
+    },
+    [updateScore, advanceChallenge]
+  );
+
+  const handleWordSearchComplete = useCallback(
     (score: number) => {
       updateScore((prev) => prev + score);
       setTimeout(() => advanceChallenge(), 1500);
@@ -2125,6 +2202,69 @@ const UserView: React.FC<UserViewProps> = ({
           <ColorCodeMatchChallenge
             key="color_code_match"
             onComplete={handleColorCodeMatchComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "programming_emoji":
+        return (
+          <ProgrammingEmojiChallenge
+            key="programming_emoji"
+            onComplete={handleProgrammingEmojiComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "keyboard_shortcuts":
+        return (
+          <KeyboardShortcutsChallenge
+            key="keyboard_shortcuts"
+            onComplete={handleKeyboardShortcutsComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "movement_coding":
+        return (
+          <MovementCodingChallenge
+            key="movement_coding"
+            onComplete={handleMovementCodingComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "math_copy_prevention":
+        return (
+          <MathCopyPreventionChallenge
+            key="math_copy_prevention"
+            onComplete={handleMathCopyPreventionComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "high_five":
+        return (
+          <HighFiveChallenge
+            key="high_five"
+            onComplete={handleHighFiveComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "cable_drag_drop":
+        return (
+          <CableDragDropChallenge
+            key="cable_drag_drop"
+            onComplete={handleCableDragDropComplete}
+            challengeTitle={currentTitle}
+          />
+        );
+
+      case "word_search":
+        return (
+          <WordSearchChallenge
+            key="word_search"
+            onComplete={handleWordSearchComplete}
             challengeTitle={currentTitle}
           />
         );

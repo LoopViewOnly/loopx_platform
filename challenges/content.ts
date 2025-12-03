@@ -883,3 +883,157 @@ Available functions: ball.moveRight(), ball.moveUp(), ball.moveRight(), ball.mov
         expectedMoves: ['moveRight', 'moveUp', 'moveRight', 'moveDown'],
     },
 ];
+
+export const PROGRAMMING_EMOJI_CHALLENGE = {
+    emojis: [
+        { emoji: '🐍', name: 'Python', options: ['Python', 'JavaScript', 'Java', 'C++'] },
+        { emoji: '☕️', name: 'Java', options: ['Java', 'JavaScript', 'C#', 'Ruby'] },
+        { emoji: '🌐', name: 'HTML', options: ['HTML', 'CSS', 'JavaScript', 'React'] },
+        { emoji: '📄', name: 'CSS', options: ['CSS', 'HTML', 'JavaScript', 'Sass'] },
+    ],
+    pointsPerCorrect: 25,
+    totalPoints: 100,
+};
+
+export const KEYBOARD_SHORTCUTS_CHALLENGE = {
+    levels: [
+        {
+            name: 'Essential Shortcuts',
+            shortcuts: [
+                { keys: ['Ctrl', 'C'], action: 'Copy' },
+                { keys: ['Ctrl', 'V'], action: 'Paste' },
+                { keys: ['Ctrl', 'X'], action: 'Cut' },
+                { keys: ['Delete'], action: 'Delete' },
+                { keys: ['Ctrl', 'A'], action: 'Select All' },
+                { keys: ['Ctrl', 'T'], action: 'Open New Tab' },
+                { keys: ['Ctrl', 'W'], action: 'Close Tab' },
+                { keys: ['Ctrl', 'Shift', 'N'], action: 'Incognito' },
+                { keys: ['Ctrl', 'R'], action: 'Refresh' },
+            ],
+            pointsPerCorrect: 15,
+        }
+    ],
+};
+
+export const MOVEMENT_CODING_CHALLENGE = {
+    description: "Write JavaScript code to make the player move when W,A,S,D keys are pressed. Complete the event listener to handle key presses and move the player in the correct direction.",
+    initialCode: `if (event.key === "W") {
+    player.moveForward();
+} else if (`,
+ 
+    expectedKeywords: ['event.key', 'W', 'A', 'S', 'D', 'moveForward', 'moveLeft', 'moveBackward', 'moveRight'],
+    hints: [
+        'Compare event.key with "W", "A", "S", "D" (uppercase)',
+        'Call the appropriate move method for each direction',
+        'Use === for exact comparison',
+        'Make sure to use the correct method names: moveForward, moveLeft, moveBackward, moveRight'
+    ],
+    points: 50,
+};
+
+export const MATH_COPY_PREVENTION_CHALLENGE = {
+    question: "67 × 15 = ?",
+    answer: "1005",
+    points: 30,
+    copyPreventionMessage: "Copying is not allowed! Solve it yourself! 😉",
+};
+
+export const HIGH_FIVE_CHALLENGE = {
+    loopers: [
+        { id: 'looper1', name: 'Looper-1', emoji: '🙋‍♀️', greeting: 'Hey there!' },
+        { id: 'looper2', name: 'Looper-2', emoji: '🙋‍♂️', greeting: 'What\'s up!' },
+        { id: 'looper3', name: 'Looper-3', emoji: '🙋‍♀️', greeting: 'Nice to meet you!' },
+        { id: 'looper4', name: 'Looper-4', emoji: '🙋‍♂️', greeting: 'Hello friend!' },
+        { id: 'looper5', name: 'Looper-5', emoji: '🙋‍♀️', greeting: 'Hi everyone!' },
+    ],
+    points: 25,
+    instruction: "High-five all 5 Loopers within 15 seconds to continue!",
+};
+
+export const CABLE_DRAG_DROP_CHALLENGE = {
+    cables: [
+        {
+            id: 'vga',
+            name: 'VGA',
+            description: 'Video Graphics Array for older monitors',
+            image: '/assets/cables_images/cable_img1.jpg',
+            points: 10,
+        },
+        {
+            id: 'hdmi',
+            name: 'HDMI',
+            description: 'High-definition multimedia interface for video',
+            image: '/assets/cables_images/cable_img2.jpg',
+            points: 10,
+        },
+        {
+            id: 'usb-a',
+            name: 'USB-A',
+            description: 'The classic rectangular USB connector',
+            image: '/assets/cables_images/cable_img3.png',
+            points: 10,
+        },
+        {
+            id: 'ethernet',
+            name: 'Ethernet',
+            description: 'RJ-45 connector for wired internet',
+            image: '/assets/cables_images/cable_img4.png',
+            points: 10,
+        },
+        {
+            id: 'usb-c',
+            name: 'USB-C',
+            description: 'Reversible connector used in modern devices',
+            image: '/assets/cables_images/cable_img5.jpg',
+            points: 10,
+        },
+        {
+            id: 'display-port',
+            name: 'Display Port',
+            description: 'High-performance video connector',
+            image: '/assets/cables_images/cable_img6.png',
+            points: 10,
+        },
+        {
+            id: 'aux',
+            name: 'AUX',
+            description: '3.5mm audio jack for headphones and speakers',
+            image: '/assets/cables_images/cable_img7.png',
+            points: 10,
+        },
+        {
+            id: 'usb-b',
+            name: 'USB-B',
+            description: 'Square connector often used for printers',
+            image: '/assets/cables_images/cable_img8.jpg',
+            points: 10,
+        },
+        {
+            id: 'usb-micro',
+            name: 'USB Micro',
+            description: 'Small 5-pin connector for mobile devices',
+            image: '/assets/cables_images/cable_img9.jpg',
+            points: 10,
+        },
+    ],
+    instruction: "Drag each cable type to match its correct image!",
+    pointsPerCorrect: 10,
+    totalPoints: 90,
+};
+
+export const WORD_SEARCH_CHALLENGE = {
+    url: "https://loopviewonly.github.io/loop-wordsearch/",
+    availableWords: [
+        'A', 'AM', 'AN', 'ARC', 'AS', 'BE', 'BOARD', 'BY', 'BYE', 'CLOUD',
+        'SPEAK', 'SPEAKER', 'SPEAKERS', 'FED', 'COP', 'MAD', 'ICLOUD', 'OK', 'ROT', 'PC', 'PEAK',
+        'COMPUTE', 'COMPUTER', 'CPU', 'CV', 'DAP', 'DISK', 'DOE', 'DO', 'DRIVE',
+        'DIP', 'FLOPPY', 'FLOPPYDISK', 'FLOP', 'FLASH', 'FLASHDRIVE', 'IN', 'IP',
+        'I', 'IS', 'IT', 'KEY', 'KEYBOARD', 'LAP', 'LAPTOP', 'LOUD', 'ME', 'MONITOR',
+        'MOUSE', 'MOUSEPAD', 'NO', 'ON', 'OR', 'PAD', 'PEA', 'PI', 'PIP', 'POT',
+        'PRINT', 'PRINTER', 'PUT', 'QUEST', 'RED', 'SO', 'TOP', 'TO', 'UP', 'US',
+        'USE', 'MAN', 'APE', 'DVD', 'CD', 'AI'
+    ],
+    requiredWordsCount: 10,
+    instruction: "Visit the word search game and find 10 different words from the available list. Enter each word you find below to complete the challenge!",
+    points: 50,
+};

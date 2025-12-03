@@ -150,6 +150,13 @@ const App: React.FC = () => {
       "mcq22",
       "fix_the_bugs",
       "color_code_match",
+      "programming_emoji",
+      "keyboard_shortcuts",
+      "movement_coding",
+      "math_copy_prevention",
+      "high_five",
+      "cable_drag_drop",
+      "word_search",
     ],
     []
   );
