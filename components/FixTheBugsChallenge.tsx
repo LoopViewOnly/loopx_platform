@@ -15,8 +15,8 @@ interface Creature {
     type: 'bug' | 'ladybug' | 'beetle' | 'ant' | 'spider' | 'apple';
 }
 
-const GAME_DURATION = 30;
-const BUGS_TO_CATCH = 30;
+const GAME_DURATION = 60;
+const BUGS_TO_CATCH = 10;
 const MAX_CREATURES_ON_SCREEN = 10;
 const SPAWN_INTERVAL = 600;
 
@@ -205,14 +205,15 @@ const FixTheBugsChallenge: React.FC<FixTheBugsChallengeProps> = ({ onComplete, c
             
             {gameState === 'ready' && (
                 <div className="flex flex-col items-center gap-6 py-8">
-                    <div className="text-8xl animate-bounce">🐛</div>
+                    <div className="text-8xl animate-bounce">🐛🐜🐞
+                    🕷️</div>
                     <p className="text-xl text-gray-300">
                         Click <span className="text-yellow-400 font-bold">{BUGS_TO_CATCH} bugs</span> in <span className="text-red-400 font-bold">{GAME_DURATION} seconds</span> to fix all the bugs!
                     </p>
                     
                     {/* Rules */}
                     <div className="bg-black/40 rounded-lg p-4 text-left max-w-md">
-                        <p className="text-green-400 font-bold mb-2">🐛 Bugs = +1</p>
+dsfds                        <p className="text-green-400 font-bold mb-2">🐛  Bugs = +1</p>
                         <div className="flex gap-2 text-2xl mb-3">
                             <span>🐛</span>
                             <span>🐞</span>

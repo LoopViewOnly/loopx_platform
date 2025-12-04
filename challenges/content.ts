@@ -1048,7 +1048,7 @@ export const WORD_SEARCH_CHALLENGE = {
         'PRINT', 'PRINTER', 'PUT', 'QUEST', 'RED', 'SO', 'TOP', 'TO', 'UP', 'US',
         'USE', 'MAN', 'APE', 'DVD', 'CD', 'AI'
     ],
-    requiredWordsCount: 10,
-    instruction: "Visit the word search game and find 10 different words from the available list. Enter each word you find below to complete the challenge!",
+    requiredWordsCount: 15,
+    instruction: "Visit the word search game and find 15 different words from the available list. Enter each word you find below to complete the challenge!",
     points: 50,
 };
