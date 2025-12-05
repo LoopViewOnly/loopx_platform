@@ -1,5 +1,16 @@
 import { SIMILARITY_IMAGE_PLACEHOLDER_B64, SIMILARITY_SPONGEBOB_B64 } from './assets';
 
+// Import cable images
+import cableImg1 from '../assets/cables_images/cable_img1.jpg';
+import cableImg2 from '../assets/cables_images/cable_img2.jpg';
+import cableImg3 from '../assets/cables_images/cable_img3.png';
+import cableImg4 from '../assets/cables_images/cable_img4.png';
+import cableImg5 from '../assets/cables_images/cable_img5.jpg';
+import cableImg6 from '../assets/cables_images/cable_img6.png';
+import cableImg7 from '../assets/cables_images/cable_img7.png';
+import cableImg8 from '../assets/cables_images/cable_img8.png';
+import cableImg9 from '../assets/cables_images/cable_img9.png';
+
 export const TYPING_CHALLENGE_TEXT = "Welcome to LoopX, are you ready to feel the magic?";
 export const TYPING_CHALLENGE_2_TEXT = "i like to move it move it, i like to move it move it, i like to move it move it, i like to MOVE IT";
 
@@ -971,63 +982,63 @@ export const CABLE_DRAG_DROP_CHALLENGE = {
             id: 'vga',
             name: 'VGA',
             description: 'Video Graphics Array for older monitors',
-            image: '/assets/cables_images/cable_img1.jpg',
+            image: cableImg1,
             points: 10,
         },
         {
             id: 'hdmi',
             name: 'HDMI',
             description: 'High-definition multimedia interface for video',
-            image: '/assets/cables_images/cable_img2.jpg',
+            image: cableImg2,
             points: 10,
         },
         {
             id: 'usb-a',
             name: 'USB-A',
             description: 'The classic rectangular USB connector',
-            image: '/assets/cables_images/cable_img3.png',
+            image: cableImg3,
             points: 10,
         },
         {
             id: 'ethernet',
             name: 'Ethernet',
             description: 'RJ-45 connector for wired internet',
-            image: '/assets/cables_images/cable_img4.png',
+            image: cableImg4,
             points: 10,
         },
         {
             id: 'usb-c',
             name: 'USB-C',
             description: 'Reversible connector used in modern devices',
-            image: '/assets/cables_images/cable_img5.jpg',
+            image: cableImg5,
             points: 10,
         },
         {
             id: 'display-port',
             name: 'Display Port',
             description: 'High-performance video connector',
-            image: '/assets/cables_images/cable_img6.png',
+            image: cableImg6,
             points: 10,
         },
         {
             id: 'aux',
             name: 'AUX',
             description: '3.5mm audio jack for headphones and speakers',
-            image: '/assets/cables_images/cable_img7.png',
+            image: cableImg7,
             points: 10,
         },
         {
             id: 'usb-b',
             name: 'USB-B',
             description: 'Square connector often used for printers',
-            image: '/assets/cables_images/cable_img8.png',
+            image: cableImg8,
             points: 10,
         },
         {
             id: 'usb-micro',
             name: 'USB Micro',
             description: 'Small 5-pin connector for mobile devices',
-            image: '/assets/cables_images/cable_img9.png',
+            image: cableImg9,
             points: 10,
         },
     ],
