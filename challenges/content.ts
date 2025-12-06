@@ -113,13 +113,14 @@ export const INSTAGRAM_CHALLENGE = {
 
 export const WORDLE_CHALLENGE = {
     link: "https://www.nytimes.com/games/wordle/index.html",
-    targetWord: "Hello",
+    targetWord: "Waist",
     question: "Play today's Wordle, find the secret word, and enter it below to continue."
 };
 
 export const PINPOINT_CHALLENGE = {
     link: "https://www.linkedin.com/games/pinpoint",
-    targetWord: "Dragons",
+    targetWord: "Parts of a roof",
+    alternateAnswers: ["roof"],
     question: "Play today's LinkedIn Pinpoint game. The secret word for this challenge relates to mythology. Find it and enter it below."
 };
 
@@ -504,9 +505,9 @@ export const CONNECTIONS_DATA = [
 
 export const MCQ_CHALLENGES = [
     { // MCQ 1
-        question: "In programming, what does 'API' stand for?",
-        options: ["Application Programming Interface", "Automated Program Interaction", "Advanced Python Implementation", "Application Protocol Inspector"],
-        correctAnswer: "Application Programming Interface"
+        question: "Which is an OUTPUT device?",
+        options: ["Keyboard", "Mouse", "Monitor", "Microphone"],
+        correctAnswer: "Monitor"
     },
     { // MCQ 2
         question: "What is the CPU?",
@@ -514,9 +515,9 @@ export const MCQ_CHALLENGES = [
         correctAnswer: "The computer’s brain"
     },
     { // MCQ 3
-        question: "Which is an OUTPUT device?",
-        options: ["Keyboard", "Mouse", "Monitor", "Microphone"],
-        correctAnswer: "Monitor"
+        question: "In programming, what does 'API' stand for?",
+        options: ["Application Programming Interface", "Automated Program Interaction", "Advanced Python Implementation", "Application Protocol Inspector"],
+        correctAnswer: "Application Programming Interface"
     },
     { // MCQ 4
         question: "Which code will output Kinder?",

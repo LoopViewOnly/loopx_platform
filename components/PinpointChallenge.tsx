@@ -18,7 +18,10 @@ const PinpointChallenge: React.FC<PinpointChallengeProps> = ({ onComplete, chall
         if (!answer.trim() || submittedCorrectly || hasSubmitted) return;
         setHasSubmitted(true);
 
-        const correct = answer.trim().toLowerCase() === PINPOINT_CHALLENGE.targetWord.toLowerCase();
+        const userAnswer = answer.trim().toLowerCase();
+        const mainAnswer = PINPOINT_CHALLENGE.targetWord.toLowerCase();
+        const alternateAnswers = PINPOINT_CHALLENGE.alternateAnswers?.map(a => a.toLowerCase()) || [];
+        const correct = userAnswer === mainAnswer || alternateAnswers.includes(userAnswer);
 
         if (correct) {
             onComplete(true);
